@@ -1,0 +1,289 @@
+{
+ "calibracion": [
+  {
+   "amp": 0.75,
+   "b_crit": -2.5,
+   "pen": 5.0,
+   "alpha": 0.2,
+   "coste": 2538.4078938157354,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 0.75,
+   "b_crit": -2.5,
+   "pen": 15.0,
+   "alpha": 0.3,
+   "coste": 3071.8326071813794,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 0.75,
+   "b_crit": -3.5,
+   "pen": 5.0,
+   "alpha": 0.1,
+   "coste": 2131.7766192762883,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 0.75,
+   "b_crit": -3.5,
+   "pen": 15.0,
+   "alpha": 0.15,
+   "coste": 2248.736014105112,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 0.75,
+   "b_crit": -4.5,
+   "pen": 5.0,
+   "alpha": 0.05,
+   "coste": 2045.258578201315,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 0.75,
+   "b_crit": -4.5,
+   "pen": 15.0,
+   "alpha": 0.05,
+   "coste": 2046.8832123034997,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 0.9,
+   "b_crit": -2.5,
+   "pen": 5.0,
+   "alpha": 0.4,
+   "coste": 6981.40543145614,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 0.9,
+   "b_crit": -2.5,
+   "pen": 15.0,
+   "alpha": 0.65,
+   "coste": 9402.88924762727,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 0.9,
+   "b_crit": -3.5,
+   "pen": 5.0,
+   "alpha": 0.3,
+   "coste": 5755.616659828979,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 0.9,
+   "b_crit": -3.5,
+   "pen": 15.0,
+   "alpha": 0.45,
+   "coste": 7077.795576902731,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 0.9,
+   "b_crit": -4.5,
+   "pen": 5.0,
+   "alpha": 0.2,
+   "coste": 5008.043269926369,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 0.9,
+   "b_crit": -4.5,
+   "pen": 15.0,
+   "alpha": 0.3,
+   "coste": 5577.823396524917,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 1.05,
+   "b_crit": -2.5,
+   "pen": 5.0,
+   "alpha": 0.65,
+   "coste": 14999.420597964612,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 1.05,
+   "b_crit": -2.5,
+   "pen": 15.0,
+   "alpha": 1.0,
+   "coste": 20876.157769344347,
+   "c2": true,
+   "c3": false,
+   "interior": false
+  },
+  {
+   "amp": 1.05,
+   "b_crit": -3.5,
+   "pen": 5.0,
+   "alpha": 0.5,
+   "coste": 12758.396864294982,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 1.05,
+   "b_crit": -3.5,
+   "pen": 15.0,
+   "alpha": 0.85,
+   "coste": 16788.12583140605,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 1.05,
+   "b_crit": -4.5,
+   "pen": 5.0,
+   "alpha": 0.4,
+   "coste": 11077.959055468398,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  },
+  {
+   "amp": 1.05,
+   "b_crit": -4.5,
+   "pen": 15.0,
+   "alpha": 0.65,
+   "coste": 13644.91055090562,
+   "c2": true,
+   "c3": true,
+   "interior": true
+  }
+ ],
+ "P0": {
+  "amp": 1.05,
+  "b_crit": -2.5,
+  "pen": 5.0,
+  "alpha_const": 0.65,
+  "coste_const": 14999.420597964612,
+  "roturas": 0.1130952380952381,
+  "interior": true,
+  "C2": true,
+  "n_eventos": 8
+ },
+ "P1": {
+  "a_lo": 0.55,
+  "a_hi": 0.8,
+  "coste_lead0": 13935.222869407693,
+  "prediccion_lead": 7.000000000000001,
+  "filas": [
+   {
+    "lead": 0,
+    "coste": 13935.222868998542,
+    "ganancia_vs_lead0": 2.9360904188048396e-09,
+    "ganancia_vs_const": 7.094925580728627,
+    "roturas": 0.1130952380952381
+   },
+   {
+    "lead": 1,
+    "coste": 13397.857980582818,
+    "ganancia_vs_lead0": 3.8561628605493246,
+    "ganancia_vs_const": 10.67749655342769,
+    "roturas": 0.10119047619047619
+   },
+   {
+    "lead": 2,
+    "coste": 13295.465759672608,
+    "ganancia_vs_lead0": 4.590935614955666,
+    "ganancia_vs_const": 11.360137727741474,
+    "roturas": 0.10119047619047619
+   },
+   {
+    "lead": 3,
+    "coste": 13323.688339225424,
+    "ganancia_vs_lead0": 4.388408681462745,
+    "ganancia_vs_const": 11.171979929455285,
+    "roturas": 0.10119047619047619
+   },
+   {
+    "lead": 5,
+    "coste": 13475.57093341127,
+    "ganancia_vs_lead0": 3.2984900227574148,
+    "ganancia_vs_const": 10.159390188445842,
+    "roturas": 0.10119047619047619
+   },
+   {
+    "lead": 7,
+    "coste": 13593.018792683144,
+    "ganancia_vs_lead0": 2.4556770991858135,
+    "ganancia_vs_const": 9.376374214563418,
+    "roturas": 0.10119047619047619
+   },
+   {
+    "lead": 10,
+    "coste": 13683.096178684118,
+    "ganancia_vs_lead0": 1.8092763430219283,
+    "ganancia_vs_const": 8.775835110984996,
+    "roturas": 0.10119047619047619
+   },
+   {
+    "lead": 14,
+    "coste": 13764.67539492461,
+    "ganancia_vs_lead0": 1.2238589657398973,
+    "ganancia_vs_const": 8.23195266094181,
+    "roturas": 0.10119047619047619
+   },
+   {
+    "lead": 20,
+    "coste": 13890.190352931872,
+    "ganancia_vs_lead0": 0.32315605496832317,
+    "ganancia_vs_const": 7.395153951368366,
+    "roturas": 0.10119047619047619
+   },
+   {
+    "lead": 28,
+    "coste": 14060.212251492094,
+    "ganancia_vs_lead0": -0.8969313462419956,
+    "ganancia_vs_const": 6.261630843260484,
+    "roturas": 0.10119047619047619
+   }
+  ],
+  "lead_optimo": 2,
+  "ganancia_max_pct": 4.590935614955666,
+  "plano": false
+ },
+ "P2": {
+  "coste_alto_siempre": 15307.027398756803,
+  "C3": true
+ },
+ "P3": {
+  "lead": 2,
+  "media_lead0": 14697.730721882215,
+  "media_leadL": 14105.135784443755,
+  "t": 5.7992168540012345,
+  "p": 0.0002597293686328363,
+  "semillas_a_favor": 9
+ },
+ "viable": true
+}

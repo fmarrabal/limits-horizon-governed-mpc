@@ -1,0 +1,120 @@
+{
+ "sintonia": {
+  "constante": {
+   "a_lo": 0.0,
+   "a_hi": 0.75
+  },
+  "reactivo": {
+   "a_lo": 0.6,
+   "a_hi": 0.8
+  },
+  "retardo-puro": {
+   "a_lo": 0.3,
+   "a_hi": 0.9,
+   "delta": 2
+  },
+  "instantaneo": {
+   "a_lo": 0.4,
+   "a_hi": 1.0
+  },
+  "oraculo": {
+   "a_lo": 0.1,
+   "a_hi": 0.9,
+   "lead": 8
+  },
+  "onda": {
+   "a_lo": 0.0,
+   "a_hi": 0.9,
+   "w0": 0.5,
+   "zeta": 0.5,
+   "c": 0.6,
+   "D": 0.0,
+   "gain": 1.6
+  },
+  "difusion": {
+   "a_lo": 0.6,
+   "a_hi": 1.0,
+   "w0": 0.5,
+   "zeta": 1.0,
+   "c": 0.6,
+   "D": 0.4,
+   "gain": 1.0,
+   "gamma": 1.0
+  }
+ },
+ "evaluacion": {
+  "oraculo": {
+   "coste": 48406.85961466875,
+   "vs_reactivo_pct": 14.411641014276338,
+   "roturas": 0.12094594594594595
+  },
+  "retardo-puro": {
+   "coste": 50739.365322298814,
+   "vs_reactivo_pct": 10.287528493240252,
+   "roturas": 0.1264864864864865
+  },
+  "instantaneo": {
+   "coste": 54741.85146931062,
+   "vs_reactivo_pct": 3.2107169852690896,
+   "roturas": 0.1289189189189189
+  },
+  "onda": {
+   "coste": 55921.35559693035,
+   "vs_reactivo_pct": 1.1252310953877145,
+   "roturas": 0.13981981981981983
+  },
+  "reactivo": {
+   "coste": 56557.7611118156,
+   "vs_reactivo_pct": 0.0,
+   "roturas": 0.14554054054054055
+  },
+  "difusion": {
+   "coste": 57677.373624324646,
+   "vs_reactivo_pct": -1.9795912895058836,
+   "roturas": 0.13761261261261265
+  },
+  "constante": {
+   "coste": 57800.28795840872,
+   "vs_reactivo_pct": -2.196916607318714,
+   "roturas": 0.14324324324324322
+  },
+  "_contrastes": {
+   "onda_vs_retardo-puro": {
+    "delta": -5181.990274631532,
+    "t": -5.185014829606292,
+    "p_holm": 0.002301894057839174,
+    "significativo": true
+   },
+   "onda_vs_difusion": {
+    "delta": 1756.0180273942983,
+    "t": 45.171638518563434,
+    "p_holm": 3.8318641614854006e-11,
+    "significativo": true
+   },
+   "instantaneo_vs_retardo-puro": {
+    "delta": -4002.4861470118094,
+    "t": -14.698077159232996,
+    "p_holm": 6.729139959937202e-07,
+    "significativo": true
+   },
+   "retardo-puro_vs_reactivo": {
+    "delta": 5818.395789516789,
+    "t": 3.9291344936014214,
+    "p_holm": 0.006925182246134022,
+    "significativo": true
+   },
+   "onda_vs_reactivo": {
+    "delta": 636.4055148852567,
+    "t": 1.312897421666052,
+    "p_holm": 0.22170570151443836,
+    "significativo": false
+   },
+   "oraculo_vs_reactivo": {
+    "delta": 8150.901497146842,
+    "t": 4.496338868254144,
+    "p_holm": 0.004490422849161875,
+    "significativo": true
+   }
+  }
+ }
+}

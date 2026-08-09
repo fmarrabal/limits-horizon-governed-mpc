@@ -1,0 +1,76 @@
+{
+ "onda": {
+  "a_lo": 0.0,
+  "a_hi": 1.0,
+  "w0": 0.15,
+  "zeta": 1.0,
+  "c": 0.15,
+  "D": 0.0,
+  "gain": 2.0,
+  "shift": -9,
+  "gamma": 1.0
+ },
+ "matched": {
+  "a_lo": 0.0,
+  "a_hi": 0.83,
+  "delta": 6,
+  "ws": 0.15,
+  "zs": 1.2,
+  "gain": 2.0,
+  "shift": -12
+ },
+ "bordes": {
+  "onda": [],
+  "matched": [
+   "shift"
+  ]
+ },
+ "tabla": {
+  "retardo-conformado": {
+   "coste": 48840.793614204624,
+   "pct_oraculo": 101.26689091361648
+  },
+  "oraculo": {
+   "coste": 48940.19107443039,
+   "pct_oraculo": 100.00000000000001
+  },
+  "onda": {
+   "coste": 49192.07386962254,
+   "pct_oraculo": 96.789575671245
+  },
+  "retardo-puro": {
+   "coste": 51222.71644610658,
+   "pct_oraculo": 70.90760018507929
+  },
+  "reactivo": {
+   "coste": 56785.96999331332,
+   "pct_oraculo": 0.0
+  }
+ },
+ "contrastes": {
+  "onda_vs_retardo-conformado": {
+   "delta": -351.2802554179221,
+   "t": -0.5627545184850129,
+   "p_holm": 1.0,
+   "significativo": false
+  },
+  "onda_vs_retardo-puro": {
+   "delta": 2030.642576484029,
+   "t": 1.9149842198494937,
+   "p_holm": 0.19621422479762993,
+   "significativo": false
+  },
+  "retardo-conformado_vs_retardo-puro": {
+   "delta": 2381.9228319019508,
+   "t": 5.453486601099082,
+   "p_holm": 2.879034968824022e-05,
+   "significativo": true
+  },
+  "oraculo_vs_onda": {
+   "delta": 251.88279519214447,
+   "t": 0.321068055655784,
+   "p_holm": 1.0,
+   "significativo": false
+  }
+ }
+}

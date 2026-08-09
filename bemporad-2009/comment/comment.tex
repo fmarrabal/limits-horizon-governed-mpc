@@ -1,0 +1,225 @@
+%% ===================================================================
+%%  Comment on "Multiobjective model predictive control"
+%%  [Automatica 45 (2009) 2823-2830]
+%%  ------------------------------------------------------------------
+%%  Compile:  latexmk -pdf comment.tex
+%% ===================================================================
+\documentclass[review]{elsarticle}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
+
+\newtheorem{lemma}{Lemma}
+\newproof{proof}{Proof}
+
+\newcommand{\Rset}{\mathbb{R}}
+
+\journal{Automatica}
+
+\begin{document}
+\begin{frontmatter}
+
+\title{Comment on ``Multiobjective model predictive control''
+[Automatica 45 (2009) 2823--2830]}
+
+\author[ual]{Francisco Manuel Arrabal-Campos\corref{cor}}
+\ead{fmarrabal@ual.es}
+\author[ual]{V\'ictor Valdivieso}
+\author[ual]{Emilio L\'opez-Lao}
+\author[cuc]{Alejandro Campa-Pinto}
+\address[ual]{Department of Engineering, Research Centre CIAIMBITAL,
+University of Almer\'ia, 04120 Almer\'ia, Spain}
+\address[cuc]{Department of Computer Science and Electronics,
+Universidad de la Costa, Barranquilla 080002, Colombia}
+\cortext[cor]{Corresponding author.}
+
+\begin{abstract}
+Lemma~4 of the commented paper states that the value function of the
+multiparametric linear program with weight vector $\mu$ in the cost and state
+$x$ in the right-hand side is convex and piecewise affine in $\mu$ for fixed
+$x$. The function is piecewise affine, but it is \emph{concave} in $\mu$, not
+convex: for each fixed decision variable the objective is affine in $\mu$ and
+the feasible set does not depend on $\mu$, so the value function is a pointwise
+minimum of affine functions. We trace the slip to a duality remark in the
+companion conference paper, and we work out the consequences. The
+weight-selection linear program of Theorem~6 evaluates the value function as
+the \emph{maximum} of its affine pieces, so it describes a convex inner
+approximation of the true admissible weight set, which is in general
+non-convex: every weight it returns satisfies the contractive constraint, so
+all closed-loop stability guarantees of the commented paper are preserved, but
+the claimed equivalence does not hold, and the program can be infeasible while
+admissible weights exist. In the quadratic case, the joint convexity invoked in
+Theorem~7 from a 1964 result of Mangasarian and Rosen does not apply, since
+that result concerns right-hand-side perturbations; the online problem is not a
+convex program. The practical remedy is to treat the admissible weight set by
+enumeration or gridding rather than by convex programming.
+\end{abstract}
+
+\begin{keyword}
+Predictive control \sep multiobjective optimization \sep multiparametric
+programming
+\end{keyword}
+
+\end{frontmatter}
+
+% ====================================================================
+\section{The claim}
+% ====================================================================
+The commented paper \citep{bemporad2009} builds a multiobjective MPC scheme in
+which, at each sample, a weight vector is selected online subject to the
+contractive constraint $V^\ast(\mu,x)\le J_a$, where $V^\ast$ is the optimal
+value of a multiparametric program with the weights in the cost. For the
+piecewise affine case, the machinery rests on
+\citep[Lemma~4]{bemporad2009}, which considers the multiparametric linear
+problem---their problem~(13)---with parameters $\mu\in\Rset^l$ in the cost
+function and $x\in\Rset^n$ in the right-hand side of the constraints, and
+states that the value function $V^\ast$ is
+\begin{quote}
+``continuous w.r.t.\ $(\mu,x)$, convex and piecewise affine w.r.t.\ $\mu$ for
+any given $x$ and w.r.t.\ $x$ for any given $\mu$.''
+\end{quote}
+The statement for $x$ is correct, and so is piecewise affinity in $\mu$. The
+convexity claim for $\mu$, however, has the wrong sign.
+
+% ====================================================================
+\section{The correction}
+% ====================================================================
+\begin{lemma}\label{lem:concave}
+Let $V^\ast(\mu,x)=\min_z\{(c_0+C_\mu'\mu)'z:\ Gz\le b+Sx\}$ be the value
+function of problem (13) of \citep{bemporad2009}. For each fixed $x$ such that
+the feasible set is nonempty and the minimum is attained,
+$\mu\mapsto V^\ast(\mu,x)$ is concave and piecewise affine on its domain.
+\end{lemma}
+
+\begin{proof}
+For each fixed feasible $z$ the map $\mu\mapsto(c_0+C_\mu'\mu)'z$ is affine.
+The feasible set $\{z:Gz\le b+Sx\}$ does not depend on $\mu$. Hence
+$V^\ast(\cdot,x)$ is a pointwise minimum of a family of affine functions of
+$\mu$, and therefore concave. Since for a linear program the minimum is
+attained at one of finitely many vertices (or the problem is unbounded),
+$V^\ast(\cdot,x)$ is the minimum of finitely many affine functions, hence
+piecewise affine.
+\end{proof}
+
+This is the standard sensitivity dichotomy of parametric optimization: under
+minimization the optimal value is convex in right-hand-side perturbations and
+concave in parameters that enter the objective linearly
+\citep[Sec.~5.6.1, Ex.~3.9]{boyd2004}. Both signs invert under maximization.
+The origin of the slip appears to be the companion conference paper
+\citep[p.~2406]{bemporad2009ecc}, which establishes the properties in $x$ and
+adds that ``by duality, the same properties hold with respect to $\mu$.''
+Duality does exchange right-hand-side and cost parameters, but it also turns
+the primal minimum into a dual maximum, and that is precisely the step that
+flips the curvature.
+
+We also verified the sign numerically on quadratic instances with the same
+parametric structure (weights entering the cost linearly, feasible set
+independent of the weights): over $300$ randomly generated chord tests the
+concavity inequality held in all cases and the convexity inequality failed in
+all cases, while the same test applied to $x$ confirmed convexity, exactly as
+in the corrected statement.
+
+% ====================================================================
+\section{Consequences within the commented paper}
+% ====================================================================
+
+\paragraph{Theorem 6 and the weight-selection LP (17)}
+The proof of Theorem~6 in \citep{bemporad2009} invokes the result of
+\citet{schechter1987} for \emph{convex} piecewise affine functions to evaluate
+$V^\ast(\mu,x)$, for fixed $x$, as the \emph{maximum} of the affine pieces
+$\{(\phi_i x+\gamma_i)'(c_0'+C_\mu'\mu)\}_{i\in I(x)}$, and the linear program
+(17) accordingly imposes
+\[
+(\phi_i x+\gamma_i)'(c_0'+C_\mu'\mu)\ \le\ J_a
+\qquad\text{for all } i\in I(x).
+\]
+By Lemma~\ref{lem:concave} the value function is the \emph{minimum} of those
+pieces. Requiring every piece to lie below $J_a$ is therefore sufficient but
+not necessary for $V^\ast(\mu,x)\le J_a$: the constraint set of (17) is a
+convex \emph{inner approximation} of the true admissible weight set
+\[
+\mathcal{A}(x,J_a)=\{\mu:\ V^\ast(\mu,x)\le J_a\},
+\]
+which, being a sublevel set of a concave function, is in general non-convex
+(for scalar $\mu$ it is a union of at most two intervals whenever the maximum
+of $V^\ast(\cdot,x)$ is interior and exceeds $J_a$).
+
+Two things follow, one reassuring and one not. Since every weight accepted by
+(17) satisfies the contractive constraint, all closed-loop stability
+guarantees built on that constraint are untouched; the scheme is safe as
+published. What fails is exactness: (17) is not equivalent to the weight
+selection problem it is meant to solve, it can be infeasible while
+$\mathcal{A}(x,J_a)$ is nonempty, and its optimizer need not be the closest
+admissible weight to the desired one. In our numerical experiments with the
+corrected sign, the admissible set was non-convex for roughly one fifth of the
+contraction levels sampled, so the gap is not a measure-zero curiosity.
+
+\paragraph{Theorem 7 and the quadratic case}
+For the branch with one quadratic objective, the proof of Theorem~7 in
+\citep{bemporad2009} asserts joint convexity of $V^\ast_\mu(\mu,x)$ in
+$(\mu,x)$ ``by the results of Mangasarian and Rosen (1964),'' and concludes
+that the online problem (21) is a convex program. In problem (20), however,
+$\mu$ enters the objective linearly through the term $\mu'C_\mu z$ while the
+constraints $Gz\le b+Sx$ do not depend on $\mu$; the situation covered by
+\citet{mangasarian1964} is perturbation of the constraint right-hand side, for
+which the value function of a minimization problem is indeed convex. In the
+$\mu$ direction the same argument as in Lemma~\ref{lem:concave} applies:
+$V^\ast_\mu(\cdot,x)$ is a pointwise minimum of functions affine in $\mu$,
+hence concave, and joint convexity in $(\mu,x)$ cannot hold except in
+degenerate cases. Consequently the feasible set of (21) is in general
+non-convex and (21) is not a convex program. Unlike the piecewise affine case,
+no inner-approximation safety net is created here; any candidate weight
+returned by a solver should therefore be certified a posteriori by evaluating
+$V^\ast_\mu$ directly, which is cheap.
+
+\paragraph{Practical remedy}
+The admissible weight set can be handled by enumeration over the finitely many
+affine pieces, or by gridding the simplex and testing
+$V^\ast(\mu,x)\le J_a$ pointwise; both preserve exactness at modest cost for
+the low weight dimensions typical of multiobjective MPC. Projection or
+gradient steps on the weight, and any construction that presumes convexity of
+$\mathcal{A}(x,J_a)$, can silently leave the admissible set.
+
+% ====================================================================
+\section*{Closing remark}
+% ====================================================================
+The contribution of the commented paper---a multiobjective MPC formulation
+with closed-loop guarantees obtained through a contractive constraint on a
+weighted value function---is not in question, and the published algorithm
+remains safe precisely because the affected construction errs on the
+conservative side. The correction concerns the exactness claims attached to
+the weight-selection subproblems. The authors were contacted about this
+observation prior to submission.
+
+\bibliographystyle{elsarticle-harv}
+\begin{thebibliography}{5}
+
+\bibitem[Bemporad and Mu\~noz de la Pe\~na(2009a)]{bemporad2009}
+Bemporad, A., Mu\~noz de la Pe\~na, D., 2009a.
+Multiobjective model predictive control.
+Automatica 45~(12), 2823--2830.
+
+\bibitem[Bemporad and Mu\~noz de la Pe\~na(2009b)]{bemporad2009ecc}
+Bemporad, A., Mu\~noz de la Pe\~na, D., 2009b.
+Multiobjective model predictive control based on convex piecewise affine costs.
+In: Proceedings of the European Control Conference (ECC). Budapest, Hungary,
+pp. 2402--2407.
+
+\bibitem[Boyd and Vandenberghe(2004)]{boyd2004}
+Boyd, S., Vandenberghe, L., 2004.
+Convex Optimization.
+Cambridge University Press, Cambridge, UK.
+
+\bibitem[Mangasarian and Rosen(1964)]{mangasarian1964}
+Mangasarian, O.~L., Rosen, J.~B., 1964.
+Inequalities for stochastic nonlinear programming problems.
+Operations Research 12~(1), 143--154.
+
+\bibitem[Schechter(1987)]{schechter1987}
+Schechter, M., 1987.
+Polyhedral functions and multiparametric linear programming.
+Journal of Optimization Theory and Applications 53~(2), 269--280.
+
+\end{thebibliography}
+
+\end{document}

@@ -1,0 +1,17 @@
+{
+ "concavidad": {
+  "tests": 300,
+  "violaciones_concavidad": 0,
+  "violaciones_convexidad": 300,
+  "peor_desviacion_negativa": 0.0,
+  "mayor_desviacion_positiva": 188.85613614979542,
+  "d_media": 23.56625188471522,
+  "concava": true
+ },
+ "no_convexidad": {
+  "estados": 20,
+  "niveles": 500,
+  "no_convexos": 103,
+  "pico_interior": 14
+ }
+}

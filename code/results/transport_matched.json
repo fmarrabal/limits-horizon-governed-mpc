@@ -1,0 +1,105 @@
+{
+ "sintonia": {
+  "onda": {
+   "par": {
+    "a_lo": 0.0,
+    "a_hi": 0.83,
+    "w0": 0.15,
+    "zeta": 1.0,
+    "c": 0.15,
+    "D": 0.0,
+    "gain": 3.0,
+    "shift": -6,
+    "gamma": 1.0
+   },
+   "borde": [
+    "gain",
+    "shift"
+   ]
+  },
+  "difusion": {
+   "par": {
+    "a_lo": 0.0,
+    "a_hi": 1.0,
+    "w0": 0.5,
+    "zeta": 1.0,
+    "c": 0.08,
+    "D": 0.4,
+    "gain": 2.0,
+    "shift": -3,
+    "gamma": 1.0
+   },
+   "borde": [
+    "c",
+    "w0"
+   ]
+  },
+  "retardo-conformado": {
+   "par": {
+    "a_lo": 0.2,
+    "a_hi": 1.0,
+    "delta": 4,
+    "ws": 0.15,
+    "zs": 1.2,
+    "gain": 2.0,
+    "shift": -6
+   },
+   "borde": [
+    "zs",
+    "shift"
+   ]
+  }
+ },
+ "tabla": {
+  "oraculo": {
+   "coste": 48406.85961470124,
+   "pct_oraculo": 100.0
+  },
+  "onda": {
+   "coste": 48539.99461732585,
+   "pct_oraculo": 98.3666223586472
+  },
+  "retardo-conformado": {
+   "coste": 49144.80636603685,
+   "pct_oraculo": 90.94644007677572
+  },
+  "difusion": {
+   "coste": 49265.90154240189,
+   "pct_oraculo": 89.46077402614263
+  },
+  "retardo-puro": {
+   "coste": 50739.36532220327,
+   "pct_oraculo": 71.38346343294842
+  },
+  "reactivo": {
+   "coste": 56557.76111194121,
+   "pct_oraculo": 0.0
+  }
+ },
+ "contrastes": {
+  "onda_vs_retardo-conformado": {
+   "delta": 604.8117487109943,
+   "t": 0.9585391605490505,
+   "p_holm": 0.36283115584214104,
+   "significativo": false
+  },
+  "onda_vs_retardo-puro": {
+   "delta": 2199.3707048774186,
+   "t": 7.78435997395775,
+   "p_holm": 0.00011006636136912934,
+   "significativo": true
+  },
+  "onda_vs_difusion": {
+   "delta": 725.9069250760251,
+   "t": 1.8980183014253056,
+   "p_holm": 0.2705200136948809,
+   "significativo": false
+  },
+  "retardo-conformado_vs_retardo-puro": {
+   "delta": 1594.5589561664244,
+   "t": 1.752701609143101,
+   "p_holm": 0.2705200136948809,
+   "significativo": false
+  }
+ }
+}

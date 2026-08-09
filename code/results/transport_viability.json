@@ -1,0 +1,86 @@
+{
+ "P0": {
+  "alpha_const": 0.95,
+  "coste_const": 145.06727792483818,
+  "saturacion": 0.07333333333333333,
+  "C2": true,
+  "n_eventos": 9
+ },
+ "P1": {
+  "a_lo": 0.45,
+  "a_hi": 0.95,
+  "coste_lead0": 136.491538040453,
+  "filas": [
+   {
+    "lead": 0,
+    "coste": 136.4915380381316,
+    "ganancia_vs_lead0": 1.7007647466461237e-09,
+    "ganancia_vs_const": 5.911560490677855
+   },
+   {
+    "lead": 1,
+    "coste": 138.8407917070661,
+    "ganancia_vs_lead0": -1.7211716567490278,
+    "ganancia_vs_const": 4.292136935938183
+   },
+   {
+    "lead": 2,
+    "coste": 138.83150944116184,
+    "ganancia_vs_lead0": -1.714371040360992,
+    "ganancia_vs_const": 4.29853552977481
+   },
+   {
+    "lead": 3,
+    "coste": 138.9165002769811,
+    "ganancia_vs_lead0": -1.776639249100848,
+    "ganancia_vs_const": 4.239948343860076
+   },
+   {
+    "lead": 5,
+    "coste": 138.96136692895413,
+    "ganancia_vs_lead0": -1.8095106289806222,
+    "ganancia_vs_const": 4.209020175485488
+   },
+   {
+    "lead": 8,
+    "coste": 139.01252147518807,
+    "ganancia_vs_lead0": -1.8469888103890333,
+    "ganancia_vs_const": 4.173757539441242
+   },
+   {
+    "lead": 12,
+    "coste": 139.07111718880864,
+    "ganancia_vs_lead0": -1.8899187344427941,
+    "ganancia_vs_const": 4.133365443815834
+   },
+   {
+    "lead": 18,
+    "coste": 139.16764609279232,
+    "ganancia_vs_lead0": -1.960640264414178,
+    "ganancia_vs_const": 4.0668246598675095
+   },
+   {
+    "lead": 25,
+    "coste": 139.26338038848817,
+    "ganancia_vs_lead0": -2.0307796276818664,
+    "ganancia_vs_const": 4.000831627486045
+   }
+  ],
+  "lead_optimo": 0,
+  "ganancia_max_pct": 1.7007647466461237e-09,
+  "plano": true
+ },
+ "P2": {
+  "coste_alto_siempre": 145.06727792484077,
+  "C3": false
+ },
+ "P3": {
+  "lead": 25,
+  "media_lead0": 145.9047729275987,
+  "media_leadL": 146.5570630020847,
+  "delta": -0.6522900744859683,
+  "t": -1.0983113067160284,
+  "p": 0.3084040268759427,
+  "semillas_a_favor": 4
+ }
+}

@@ -1,0 +1,42 @@
+{
+ "P1": {
+  "alphas": [
+   0.2,
+   0.2,
+   0.2,
+   0.2,
+   0.2
+  ],
+  "Ns": [
+   32,
+   32,
+   32,
+   32,
+   32
+  ],
+  "argmin_invariante_peso": true,
+  "argmin_invariante_horizonte": true,
+  "dispersion_coste_peso": 5.418603191825018e-14,
+  "dispersion_coste_horizonte": 1.2157769419587409e-16,
+  "interior_peso": true,
+  "interior_horizonte": true
+ },
+ "P2_hipotesis": {
+  "(0.0, 0.0)": {
+   "N": [
+    8,
+    8
+   ],
+   "invariante": true,
+   "dispersion": 3.596394605413906e-15
+  },
+  "(0.0, -4.0)": {
+   "N": [
+    8,
+    8
+   ],
+   "invariante": true,
+   "dispersion": 0.9989892844449645
+  }
+ }
+}

@@ -1,0 +1,86 @@
+{
+ "resintonia": {
+  "onda": {
+   "par": {
+    "a_lo": 0.2,
+    "a_hi": 0.833,
+    "w0": 0.15,
+    "zeta": 1.0,
+    "c": 0.3,
+    "D": 0.0,
+    "gain": 2.0,
+    "shift": -3,
+    "gamma": 1.0
+   },
+   "coste_sintonia": 48903.73082001744,
+   "borde": [
+    "c"
+   ]
+  },
+  "difusion": {
+   "par": {
+    "a_lo": 0.2,
+    "a_hi": 0.833,
+    "w0": 0.5,
+    "zeta": 0.2,
+    "c": 0.3,
+    "D": 0.4,
+    "gain": 2.0,
+    "shift": 0,
+    "gamma": 1.0
+   },
+   "coste_sintonia": 49560.04457801587,
+   "borde": [
+    "c",
+    "zeta"
+   ]
+  }
+ },
+ "tabla": {
+  "oraculo": {
+   "coste": 48406.859614690664,
+   "vs_reactivo_pct": 14.411641014245165,
+   "pct_del_oraculo": 100.0
+  },
+  "onda": {
+   "coste": 49455.277541960495,
+   "vs_reactivo_pct": 12.557929151081064,
+   "pct_del_oraculo": 87.13739912525018
+  },
+  "difusion": {
+   "coste": 50060.75702073443,
+   "vs_reactivo_pct": 11.487378501848605,
+   "pct_del_oraculo": 79.70902474252533
+  },
+  "retardo-puro": {
+   "coste": 50739.3653222042,
+   "vs_reactivo_pct": 10.287528493415483,
+   "pct_del_oraculo": 71.383463432421
+  },
+  "reactivo": {
+   "coste": 56557.761111820604,
+   "vs_reactivo_pct": 0.0,
+   "pct_del_oraculo": 0.0
+  }
+ },
+ "contrastes": {
+  "onda_vs_retardo-puro": {
+   "delta": 1284.0877802436983,
+   "t": 137.54226854611326,
+   "p_holm": 8.654090005725818e-16,
+   "significativo": true
+  },
+  "onda_vs_difusion": {
+   "delta": 605.4794787739381,
+   "t": 2.3623986572273843,
+   "p_holm": 0.0424342604332263,
+   "significativo": true
+  },
+  "onda_vs_reactivo": {
+   "delta": 7102.483569860119,
+   "t": 4.796337538177768,
+   "p_holm": 0.00195740882725285,
+   "significativo": true
+  }
+ }
+}
