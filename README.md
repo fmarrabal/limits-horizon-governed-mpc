@@ -2,9 +2,9 @@
 
 **Minimal governors and structural limits for weight- and horizon-governed MPC**
 
-F. M. Arrabal-Campos (corresponding), V. Valdivieso, F. G. Montoya
-(University of Almería, CIAIMBITAL) and A. Campa-Pinto (Universidad de la
-Costa, Barranquilla).
+V. Valdivieso, F. G. Montoya (University of Almería, CIAIMBITAL),
+A. Campa-Pinto (Universidad de la Costa, Barranquilla) and
+F. M. Arrabal-Campos* (University of Almería, CIAIMBITAL; *corresponding).
 
 This repository contains everything needed to reproduce the paper in
 [`paper/`](paper/) and the companion Comment to Automatica in
