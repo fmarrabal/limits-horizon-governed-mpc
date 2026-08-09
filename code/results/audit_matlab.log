@@ -1,0 +1,31 @@
+==============================================================================
+SUITE DE AUDITORIA -- MATLAB  (cada hallazgo adversarial, ejecutable)
+==============================================================================
+[OK  ] A1    desigualdad terminal S_i >= 0 por objetivo
+         economia: eig_min=-2.220e-16; prestaciones: eig_min=4.084e-16; 
+[OK  ] A2    Omega positivamente invariante bajo Acl
+         peor violacion = -6.331e-01 (341 muestras)
+[OK  ] A3    Omega respeta |x|<=xmax y |Kf x|<=umax
+         peor violacion = -1.045e-02
+[OK  ] A4    V*(x,.) es CONCAVA en alpha (correccion a Bemporad 2009)
+         200 tests | violaciones de CONCAVIDAD = 0 | de CONVEXIDAD = 200 | d medio = +2.6059e+01
+[OK  ] A5    el conjunto admisible ES no convexo para un rango de J_a
+         8 estados, 200 niveles | NO convexo en 50 (25.0%) | pico interior en 5/8
+[OK  ] A6    radio certificado valido: ||da||<=r => alpha admisible
+         8 estados, 192 pruebas | peor exceso sobre J_a = -2.127e+02
+[OK  ] A7    igualacion 1er/2o orden exacta EN DISCRETO
+         tau=5.9246 |H1|=0.092173473 |H2|=0.092173473 err=1.39e-17
+[OK  ] A8    el anti-windup NO se dispara si no hay bloqueo
+         orden-1: 0.000 | orden-2 th=0.5: 0.000 | orden-2 th=0.0: 0.000 | 
+[OK  ] A9    sobreoscilacion ejecutada == la del DISCRETO
+         z=0.3: 34.8461% vs 34.8461% | z=0.5: 11.3203% vs 11.3203% | z=0.7: 0.8524% vs 0.8524% | 
+[OK  ] A11   umbral de Merkin EXACTO con K y C uniformes
+         beta*_pred=0.05128 beta*_obs=0.05150 ratio=1.0044
+[OK  ] A11b  con estructura de planta el umbral es CONSERVADOR
+         c=0.35,D=0.00: 1.229 | c=0.00,D=0.05: 1.297 | c=0.35,D=0.05: 1.521 | c=0.60,D=0.00: 1.941 | 
+[OK  ] A10   colocacion GIROSCOPICA estable en toda la caja
+         peor max Re(lambda) = -2.603e-02 (debe ser < 0)
+[OK  ] A12   los ingredientes del TFM VIOLAN la desigualdad terminal (regresion: debe seguir fallando)
+         eig_min(S_0)=-11.0392 | eig_min(S_1)=-3.3772
+==============================================================================
+13/13 comprobaciones OK

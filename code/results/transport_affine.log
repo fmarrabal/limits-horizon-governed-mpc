@@ -1,0 +1,47 @@
+==============================================================================
+SINTONIA (semillas 100-102). Todo causal salvo el techo, que se marca.
+==============================================================================
+  reactivo (local)       coste   56093.8 | a_hi=0.9 a_lo=0.7
+                         0 acausales descartadas | optimo interior
+  retardo LINEAL         coste   50166.0 | a_hi=0.9 a_lo=0.3 delta=2
+                         0 acausales descartadas | optimo interior
+  retardo AFIN           coste   48341.0 | a_hi=0.9 a_lo=0.2 delta=6 lead=8
+                         0 acausales descartadas | BORDE: ['lead']
+  AFIN + conformado      coste   48403.8 | a_hi=1.0 a_lo=0.3 delta=6 gain=1.0 lead=8 ws=0.6 zs=1.2
+                         0 acausales descartadas | BORDE: ['lead', 'a_hi']
+  onda                   coste   50157.7 | D=0.0 a_hi=1.0 a_lo=0.4 c=0.6 gain=3.0 gamma=1.0 shift=0 w0=0.3 zeta=1.0
+                         0 acausales descartadas | BORDE: ['a_hi']
+  clarividente (techo)   coste   47285.0 | a_hi=1.0 a_lo=0.0 lead=10
+                         0 acausales descartadas | BORDE: ['a_lo', 'a_hi']
+  (el clarividente usa antelaciones > TAU, luego es ACAUSAL a proposito:
+   es una cota superior, no un mecanismo implementable)
+
+==============================================================================
+EVALUACION CON 30 SEMILLAS
+==============================================================================
+
+  mecanismo                 coste     sem  vs local   % techo
+  clarividente            48943.8  2827.8   +13.66%    100.0%
+  retardo-afin            49650.3  2369.6   +12.42%     90.9%
+  afin-conformado         49799.3  2560.4   +12.16%     89.0%
+  retardo-lineal          51222.7  2091.1    +9.64%     70.6%
+  onda                    51433.7  2461.3    +9.27%     67.9%
+  reactivo                56690.2  1300.8    +0.00%      0.0%
+
+==============================================================================
+CONTRASTES (pareados, Holm) CON MINIMO DETECTABLE
+==============================================================================
+  AFIN vs LINEAL  <== el que decide    delta=  +1572.4 t=  +5.40 p=0.0000* | detectable >= 816 (1.44%)
+  afin vs onda                         delta=  +1783.4 t= +17.96 p=0.0000* | detectable >= 278 (0.49%)
+  conformar ayuda al afin?             delta=   +149.0 t=  +0.75 p=0.4582  | detectable >= 555 (0.98%)
+  afin vs solo local                   delta=  +7039.9 t=  +6.29 p=0.0000* | detectable >= 3133 (5.53%)
+  cuanto falta para el techo           delta=   +706.5 t=  +1.49 p=0.2922  | detectable >= 1325 (2.34%)
+
+==============================================================================
+LECTURA
+==============================================================================
+  LA ENTREGA SI IMPORTA. El retardo AFIN bate al LINEAL: lo que
+  cuenta no es la forma del nucleo sino que la antelacion sea
+  CONSTANTE entre nodos, y eso exige termino independiente.
+
+escrito E:\ARTICULOS-CIENTIFICOS\NewMPC\code\results\transport_affine.json

@@ -1,0 +1,42 @@
+==============================================================================
+SINTONIA (en semillas 100-102, DISTINTAS de las de evaluacion)
+==============================================================================
+  cadena de M=4 nodos, retardo de transporte TAU_HOP=6 pasos/tramo
+  actuador: umax=0.35 tau_act=8.0 | evento amp=0.8 ancho=16
+  constante        a=(0.00,0.75)   coste sintonia 57680.5
+  reactivo         a=(0.60,0.80)   coste sintonia 56467.2
+  retardo-puro     a=(0.30,0.90) {'delta': 2}  coste sintonia 50166.0
+  instantaneo      a=(0.40,1.00)   coste sintonia 54171.0
+  oraculo          a=(0.10,0.90) {'lead': 8}  coste sintonia 47511.2
+  onda             a=(0.00,0.90) {'w0': 0.5, 'zeta': 0.5, 'c': 0.6, 'D': 0.0, 'gain': 1.6}  coste sintonia 55608.3
+  difusion         a=(0.60,1.00) {'w0': 0.5, 'zeta': 1.0, 'c': 0.6, 'D': 0.4, 'gain': 1.0, 'gamma': 1.0}  coste sintonia 57473.0
+
+==============================================================================
+EVALUACION (semillas 0-9, no usadas en la sintonia)
+==============================================================================
+
+  mecanismo             coste  vs reactivo   % rotura
+  oraculo             48406.9      +14.41%      12.1%
+  retardo-puro        50739.4      +10.29%      12.6%
+  instantaneo         54741.9       +3.21%      12.9%
+  onda                55921.4       +1.13%      14.0%
+  reactivo            56557.8       +0.00%      14.6%
+  difusion            57677.4       -1.98%      13.8%
+  constante           57800.3       -2.20%      14.3%
+
+==============================================================================
+CONTRASTES PRE-REGISTRADOS (pareados por semilla, Holm)
+==============================================================================
+  T1: onda vs linea de retardo pura              delta= -5181.99 t= -5.19 p_holm=0.0023 * gana retardo-puro
+  T2: onda vs difusion                           delta= +1756.02 t=+45.17 p_holm=0.0000 * gana onda
+  T3: instantaneo vs retardo (nulo de timing)    delta= -4002.49 t=-14.70 p_holm=0.0000 * gana retardo-puro
+  T4: informacion de aguas arriba vs solo local  delta= +5818.40 t= +3.93 p_holm=0.0069 * gana retardo-puro
+  T4b: onda vs solo local                        delta=  +636.41 t= +1.31 p_holm=0.2217   gana onda
+  cota: oraculo vs solo local                    delta= +8150.90 t= +4.50 p_holm=0.0045 * gana oraculo
+
+==============================================================================
+LECTURA
+==============================================================================
+  T1 SE FALSA: la onda y la linea de retardo NO son equivalentes.
+
+escrito E:\ARTICULOS-CIENTIFICOS\NewMPC\code\results\transport_mechanism.json

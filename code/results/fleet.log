@@ -1,0 +1,57 @@
+==============================================================================
+FLOTA DE M=8 LAZOS CON UN PRESUPUESTO DE COMPUTO COMPARTIDO
+==============================================================================
+  lazo termico de colector: tau_f=2 min, tau_m=5 min, dt=30 s, T=480 pasos (4 h)
+  se penaliza la temperatura del ABSORBEDOR, a la que el caudal llega
+  con retardo: es lo que hace que el horizonte importe
+  presupuesto = suma de horizontes concedidos por paso; peor caso M*N_max = 128
+
+------------------------------------------------------------------------------
+  SINTONIA del gobernador (semillas 100-102, disjuntas de evaluacion)
+------------------------------------------------------------------------------
+  tau = 8.0, a_ref = 0.3  (optimo interior de la rejilla)
+
+------------------------------------------------------------------------------
+  perturbaciones INDEPENDIENTES (rho = 0) -- coste A IGUAL PRESUPUESTO
+------------------------------------------------------------------------------
+   presup.  B/(M N_max)   mejor fijo  coste fijo  gobernado   mejora
+        16         0.12          N=2      3318.0     3318.0   +0.00%
+        24         0.19          N=4      3053.8     2822.8   +7.57%  *
+        32         0.25          N=4      2809.9     2548.4   +9.31%  *
+        48         0.38          N=6      2485.7     2422.7   +2.53%  *
+        64         0.50          N=8      2359.1     2408.0   -2.07%  *
+        96         0.75         N=12      2280.4     2407.0   -5.55%  *
+       128         1.00         N=16      2257.0     2407.0   -6.64%  *
+
+  el gobernador gana de forma significativa en 3/7 presupuestos, el mayor margen +9.31%
+
+------------------------------------------------------------------------------
+  perturbaciones FRENTE COMUN (rho = 1) -- coste A IGUAL PRESUPUESTO
+------------------------------------------------------------------------------
+   presup.  B/(M N_max)   mejor fijo  coste fijo  gobernado   mejora
+        16         0.12          N=2      5006.2     5006.2   +0.00%
+        24         0.19          N=4      4589.0     4589.0   +0.00%
+        32         0.25          N=4      4205.3     4229.3   -0.57%  *
+        48         0.38          N=6      3718.2     3792.7   -2.00%  *
+        64         0.50          N=8      3538.6     3662.2   -3.49%  *
+        96         0.75         N=12      3427.7     3622.6   -5.69%  *
+       128         1.00         N=16      3395.4     3622.2   -6.68%  *
+
+  el gobernador gana de forma significativa en 0/7 presupuestos
+
+==============================================================================
+H3  REPARTIR POR DEMANDA FRENTE A REPARTIR A PARTES IGUALES
+==============================================================================
+  presupuesto escaso B = 32 (un cuarto del peor caso)
+  proporcional a la demanda: 2548.4
+  a partes iguales         : 2809.9
+  mejora +9.31%  t = +15.30  p = 1.23e-06
+
+==============================================================================
+LECTURA
+==============================================================================
+  H1 CONFIRMADA: con lazos independientes el gobernador gana en 3 presupuestos
+  H2 CONFIRMADA: con frente comun gana solo en 0
+  H3 CONFIRMADA: repartir por demanda mejora +9.31%
+
+escrito E:\ARTICULOS-CIENTIFICOS\NewMPC\code\results\fleet.json

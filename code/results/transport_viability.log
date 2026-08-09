@@ -1,0 +1,61 @@
+==============================================================================
+P0  CALIBRACION: hay compromiso que arbitrar, y la no linealidad esta ACTIVA
+==============================================================================
+
+  eventos en la traza: 9  (anchura 14, amplitud 0.95, ruido de fondo 0.045)
+    alpha       coste   % saturado
+     0.05     1844.16         0.0%
+     0.25      404.28         0.7%
+     0.50      215.74         2.6%
+     0.75      156.95         4.0%
+     0.95      145.07         7.3%  <== MEJOR CONSTANTE
+
+  mejor peso constante = 0.95  (interior: False)
+  saturacion en el optimo constante: 7.3%
+  C2 (saturacion ACTIVA, >1% de los pasos): SI
+
+==============================================================================
+P1  LA PRUEBA: coste frente a ANTELACION del gobernador clarividente
+==============================================================================
+  lead = 0 es el limite REACTIVO ideal (saber del evento justo al empezar).
+  Todo lead > 0 exige informacion que solo el vecino de aguas arriba tiene.
+
+  par (a_lo, a_hi) sintonizado CON lead=0: (0.45, 0.95)  coste 136.49
+
+    lead       coste   vs lead=0  vs constante    % sat
+       0      136.49      +0.00%        +5.91%     7.3%
+       1      138.84      -1.72%        +4.29%     7.3%
+       2      138.83      -1.71%        +4.30%     7.3%
+       3      138.92      -1.78%        +4.24%     7.2%
+       5      138.96      -1.81%        +4.21%     7.3%
+       8      139.01      -1.85%        +4.17%     7.3%
+      12      139.07      -1.89%        +4.13%     7.3%
+      18      139.17      -1.96%        +4.07%     7.3%
+      25      139.26      -2.03%        +4.00%     7.3%
+
+  mejor antelacion: lead = 0  (+0.00% sobre el limite reactivo)
+  VEREDICTO P1: PLANO -> la anticipacion NO compra nada -> ARENA MUERTA
+
+==============================================================================
+P2  CONTROL DE GRATUIDAD (C3): la accion preventiva TIENE que costar
+==============================================================================
+
+  peso alto SIEMPRE (a=0.95): 145.07
+  mejor peso constante   (a=0.95): 145.07
+  C3 (mantener el peso alto es PEOR que el mejor constante): NO -- entonces no hay nada que programar
+
+==============================================================================
+P3  ROBUSTEZ: 8 semillas, contraste pareado lead* frente a lead=0
+==============================================================================
+
+  lead=0 : media 145.90
+  lead=25: media 146.56
+  mejora media -0.45%  |  t = -1.10  p = 3.08e-01  (4/8 semillas a favor)
+
+==============================================================================
+VEREDICTO GLOBAL: ARENA MUERTA. La informacion anticipada no compra
+nada por el canal del meta-parametro, luego ningun mecanismo de
+transporte puede pagar. No implementar el campo.
+==============================================================================
+
+escrito E:\ARTICULOS-CIENTIFICOS\NewMPC\code\results\transport_viability.json

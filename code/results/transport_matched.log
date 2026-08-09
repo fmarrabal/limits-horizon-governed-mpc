@@ -1,0 +1,38 @@
+==============================================================================
+SINTONIA IGUALADA (semillas 100-102). Siete parametros en ambos bandos.
+==============================================================================
+  onda                 coste   47823.8 | D=0.0 a_hi=0.83 a_lo=0.0 c=0.15 gain=3.0 gamma=1.0 shift=-6 w0=0.15 zeta=1.0 | borde: ['gain', 'shift']
+  difusion             coste   48511.3 | D=0.4 a_hi=1.0 a_lo=0.0 c=0.08 gain=2.0 gamma=1.0 shift=-3 w0=0.5 zeta=1.0 | borde: ['c', 'w0']
+  retardo-conformado   coste   48299.9 | a_hi=1.0 a_lo=0.2 delta=4 gain=2.0 shift=-6 ws=0.15 zs=1.2 | borde: ['zs', 'shift']
+  reactivo             coste   56467.2 | a_hi=0.8 a_lo=0.6 | borde: ninguno
+  retardo-puro         coste   50166.0 | a_hi=0.9 a_lo=0.3 delta=2 | borde: ninguno
+  oraculo              coste   47511.2 | a_hi=0.9 a_lo=0.1 lead=8 | borde: ninguno
+
+==============================================================================
+EVALUACION (semillas 0-9, no usadas en la sintonia)
+==============================================================================
+
+  mecanismo                 coste  vs reactivo  % del oraculo
+  oraculo                 48406.9      +14.41%         100.0%
+  onda                    48540.0      +14.18%          98.4%
+  retardo-conformado      49144.8      +13.11%          90.9%
+  difusion                49265.9      +12.89%          89.5%
+  retardo-puro            50739.4      +10.29%          71.4%
+  reactivo                56557.8       +0.00%           0.0%
+
+==============================================================================
+EL CONTRASTE QUE DECIDE
+==============================================================================
+  onda vs RIVAL IGUALADO (7 vs 7 parametros)   delta=  +604.81 t=  +0.96 p_holm=0.3628   gana onda
+  onda vs retardo puro (7 vs 3)                delta= +2199.37 t=  +7.78 p_holm=0.0001 * gana onda
+  onda vs difusion (nulo de mecanismo)         delta=  +725.91 t=  +1.90 p_holm=0.2705   gana onda
+  conformar ayuda al rival?                    delta= +1594.56 t=  +1.75 p_holm=0.2705   gana retardo-conformado
+
+==============================================================================
+  EL CAMPO NO SOBREVIVE AL RIVAL IGUALADO. Su ventaja sobre la linea de
+  retardo pura era libertad de sintonia, no estructura: un retardo conformado
+  con los mismos grados de libertad lo alcanza. Coherente con A17 (el campo es
+  un banco de filtros LTI y no crea informacion).
+==============================================================================
+
+escrito E:\ARTICULOS-CIENTIFICOS\NewMPC\code\results\transport_matched.json

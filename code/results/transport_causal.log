@@ -1,0 +1,49 @@
+E:\ARTICULOS-CIENTIFICOS\NewMPC\code\python\scripts\run_transport_matched.py:57: RuntimeWarning: overflow encountered in scalar multiply
+  acc = ws * ws * (x[t] - y) - 2.0 * zs * ws * v
+E:\ARTICULOS-CIENTIFICOS\NewMPC\code\python\scripts\run_transport_matched.py:58: RuntimeWarning: invalid value encountered in scalar add
+  v += acc
+==============================================================================
+SINTONIA CON GUARDA DE CAUSALIDAD (semillas 100-102)
+==============================================================================
+  toda configuracion cuya puerta se mueva antes de que la fuente mida
+  el evento queda descartada, igual que una integracion inestable
+
+  onda                 coste   49955.2 | D=0.0 a_hi=1.0 a_lo=0.0 c=0.6 gain=3.0 gamma=1.0 shift=0 w0=0.08 zeta=0.5
+                       descartadas: 0 acausales, 0 inestables | borde: ['shift', 'c', 'zeta', 'w0']
+  retardo-conformado   coste   50290.0 | a_hi=0.83 a_lo=0.0 delta=2 gain=2.0 shift=0 ws=0.6 zs=0.3
+                       descartadas: 0 acausales, 0 inestables | borde: ['ws', 'zs', 'shift']
+  reactivo             coste   56467.2 | a_hi=0.8 a_lo=0.6
+                       descartadas: 0 acausales, 0 inestables | borde: ninguno
+  retardo-puro         coste   50166.0 | a_hi=0.9 a_lo=0.3 delta=2
+                       descartadas: 0 acausales, 0 inestables | borde: ninguno
+  oraculo(*)           coste   48431.5 | a_hi=0.9 a_lo=0.3 lead=6
+                       descartadas: 46 acausales, 0 inestables | borde: ninguno
+  (*) el oraculo es CLARIVIDENTE por definicion: es la referencia de
+      techo, no un mecanismo implementable, y por eso no se le exige causalidad
+
+==============================================================================
+EVALUACION CON 30 SEMILLAS
+==============================================================================
+
+  mecanismo                 coste     sem  vs reactivo  % oraculo
+  oraculo                 49829.7  2265.4      +12.25%     100.0%
+  retardo-conformado      51212.1  1884.2       +9.82%      80.1%
+  retardo-puro            51222.7  2091.1       +9.80%      80.0%
+  onda                    51314.9  2435.6       +9.63%      78.6%
+  reactivo                56786.0   931.1       +0.00%       0.0%
+
+==============================================================================
+CONTRASTES (pareados, Holm)
+==============================================================================
+  onda vs rival igualado (7 vs 7)          delta=  -102.89 t=  -0.18 p_holm=1.0000  
+  onda vs retardo puro (7 vs 3)            delta=   -92.23 t=  -0.26 p_holm=1.0000  
+  conformar ayuda al rival?                delta=   +10.66 t=  +0.05 p_holm=1.0000  
+  info de aguas arriba vs solo local       delta= +5563.25 t=  +4.37 p_holm=0.0006 *
+
+==============================================================================
+LECTURA
+==============================================================================
+  informacion de aguas arriba frente a deteccion local: SIGUE SIENDO significativa (t=+4.37, p=0.0006)
+  'conformar ayuda': NO SOBREVIVE a la guarda de causalidad (t=+0.05, p=1.0000)
+
+escrito E:\ARTICULOS-CIENTIFICOS\NewMPC\code\results\transport_causal.json

@@ -1,0 +1,80 @@
+==============================================================================
+BANCO PRINCIPAL DEL GHI -- MATLAB
+==============================================================================
+planta      : conflicto, N = 5
+terminal    : Kf = [-0.4841 -1.0077], Omega con 8 filas
+igualacion  : w0=0.90 zeta=0.50 -> |H| en Nyquist = 0.092173, tau = 5.9246
+              (EN DISCRETO; igualar en continuo daba un desajuste de 1.69x)
+anti-windup : theta = 0.50
+semillas    : 10
+
+### A_cuasiestatico
+  regulador          err_demanda            coste  bloqueos
+  orden-0        0.1451+-0.0183      29.87+-1.62        1.8
+  orden-1        0.0475+-0.0135      30.78+-1.30        0.7
+  orden-2        0.0955+-0.0154      30.17+-1.42        1.4
+  congelado      0.2500+-0.0000      54.64+-0.00        0.0
+
+### B_periodico
+  regulador          err_demanda            coste  bloqueos
+  orden-0        0.1394+-0.0165      69.48+-5.37        2.4
+  orden-1        0.1947+-0.0068      58.64+-2.06        0.3
+  orden-2        0.0989+-0.0110      67.55+-4.22        1.5
+  congelado      0.2475+-0.0000      56.78+-0.00        0.0
+
+### C_OOD
+  regulador          err_demanda            coste  bloqueos
+  orden-0        0.1389+-0.0197     105.35+-15.96       1.6
+  orden-1        0.2054+-0.0096      84.14+-6.88        0.1
+  orden-2        0.1034+-0.0169     100.83+-14.84       0.9
+  congelado      0.2475+-0.0000      80.21+-3.71        0.0
+
+### D_OOD_fuerte
+  regulador          err_demanda            coste  bloqueos
+  orden-0        0.1514+-0.0362     189.46+-64.00       3.2
+  orden-1        0.2155+-0.0071     123.01+-11.60       0.5
+  orden-2        0.1497+-0.0373     189.41+-44.34       2.4
+  congelado      0.2459+-0.0000     119.50+-8.31        0.0
+
+==============================================================================
+CONTRASTES PAREADOS POR SEMILLA (delta > 0 => gana el primero)
+
+--- err_demanda
+  A_cuasiestatico   orden_2 vs orden_1    delta=  -0.0480 t= -14.72 p=0.0000 *
+  A_cuasiestatico   orden_2 vs orden_0    delta=  +0.0496 t= +15.90 p=0.0000 *
+  A_cuasiestatico   orden_1 vs orden_0    delta=  +0.0977 t= +25.58 p=0.0000 *
+  B_periodico       orden_2 vs orden_1    delta=  +0.0958 t= +22.39 p=0.0000 *
+  B_periodico       orden_2 vs orden_0    delta=  +0.0405 t= +12.74 p=0.0000 *
+  B_periodico       orden_1 vs orden_0    delta=  -0.0553 t=  -8.64 p=0.0000 *
+  C_OOD             orden_2 vs orden_1    delta=  +0.1020 t= +28.19 p=0.0000 *
+  C_OOD             orden_2 vs orden_0    delta=  +0.0355 t=  +6.20 p=0.0002 *
+  C_OOD             orden_1 vs orden_0    delta=  -0.0665 t= -10.76 p=0.0000 *
+  D_OOD_fuerte      orden_2 vs orden_1    delta=  +0.0657 t=  +5.53 p=0.0004 *
+  D_OOD_fuerte      orden_2 vs orden_0    delta=  +0.0016 t=  +0.09 p=0.9282
+  D_OOD_fuerte      orden_1 vs orden_0    delta=  -0.0641 t=  -5.28 p=0.0005 *
+
+--- coste
+  A_cuasiestatico   orden_2 vs orden_1    delta=  +0.6109 t=  +2.35 p=0.0431 *
+  A_cuasiestatico   orden_2 vs orden_0    delta=  -0.3018 t=  -2.03 p=0.0732
+  A_cuasiestatico   orden_1 vs orden_0    delta=  -0.9127 t=  -3.83 p=0.0040 *
+  B_periodico       orden_2 vs orden_1    delta=  -8.9088 t=  -8.04 p=0.0000 *
+  B_periodico       orden_2 vs orden_0    delta=  +1.9282 t=  +2.12 p=0.0628
+  B_periodico       orden_1 vs orden_0    delta= +10.8370 t=  +8.06 p=0.0000 *
+  C_OOD             orden_2 vs orden_1    delta= -16.6889 t=  -5.38 p=0.0004 *
+  C_OOD             orden_2 vs orden_0    delta=  +4.5237 t=  +1.79 p=0.1079
+  C_OOD             orden_1 vs orden_0    delta= +21.2126 t=  +5.06 p=0.0007 *
+  D_OOD_fuerte      orden_2 vs orden_1    delta= -66.4004 t=  -4.18 p=0.0024 *
+  D_OOD_fuerte      orden_2 vs orden_0    delta=  +0.0502 t=  +0.00 p=0.9979
+  D_OOD_fuerte      orden_1 vs orden_0    delta= +66.4506 t=  +3.29 p=0.0094 *
+
+tiempo: 259.8s
+
+ans = 
+
+  struct with fields:
+
+    A_cuasiestatico: [1ž1 struct]
+        B_periodico: [1ž1 struct]
+              C_OOD: [1ž1 struct]
+       D_OOD_fuerte: [1ž1 struct]
+

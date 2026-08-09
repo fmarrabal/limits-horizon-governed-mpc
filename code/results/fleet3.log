@@ -1,0 +1,28 @@
+EVALUACION DEFINITIVA de la flota: tau=30, mapa en el limite detector-de-eventos
+(sintonizado en semillas 100-102 con la contabilidad correcta; optimo interior)
+
+--- rho=0 (INDEPENDIENTES) ---
+     B  comp.real  coste gob  frontera      dif       t         p
+    16       16.0     3318.0    3316.9   +0.03%  +12.87  3.98e-06  *
+    24       26.0     2813.7    2993.3   -6.00%  -12.87  3.96e-06  *
+    32       35.2     2567.4    2731.7   -6.02%  -13.97  2.28e-06  *
+    40       41.1     2470.3    2597.6   -4.90%  -14.40  1.86e-06  *
+    48       42.9     2443.0    2568.2   -4.88%  -12.20  5.69e-06  *
+    64       43.1     2439.7    2564.0   -4.85%  -11.54  8.28e-06  *
+    96       43.1     2439.7    2564.0   -4.85%  -11.54  8.28e-06  *
+   128       43.1     2439.7    2564.0   -4.85%  -11.54  8.28e-06  *
+  gana significativamente en 7/8 puntos
+
+--- rho=1 (FRENTE COMUN) ---
+     B  comp.real  coste gob  frontera      dif       t         p
+    16       16.0     5006.2    5004.4   +0.03%   +7.96  9.42e-05  *
+    24       23.8     4589.2    4598.9   -0.21%   -7.98  9.29e-05  *
+    32       29.1     4208.1    4343.1   -3.11%   -7.84  1.03e-04  *
+    40       33.5     3912.2    4149.1   -5.71%   -7.72  1.14e-04  *
+    48       37.3     3750.3    4003.0   -6.31%   -7.16  1.83e-04  *
+    64       43.1     3645.1    3829.1   -4.81%   -5.20  1.25e-03  *
+    96       48.2     3638.1    3715.7   -2.09%   -2.98  2.04e-02  *
+   128       48.3     3638.1    3714.8   -2.07%   -2.96  2.11e-02  *
+  gana significativamente en 7/8 puntos
+
+escrito ../results/fleet3.json

@@ -1,0 +1,40 @@
+E:\ARTICULOS-CIENTIFICOS\NewMPC\code\python\ghi\distributed.py:69: RuntimeWarning: overflow encountered in matmul
+  return -(self.C + self.G) @ v - self.K @ (h - hd)
+E:\ARTICULOS-CIENTIFICOS\NewMPC\code\python\ghi\distributed.py:69: RuntimeWarning: invalid value encountered in matmul
+  return -(self.C + self.G) @ v - self.K @ (h - hd)
+==============================================================================
+RE-SINTONIA DEL CAMPO CON REJILLA AMPLIADA (semillas de sintonia 100-102)
+==============================================================================
+  c    in (0.3, 0.6, 1.0, 1.6, 2.5, 4.0)   (antes: hasta 0.6, el optimo se pego al borde)
+  gain in (1.0, 2.0, 4.0)   (antes: hasta 1.6, idem)
+  zeta in (0.2, 0.5, 1.0, 1.6) | w0 in (0.15, 0.5) | desplazamiento in (-6, -3, 0, 3, 6)
+
+  onda: etapa 1 = 720 configuraciones de campo
+    etapa 2 = 15 pares de pesos con el campo ya fijado
+    optimo: c=0.3 zeta=1.6 w0=0.5 gain=4.0 shift=-6 a=(0.20,0.67)
+    coste sintonia 54880.5 | parametros EN EL BORDE: ['c', 'gain', 'zeta', 'shift']
+
+  difusion: etapa 1 = 720 configuraciones de campo
+    etapa 2 = 15 pares de pesos con el campo ya fijado
+    optimo: c=0.3 zeta=0.5 w0=0.5 gain=4.0 shift=-6 a=(0.00,0.67)
+    coste sintonia 54793.9 | parametros EN EL BORDE: ['c', 'gain', 'shift']
+
+==============================================================================
+EVALUACION en semillas 0-9 con el campo RE-SINTONIZADO
+==============================================================================
+
+  mecanismo             coste  vs reactivo  % del oraculo
+  oraculo             48406.9      +14.41%         100.0%
+  retardo-puro        50739.4      +10.29%          71.4%
+  difusion            55000.3       +2.75%          19.1%
+  onda                55075.4       +2.62%          18.2%
+  reactivo            56557.8       +0.00%           0.0%
+
+==============================================================================
+CONTRASTES (pareados, Holm)
+==============================================================================
+  T1: onda RE-SINTONIZADA vs retardo puro      delta= -4336.05 t= -3.81 p_holm=0.0041 * gana retardo-puro
+  T2: onda vs difusion                         delta=   -75.15 t= -5.85 p_holm=0.0007 * gana difusion
+  T4b: onda vs solo local                      delta= +1482.35 t= +4.28 p_holm=0.0041 * gana onda
+
+escrito E:\ARTICULOS-CIENTIFICOS\NewMPC\code\results\transport_retune.json

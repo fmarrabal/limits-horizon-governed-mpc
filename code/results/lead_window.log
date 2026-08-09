@@ -1,0 +1,27 @@
+==============================================================================
+DE QUE DEPENDE LA ANTELACION UTIL lead*
+==============================================================================
+  ganancia = % de coste que la anticipacion compra sobre el limite REACTIVO
+  ventana  = leads dentro del 1% del optimo (si es ancha, el instante
+             exacto de entrega da igual y el transporte fino no aporta)
+
+    umax  tau_act   amp  lead*    ventana  ganancia  %rot base
+    0.60      3.0  1.05      2     (1, 6)    +2.21%      10.1%
+    0.60      8.0  1.05      3     (2, 6)    +3.19%      11.7%
+    0.35      3.0  0.80      2     (1, 6)    +2.15%      11.5%
+    0.35      8.0  0.80      4     (2, 8)    +3.73%      13.4%
+    0.20      3.0  0.65      2    (1, 20)    +1.00%      14.6%
+    0.20      8.0  0.65      4    (1, 11)    +1.38%      16.4%
+
+  rango de lead*: 2 .. 4  |  ganancia +1.00% .. +3.73%
+
+==============================================================================
+LECTURA
+==============================================================================
+  lead* es PEQUENO en todo el rango fisico barrido. La informacion
+  anticipada util cabe en unos pocos pasos, luego una linea de retardo trivial
+  la entrega y no queda nada que un campo de onda con velocidad de propagacion
+  ajustada pueda aportar. El transporte estaria muerto por falta de VENTANA, no
+  por mala sintonia del campo.
+
+escrito E:\ARTICULOS-CIENTIFICOS\NewMPC\code\results\lead_window.json

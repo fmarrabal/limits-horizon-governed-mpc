@@ -1,0 +1,35 @@
+==============================================================================
+P1  ARGMIN INVARIANTE, con rejillas ampliadas y x_0 = 0
+==============================================================================
+  peso en [0.05, 0.95] (19 puntos) | horizonte en 2..40
+
+   lambda   alpha*  interior?    N*  interior?   J*/lambda^2 (peso)
+      0.5    0.200         si    32         si          8895.153379
+      1.0    0.200         si    32         si          8895.153379
+      2.0    0.200         si    32         si          8895.153379
+      4.0    0.200         si    32         si          8895.153379
+      8.0    0.200         si    32         si          8895.153379
+
+  AFIRMACION 1 -- el argmin no se mueve: peso True (valores [0.2]), horizonte True (valores [32])
+  AFIRMACION 2 -- homogeneidad J -> lambda^2 J: dispersion relativa del coste normalizado 5.42e-14 (peso), 1.22e-16 (horizonte)
+  (son afirmaciones DISTINTAS: la segunda no implica la primera)
+
+==============================================================================
+P2  LA HIPOTESIS x_0 = 0 NO ES DECORATIVA
+==============================================================================
+  con estado inicial NO nulo la respuesta libre no escala con lambda,
+  el coste deja de ser homogeneo y el argmin SI se mueve
+
+           x_0   lambda    N*     J*/lambda^2
+    (0.0, 0.0)     0.01     8         94.8340
+    (0.0, 0.0)    10.00     8         94.8340
+              -> argmin invariante: True, dispersion del coste normalizado 3.60e-15
+
+   (0.0, -4.0)     0.01     8     188688.4215
+   (0.0, -4.0)    10.00     8         95.4034
+              -> argmin invariante: True, dispersion del coste normalizado 9.99e-01
+
+==============================================================================
+VEREDICTO: revisar: el patron esperado no se reproduce
+
+escrito E:\ARTICULOS-CIENTIFICOS\NewMPC\code\results\scale_invariance2.json

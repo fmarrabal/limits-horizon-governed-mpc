@@ -1,0 +1,36 @@
+==============================================================================
+RE-SINTONIA DEL CAMPO CON REJILLA AMPLIADA (semillas de sintonia 100-102)
+==============================================================================
+  c    in (0.3, 0.6, 1.0, 1.6, 2.5, 4.0)   (antes: hasta 0.6, el optimo se pego al borde)
+  gain in (1.0, 2.0, 4.0)   (antes: hasta 1.6, idem)
+  zeta in (0.2, 0.5, 1.0, 1.6) | w0 in (0.15, 0.5) | desplazamiento in (-6, -3, 0, 3, 6)
+
+  onda: etapa 1 = 720 configuraciones de campo
+    etapa 2 = 15 pares de pesos con el campo ya fijado
+    optimo: c=0.3 zeta=1.0 w0=0.15 gain=2.0 shift=-3 a=(0.20,0.83)
+    coste sintonia 48903.7 | parametros EN EL BORDE: ['c']
+
+  difusion: etapa 1 = 720 configuraciones de campo
+    etapa 2 = 15 pares de pesos con el campo ya fijado
+    optimo: c=0.3 zeta=0.2 w0=0.5 gain=2.0 shift=0 a=(0.20,0.83)
+    coste sintonia 49560.0 | parametros EN EL BORDE: ['c', 'zeta']
+
+==============================================================================
+EVALUACION en semillas 0-9 con el campo RE-SINTONIZADO
+==============================================================================
+
+  mecanismo             coste  vs reactivo  % del oraculo
+  oraculo             48406.9      +14.41%         100.0%
+  onda                49455.3      +12.56%          87.1%
+  difusion            50060.8      +11.49%          79.7%
+  retardo-puro        50739.4      +10.29%          71.4%
+  reactivo            56557.8       +0.00%           0.0%
+
+==============================================================================
+CONTRASTES (pareados, Holm)
+==============================================================================
+  T1: onda RE-SINTONIZADA vs retardo puro      delta= +1284.09 t=+137.54 p_holm=0.0000 * gana onda
+  T2: onda vs difusion                         delta=  +605.48 t= +2.36 p_holm=0.0424 * gana onda
+  T4b: onda vs solo local                      delta= +7102.48 t= +4.80 p_holm=0.0020 * gana onda
+
+escrito E:\ARTICULOS-CIENTIFICOS\NewMPC\code\results\transport_retune.json

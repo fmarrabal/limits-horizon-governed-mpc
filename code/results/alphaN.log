@@ -1,0 +1,200 @@
+==============================================================================
+alpha_N COMO OBJETIVO DE MODULACION  --  campo inercial vs la literatura
+==============================================================================
+ PRE-REGISTRADAS (declaradas antes de mirar ningun numero)
+-------------------------------------------------------------------
+H1 (dentro del sobre): todos los gobernadores adaptativos ahorran computo
+   grande frente a fijo-N_max con coste comparable; las diferencias ENTRE
+   adaptativos son pequenas. Se espera un cuasi-nulo, como en el HBP.
+H2 (fuera del sobre -- la hipotesis central, transferida del HBP): el campo de
+   segundo orden mantiene la correlacion dificultad->computo asignado mejor que
+   umbral / orden-0 / orden-1, pareado por semilla. PUEDE SALIR NEGATIVA: si la
+   senal alpha es lo bastante limpia, el primer orden podria bastar. Se
+   reportara tal cual salga.
+H3: el fijo-N sintonizado al sobre de diseno (fijo-8, que cubre kicks <= 4
+   segun la tabla de calibracion) se rompe fuera del sobre; los adaptativos no.
+H4: el orden-0 puro reacciona mas rapido pero con mas varianza y mas
+   sobreasignacion; el umbral con histeresis es competitivo dentro del sobre
+   (por eso es el estandar de la literatura) y pierde trazado fino fuera.
+
+
+
+### A_diseno  (kicks U[1.5,3.5])
+  gobernador    computo     coste  N_med   a_min  fr<0.1   corr  div
+E:\ARTICULOS-CIENTIFICOS\NewMPC\code\python\scripts\run_alphaN.py:119: RuntimeWarning: Mean of empty slice
+  f"{np.nanmean(co):>7.3f}{dv:>5d}")
+  fijo-16          6400     377.3  16.00    1.00   0.000    nan    0
+  umbral           1143     422.0   2.27  -23.61   0.109  0.927    0
+  umbral-up4       1298     379.4   2.47   -3.20   0.041  0.905    0
+  orden-0          1622     431.2   2.88   -5.62   0.119  0.784    0
+  orden-1-nyq      1199     377.4   2.67  -25.51   0.147  0.844    0
+  orden-1-set      1223     382.3   2.41   -2.37   0.028  0.724    0
+  orden-2          1422     415.6   2.62  -13.85   0.074  0.941    0
+  orden-2-z1       1292     377.4   2.47  -13.85   0.055  0.917    0
+  fijo-8           3200     377.3   8.00    0.49   0.000    nan    0
+
+### B_OOD_kick  (kicks U[3.5,6.5])
+  gobernador    computo     coste  N_med   a_min  fr<0.1   corr  div
+  fijo-16          6400    9888.6  16.00    0.55   0.000    nan    0
+  umbral           2229   15827.4   3.33  -72.44   0.217  0.686    0
+  umbral-up4       2356   11123.5   3.57  -94.54   0.111  0.703    0
+  orden-0          3458   16875.0   4.87  -19.75   0.230 -0.157    0
+  orden-1-nyq      1602    9919.7   3.33  -54.63   0.182  0.954    0
+  orden-1-set      2245   15333.8   3.47  -93.24   0.135  0.710    0
+  orden-2          2584   12807.9   3.80  -87.75   0.150 -0.424    0
+  orden-2-z1       2319   15064.5   3.56  -91.09   0.150  0.434    0
+  fijo-8           3200    9888.6   8.00  -79.35   0.099    nan    0
+
+### C_OOD_modelo  (kicks U[1.5,3.5], A22_real=1.02)
+  gobernador    computo     coste  N_med   a_min  fr<0.1   corr  div
+  fijo-16          6400     416.6  16.00   -5.95   0.093    nan    0
+  umbral           1169     434.7   2.33  -27.43   0.112  0.917    0
+  umbral-up4       1665     416.6   2.91   -9.73   0.093  0.783    0
+  orden-0          1660     480.8   3.08   -6.88   0.165  0.879    0
+  orden-1-nyq      1221     416.9   2.70  -27.42   0.150  0.898    0
+  orden-1-set      1400     421.9   2.61   -6.32   0.095  0.726    0
+  orden-2          1586     464.9   2.81  -19.62   0.116  0.898    0
+  orden-2-z1       1394     417.0   2.58  -19.62   0.090  0.650    0
+  fijo-8           3200     416.6   8.00   -6.41   0.093    nan    0
+
+### D_OOD_ambos  (kicks U[3.5,6.5], A22_real=1.02)
+  gobernador    computo     coste  N_med   a_min  fr<0.1   corr  div
+  fijo-16          6400   12103.4  16.00  -54.98   0.115    nan    0
+  umbral           2229   15719.9   3.46  -78.18   0.208  0.880    0
+  umbral-up4       3051   12103.4   4.60 -111.52   0.115  0.858    0
+  orden-0          3666   27620.1   5.68  -83.47   0.272  0.367    5
+  orden-1-nyq      1775   12211.1   3.62  -68.73   0.206  0.935    0
+  orden-1-set      2879   25146.2   4.20 -123.24   0.197  0.134    1
+  orden-2          3133   17861.9   4.51  -98.01   0.199  0.270    2
+  orden-2-z1       2829   25286.0   4.14 -105.72   0.196  0.293    1
+  fijo-8           3200   12103.6   8.00 -111.85   0.136    nan    0
+
+==============================================================================
+FRONTERA DE HORIZONTE FIJO (computo medio, coste medio) por escenario
+  A_diseno:
+    N= 2: computo=    800  coste=    431.2  divergencias=0
+    N= 4: computo=   1600  coste=    377.4  divergencias=0
+    N= 6: computo=   2400  coste=    377.3  divergencias=0
+    N= 8: computo=   3200  coste=    377.3  divergencias=0
+    N=10: computo=   4000  coste=    377.3  divergencias=0
+    N=12: computo=   4800  coste=    377.3  divergencias=0
+    N=16: computo=   6400  coste=    377.3  divergencias=0
+  D_OOD_ambos:
+    N= 2: computo=    610  coste=  29653.1  divergencias=5
+    N= 4: computo=   1600  coste=  12561.3  divergencias=0
+    N= 6: computo=   2400  coste=  12124.1  divergencias=0
+    N= 8: computo=   3200  coste=  12103.6  divergencias=0
+    N=10: computo=   4000  coste=  12103.4  divergencias=0
+    N=12: computo=   4800  coste=  12103.4  divergencias=0
+    N=16: computo=   6400  coste=  12103.4  divergencias=0
+
+==============================================================================
+CONTRASTES PAREADOS POR SEMILLA (solo pares completos; Holm por familia)
+DIVERGENCIAS POR GOBERNADOR Y ESCENARIO (fallo terminal, se reporta aparte):
+  D_OOD_ambos: orden-0=5/10, orden-1-set=1/10, orden-2=2/10, orden-2-z1=1/10
+
+--- coste
+  A_diseno:orden-2(n=10) vs orden-1-nyq  coste        delta= -38.1788+-6.9763   t=  -5.47 p=0.0004 p_holm=0.0059 *
+  A_diseno:orden-2(n=10) vs orden-1-set  coste        delta= -33.2778+-6.7681   t=  -4.92 p=0.0008 p_holm=0.0092 *
+  A_diseno:orden-2(n=10) vs umbral-up4   coste        delta= -36.2586+-7.2935   t=  -4.97 p=0.0008 p_holm=0.0092 *
+  A_diseno:orden-2(n=10) vs orden-0      coste        delta= +15.5974+-2.4299   t=  +6.42 p=0.0001 p_holm=0.0021 *
+  A_diseno:orden-2-z1(n=10) vs orden-2      coste        delta= +38.2506+-6.9856   t=  +5.48 p=0.0004 p_holm=0.0059 *
+  A_diseno:orden-1-nyq(n=10) vs umbral-up4   coste        delta=  +1.9202+-0.5906   t=  +3.25 p=0.0100 p_holm=0.0698
+  B_OOD_kick:orden-2(n=10) vs orden-1-nyq  coste        delta=-2888.1752+-308.9554 t=  -9.35 p=0.0000 p_holm=0.0002 *
+  B_OOD_kick:orden-2(n=10) vs orden-1-set  coste        delta=+2525.9383+-1182.9511 t=  +2.14 p=0.0615 p_holm=0.3075
+  B_OOD_kick:orden-2(n=10) vs umbral-up4   coste        delta=-1684.3946+-251.9150 t=  -6.69 p=0.0001 p_holm=0.0017 *
+  B_OOD_kick:orden-2(n=10) vs orden-0      coste        delta=+4067.0977+-1363.3338 t=  +2.98 p=0.0154 p_holm=0.0922
+  B_OOD_kick:orden-2-z1(n=10) vs orden-2      coste        delta=-2256.5984+-1111.5843 t=  -2.03 p=0.0729 p_holm=0.3075
+  B_OOD_kick:orden-1-nyq(n=10) vs umbral-up4   coste        delta=+1203.7805+-223.9495 t=  +5.38 p=0.0004 p_holm=0.0059 *
+  C_OOD_modelo:orden-2(n=10) vs orden-1-nyq  coste        delta= -47.9862+-7.0790   t=  -6.78 p=0.0001 p_holm=0.0017 *
+  C_OOD_modelo:orden-2(n=10) vs orden-1-set  coste        delta= -42.9783+-6.5782   t=  -6.53 p=0.0001 p_holm=0.0019 *
+  C_OOD_modelo:orden-2(n=10) vs umbral-up4   coste        delta= -48.2643+-7.0534   t=  -6.84 p=0.0001 p_holm=0.0017 *
+  C_OOD_modelo:orden-2(n=10) vs orden-0      coste        delta= +15.9079+-2.7199   t=  +5.85 p=0.0002 p_holm=0.0039 *
+  C_OOD_modelo:orden-2-z1(n=10) vs orden-2      coste        delta= +47.8960+-7.0342   t=  +6.81 p=0.0001 p_holm=0.0017 *
+  C_OOD_modelo:orden-1-nyq(n=10) vs umbral-up4   coste        delta=  -0.2780+-0.0587   t=  -4.74 p=0.0011 p_holm=0.0106 *
+  D_OOD_ambos:orden-2(n=8) vs orden-1-nyq  coste        delta=-6248.6139+-1226.4624 t=  -5.09 p=0.0014 p_holm=0.0123 *
+  D_OOD_ambos:orden-2(n=7) vs orden-1-set  coste        delta=+1714.0737+-935.4066 t=  +1.83 p=0.1166 p_holm=0.3498
+  D_OOD_ambos:orden-2(n=8) vs umbral-up4   coste        delta=-6362.8348+-1242.4303 t=  -5.12 p=0.0014 p_holm=0.0123 *
+  D_OOD_ambos:orden-2(n=5) vs orden-0      coste        delta=+12205.7333+-8683.9904 t=  +1.41 p=0.2326 p_holm=0.3498
+  D_OOD_ambos:orden-2-z1(n=7) vs orden-2      coste        delta=-1648.4573+-974.7314 t=  -1.69 p=0.1418 p_holm=0.3498
+  D_OOD_ambos:orden-1-nyq(n=10) vs umbral-up4   coste        delta=-107.6536+-15.6823  t=  -6.86 p=0.0001 p_holm=0.0017 *
+
+--- computo
+  A_diseno:orden-2(n=10) vs orden-1-nyq  computo      delta=-223.7000+-21.6359  t= -10.34 p=0.0000 p_holm=0.0000 *
+  A_diseno:orden-2(n=10) vs orden-1-set  computo      delta=-199.9000+-19.4722  t= -10.27 p=0.0000 p_holm=0.0000 *
+  A_diseno:orden-2(n=10) vs umbral-up4   computo      delta=-124.3000+-9.6114   t= -12.93 p=0.0000 p_holm=0.0000 *
+  A_diseno:orden-2(n=10) vs orden-0      computo      delta=+199.5000+-24.0307  t=  +8.30 p=0.0000 p_holm=0.0002 *
+  A_diseno:orden-2-z1(n=10) vs orden-2      computo      delta=+130.6000+-13.3867  t=  +9.76 p=0.0000 p_holm=0.0001 *
+  A_diseno:orden-1-nyq(n=10) vs umbral-up4   computo      delta= +99.4000+-20.3498  t=  +4.88 p=0.0009 p_holm=0.0043 *
+  B_OOD_kick:orden-2(n=10) vs orden-1-nyq  computo      delta=-981.8000+-49.8272  t= -19.70 p=0.0000 p_holm=0.0000 *
+  B_OOD_kick:orden-2(n=10) vs orden-1-set  computo      delta=-339.2000+-39.9380  t=  -8.49 p=0.0000 p_holm=0.0002 *
+  B_OOD_kick:orden-2(n=10) vs umbral-up4   computo      delta=-227.9000+-35.0702  t=  -6.50 p=0.0001 p_holm=0.0009 *
+  B_OOD_kick:orden-2(n=10) vs orden-0      computo      delta=+874.6000+-48.6770  t= +17.97 p=0.0000 p_holm=0.0000 *
+  B_OOD_kick:orden-2-z1(n=10) vs orden-2      computo      delta=+264.7000+-36.8905  t=  +7.18 p=0.0001 p_holm=0.0005 *
+  B_OOD_kick:orden-1-nyq(n=10) vs umbral-up4   computo      delta=+753.9000+-46.1778  t= +16.33 p=0.0000 p_holm=0.0000 *
+  C_OOD_modelo:orden-2(n=10) vs orden-1-nyq  computo      delta=-365.6000+-21.3704  t= -17.11 p=0.0000 p_holm=0.0000 *
+  C_OOD_modelo:orden-2(n=10) vs orden-1-set  computo      delta=-187.0000+-21.7491  t=  -8.60 p=0.0000 p_holm=0.0002 *
+  C_OOD_modelo:orden-2(n=10) vs umbral-up4   computo      delta= +78.9000+-18.6115  t=  +4.24 p=0.0022 p_holm=0.0065 *
+  C_OOD_modelo:orden-2(n=10) vs orden-0      computo      delta= +73.3000+-18.6578  t=  +3.93 p=0.0035 p_holm=0.0069 *
+  C_OOD_modelo:orden-2-z1(n=10) vs orden-2      computo      delta=+192.2000+-24.9158  t=  +7.71 p=0.0000 p_holm=0.0003 *
+  C_OOD_modelo:orden-1-nyq(n=10) vs umbral-up4   computo      delta=+444.5000+-18.9545  t= +23.45 p=0.0000 p_holm=0.0000 *
+  D_OOD_ambos:orden-2(n=8) vs orden-1-nyq  computo      delta=-1383.0000+-72.7452  t= -19.01 p=0.0000 p_holm=0.0000 *
+  D_OOD_ambos:orden-2(n=7) vs orden-1-set  computo      delta=-383.7143+-55.5431  t=  -6.91 p=0.0005 p_holm=0.0027 *
+  D_OOD_ambos:orden-2(n=8) vs umbral-up4   computo      delta=-125.7500+-61.7991  t=  -2.03 p=0.0813 p_holm=0.0813
+  D_OOD_ambos:orden-2(n=5) vs orden-0      computo      delta=+581.6000+-70.7952  t=  +8.22 p=0.0012 p_holm=0.0048 *
+  D_OOD_ambos:orden-2-z1(n=7) vs orden-2      computo      delta=+421.2857+-52.6786  t=  +8.00 p=0.0002 p_holm=0.0014 *
+  D_OOD_ambos:orden-1-nyq(n=10) vs umbral-up4   computo      delta=+1275.8000+-35.7966  t= +35.64 p=0.0000 p_holm=0.0000 *
+
+--- frac_alpha_bajo
+  A_diseno:orden-2(n=10) vs orden-1-nyq  frac_alpha_bajodelta=  +0.0731+-0.0077   t=  +9.48 p=0.0000 p_holm=0.0001 *
+  A_diseno:orden-2(n=10) vs orden-1-set  frac_alpha_bajodelta=  -0.0468+-0.0056   t=  -8.31 p=0.0000 p_holm=0.0002 *
+  A_diseno:orden-2(n=10) vs umbral-up4   frac_alpha_bajodelta=  -0.0331+-0.0051   t=  -6.49 p=0.0001 p_holm=0.0015 *
+  A_diseno:orden-2(n=10) vs orden-0      frac_alpha_bajodelta=  +0.0449+-0.0078   t=  +5.77 p=0.0003 p_holm=0.0024 *
+  A_diseno:orden-2-z1(n=10) vs orden-2      frac_alpha_bajodelta=  +0.0194+-0.0031   t=  +6.25 p=0.0002 p_holm=0.0017 *
+  A_diseno:orden-1-nyq(n=10) vs umbral-up4   frac_alpha_bajodelta=  -0.1062+-0.0047   t= -22.75 p=0.0000 p_holm=0.0000 *
+  B_OOD_kick:orden-2(n=10) vs orden-1-nyq  frac_alpha_bajodelta=  +0.0325+-0.0032   t= +10.11 p=0.0000 p_holm=0.0001 *
+  B_OOD_kick:orden-2(n=10) vs orden-1-set  frac_alpha_bajodelta=  -0.0150+-0.0040   t=  -3.77 p=0.0044 p_holm=0.0222 *
+  B_OOD_kick:orden-2(n=10) vs umbral-up4   frac_alpha_bajodelta=  -0.0390+-0.0041   t=  -9.54 p=0.0000 p_holm=0.0001 *
+  B_OOD_kick:orden-2(n=10) vs orden-0      frac_alpha_bajodelta=  +0.0801+-0.0033   t= +24.42 p=0.0000 p_holm=0.0000 *
+  B_OOD_kick:orden-2-z1(n=10) vs orden-2      frac_alpha_bajodelta=  +0.0001+-0.0029   t=  +0.03 p=0.9738 p_holm=0.9738
+  B_OOD_kick:orden-1-nyq(n=10) vs umbral-up4   frac_alpha_bajodelta=  -0.0715+-0.0051   t= -13.90 p=0.0000 p_holm=0.0000 *
+  C_OOD_modelo:orden-2(n=10) vs orden-1-nyq  frac_alpha_bajodelta=  +0.0339+-0.0060   t=  +5.65 p=0.0003 p_holm=0.0025 *
+  C_OOD_modelo:orden-2(n=10) vs orden-1-set  frac_alpha_bajodelta=  -0.0206+-0.0046   t=  -4.45 p=0.0016 p_holm=0.0097 *
+  C_OOD_modelo:orden-2(n=10) vs umbral-up4   frac_alpha_bajodelta=  -0.0229+-0.0038   t=  -5.98 p=0.0002 p_holm=0.0021 *
+  C_OOD_modelo:orden-2(n=10) vs orden-0      frac_alpha_bajodelta=  +0.0490+-0.0048   t= +10.32 p=0.0000 p_holm=0.0001 *
+  C_OOD_modelo:orden-2-z1(n=10) vs orden-2      frac_alpha_bajodelta=  +0.0257+-0.0040   t=  +6.43 p=0.0001 p_holm=0.0015 *
+  C_OOD_modelo:orden-1-nyq(n=10) vs umbral-up4   frac_alpha_bajodelta=  -0.0568+-0.0061   t=  -9.24 p=0.0000 p_holm=0.0001 *
+  D_OOD_ambos:orden-2(n=8) vs orden-1-nyq  frac_alpha_bajodelta=  +0.0037+-0.0045   t=  +0.82 p=0.4417 p_holm=0.8833
+  D_OOD_ambos:orden-2(n=7) vs orden-1-set  frac_alpha_bajodelta=  -0.0046+-0.0039   t=  -1.19 p=0.2801 p_holm=0.8403
+  D_OOD_ambos:orden-2(n=8) vs umbral-up4   frac_alpha_bajodelta=  -0.0852+-0.0039   t= -22.13 p=0.0000 p_holm=0.0000 *
+  D_OOD_ambos:orden-2(n=5) vs orden-0      frac_alpha_bajodelta=  +0.0734+-0.0079   t=  +9.33 p=0.0007 p_holm=0.0051 *
+  D_OOD_ambos:orden-2-z1(n=7) vs orden-2      frac_alpha_bajodelta=  +0.0076+-0.0040   t=  +1.88 p=0.1097 p_holm=0.4390
+  D_OOD_ambos:orden-1-nyq(n=10) vs umbral-up4   frac_alpha_bajodelta=  -0.0911+-0.0038   t= -24.16 p=0.0000 p_holm=0.0000 *
+
+--- corr_asignacion  [MAS es MEJOR: leer delta al reves]
+  A_diseno:orden-2(n=10) vs orden-1-nyq  corr_asignaciondelta=  -0.0963+-0.0218   t=  -4.42 p=0.0017 p_holm=0.0217 *
+  A_diseno:orden-2(n=10) vs orden-1-set  corr_asignaciondelta=  -0.2167+-0.0441   t=  -4.92 p=0.0008 p_holm=0.0120 *
+  A_diseno:orden-2(n=10) vs umbral-up4   corr_asignaciondelta=  -0.0354+-0.0136   t=  -2.61 p=0.0284 p_holm=0.2272
+  A_diseno:orden-2(n=10) vs orden-0      corr_asignaciondelta=  -0.1567+-0.0501   t=  -3.13 p=0.0122 p_holm=0.1216
+  A_diseno:orden-2-z1(n=10) vs orden-2      corr_asignaciondelta=  +0.0239+-0.0099   t=  +2.41 p=0.0395 p_holm=0.2631
+  A_diseno:orden-1-nyq(n=10) vs umbral-up4   corr_asignaciondelta=  +0.0608+-0.0227   t=  +2.68 p=0.0252 p_holm=0.2268
+  B_OOD_kick:orden-2(n=10) vs orden-1-nyq  corr_asignaciondelta=  +1.3784+-0.1292   t= +10.66 p=0.0000 p_holm=0.0000 *
+  B_OOD_kick:orden-2(n=10) vs orden-1-set  corr_asignaciondelta=  +1.1341+-0.1269   t=  +8.94 p=0.0000 p_holm=0.0002 *
+  B_OOD_kick:orden-2(n=10) vs umbral-up4   corr_asignaciondelta=  +1.1275+-0.1170   t=  +9.64 p=0.0000 p_holm=0.0001 *
+  B_OOD_kick:orden-2(n=10) vs orden-0      corr_asignaciondelta=  +0.2676+-0.1098   t=  +2.44 p=0.0376 p_holm=0.2631
+  B_OOD_kick:orden-2-z1(n=10) vs orden-2      corr_asignaciondelta=  -0.8586+-0.1183   t=  -7.26 p=0.0000 p_holm=0.0010 *
+  B_OOD_kick:orden-1-nyq(n=10) vs umbral-up4   corr_asignaciondelta=  -0.2509+-0.0474   t=  -5.29 p=0.0005 p_holm=0.0085 *
+  C_OOD_modelo:orden-2(n=10) vs orden-1-nyq  corr_asignaciondelta=  -0.0001+-0.0244   t=  -0.00 p=0.9976 p_holm=1.0000
+  C_OOD_modelo:orden-2(n=10) vs orden-1-set  corr_asignaciondelta=  -0.1721+-0.0289   t=  -5.97 p=0.0002 p_holm=0.0038 *
+  C_OOD_modelo:orden-2(n=10) vs umbral-up4   corr_asignaciondelta=  -0.1156+-0.0282   t=  -4.10 p=0.0027 p_holm=0.0323 *
+  C_OOD_modelo:orden-2(n=10) vs orden-0      corr_asignaciondelta=  -0.0195+-0.0294   t=  -0.66 p=0.5237 p_holm=1.0000
+  C_OOD_modelo:orden-1-nyq(n=10) vs umbral-up4   corr_asignaciondelta=  -0.1155+-0.0162   t=  -7.15 p=0.0001 p_holm=0.0010 *
+  D_OOD_ambos:orden-2(n=8) vs orden-1-nyq  corr_asignaciondelta=  +0.6864+-0.1136   t=  +6.04 p=0.0005 p_holm=0.0085 *
+  D_OOD_ambos:orden-2(n=7) vs orden-1-set  corr_asignaciondelta=  -0.1268+-0.1598   t=  -0.79 p=0.4576 p_holm=1.0000
+  D_OOD_ambos:orden-2(n=8) vs umbral-up4   corr_asignaciondelta=  +0.6200+-0.1104   t=  +5.62 p=0.0008 p_holm=0.0120 *
+  D_OOD_ambos:orden-2(n=5) vs orden-0      corr_asignaciondelta=  +0.2537+-0.1560   t=  +1.63 p=0.1791 p_holm=0.8953
+  D_OOD_ambos:orden-2-z1(n=7) vs orden-2      corr_asignaciondelta=  -0.0705+-0.1793   t=  -0.39 p=0.7077 p_holm=1.0000
+  D_OOD_ambos:orden-1-nyq(n=10) vs umbral-up4   corr_asignaciondelta=  -0.0771+-0.0229   t=  -3.37 p=0.0082 p_holm=0.0907
+
+tiempo: 24.9s
+escrito E:\ARTICULOS-CIENTIFICOS\NewMPC\code\results\alphaN.json

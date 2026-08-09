@@ -1,0 +1,38 @@
+E:\ARTICULOS-CIENTIFICOS\NewMPC\code\python\scripts\run_transport_matched.py:57: RuntimeWarning: overflow encountered in scalar multiply
+  acc = ws * ws * (x[t] - y) - 2.0 * zs * ws * v
+E:\ARTICULOS-CIENTIFICOS\NewMPC\code\python\scripts\run_transport_matched.py:58: RuntimeWarning: invalid value encountered in scalar add
+  v += acc
+E:\ARTICULOS-CIENTIFICOS\NewMPC\code\python\scripts\run_transport_causal2.py:79: RuntimeWarning: overflow encountered in multiply
+  return base.alpha_from_gate(par["gain"] * g, par["a_lo"], par["a_hi"])
+==============================================================================
+SINTONIA con guarda de causalidad Y normalizacion CAUSAL
+==============================================================================
+  la escala de la puerta se fija con la ganancia en continua, que se
+  calcula offline; ya no se mira el maximo de la traza completa
+
+  onda                 coste   49949.9 | D=0.0 a_hi=1.0 a_lo=0.2 c=0.6 gain=3.0 gamma=1.0 shift=0 w0=0.3 zeta=1.0 | 0 descartadas por acausales
+  retardo-conformado   coste   49573.5 | a_hi=1.0 a_lo=0.2 delta=0 gain=2.0 shift=0 ws=0.3 zs=2.0 | 0 descartadas por acausales
+  reactivo             coste   56467.2 | a_hi=0.8 a_lo=0.6 | 0 descartadas por acausales
+  retardo-puro         coste   50166.0 | a_hi=0.9 a_lo=0.3 delta=2 | 0 descartadas por acausales
+  oraculo(*)           coste   48431.5 | a_hi=0.9 a_lo=0.3 lead=6 | 46 descartadas por acausales
+
+==============================================================================
+EVALUACION CON 30 SEMILLAS
+==============================================================================
+
+  mecanismo                 coste     sem  vs reactivo  % oraculo
+  oraculo                 49829.7  2265.4      +12.25%     100.0%
+  retardo-conformado      50791.0  2370.5      +10.56%      86.2%
+  retardo-puro            51222.7  2091.1       +9.80%      80.0%
+  onda                    51277.0  2492.0       +9.70%      79.2%
+  reactivo                56786.0   931.1       +0.00%       0.0%
+
+==============================================================================
+CONTRASTES (pareados, Holm) Y EQUIVALENCIA
+==============================================================================
+  onda vs rival igualado                 delta=  -485.97 t=  -3.90 p=0.0016* | detectable >= 349 (0.61% del coste)
+  onda vs retardo puro                   delta=   -54.27 t=  -0.13 p=0.8959  | detectable >= 1151 (2.03% del coste)
+  conformar ayuda?                       delta=  +431.70 t=  +1.50 p=0.2871  | detectable >= 804 (1.42% del coste)
+  info de aguas arriba vs solo local     delta= +5563.25 t=  +4.37 p=0.0006* | detectable >= 3562 (6.27% del coste)
+
+escrito E:\ARTICULOS-CIENTIFICOS\NewMPC\code\results\transport_causal2.json

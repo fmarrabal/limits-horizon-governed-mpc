@@ -1,0 +1,41 @@
+==============================================================================
+SUITE DE AUDITORIA  (cada hallazgo adversarial, ejecutable)
+==============================================================================
+[OK  ] A1   desigualdad terminal S_i >= 0 por objetivo
+         economia: eig_min=-4.441e-16; prestaciones: eig_min=-5.338e-16
+[OK  ] A2   Omega positivamente invariante bajo Acl
+         peor violacion = -9.025e-01
+[OK  ] A3   Omega respeta |x|<=xmax y |Kf x|<=umax
+         peor violacion = -3.835e-02
+[OK  ] A4   V*(x,.) es CONCAVA en alpha (correccion a Bemporad 2009)
+         40 tests | violaciones de CONCAVIDAD = 0 | de CONVEXIDAD = 40 | d medio = +2.4858e+01
+[OK  ] A5   el conjunto admisible ES no convexo para un rango de J_a
+         4 estados, 100 niveles de J_a | NO convexo en 39 (39.0%) | pico de V* en el interior en 4/4 estados | ejemplo x=[1.644, -2.763]
+[OK  ] A6   radio certificado valido: ||da||<=r => alpha' admisible
+         3 estados, 72 pruebas | peor exceso sobre J_a = -4.195e+02
+[OK  ] A7   igualacion 1er/2o orden exacta EN DISCRETO
+         tau=5.9246 |H1|=0.092173473 |H2|=0.092173473 err=1.39e-17  ||  igualando en continuo: tau=6.3584 -> desajuste 0.9259 (deberia ser 1)
+[OK  ] A8   el anti-windup NO se dispara si no hay bloqueo
+         orden-1: 0.000 | orden-2 (theta=0.5): 0.000 | orden-2 (theta=0.0): 0.000
+[OK  ] A9   sobreoscilacion ejecutada == la del DISCRETO (zeta=0.3)
+         ejecutada=34.8461%  discreta=34.8461%  (continua=37.23%, referencia equivocada)
+[OK  ] A9   sobreoscilacion ejecutada == la del DISCRETO (zeta=0.5)
+         ejecutada=11.3203%  discreta=11.3203%  (continua=16.30%, referencia equivocada)
+[OK  ] A9   sobreoscilacion ejecutada == la del DISCRETO (zeta=0.7)
+         ejecutada=0.8524%  discreta=0.8524%  (continua=4.60%, referencia equivocada)
+[OK  ] A12  los ingredientes del TFM VIOLAN la desigualdad terminal (regresion documentada, debe seguir fallando)
+         eig_min(S_0) = -11.0392 | eig_min(S_1) = -3.3772
+[OK  ] A13  SIN terminal: V_N NO DECRECIENTE en N (rel.)
+         peor violacion relativa = 1.048e-09
+[OK  ] A14  CON terminal correcto: V_N NO CRECIENTE en N (rel.)
+         30 estados factibles | peor violacion relativa = -6.784e-14
+[OK  ] A15  regimen lineal: alpha* y N* INVARIANTES a la amplitud
+         curvas J/lambda^2 identicas entre escalas: peso 6.0e-13, horizonte 1.6e-10 | alpha*=[0.15] N*=[32, 40] | argmin de borde: False | mismo conjunto de casi-optimos: True
+[OK  ] A16  la anticipacion solo sirve si hay ALMACENAMIENTO
+         ganancia maxima de la antelacion: SIN almacenamiento -0.00% (plano, como debe) | CON almacenamiento +3.78% (no plano, como debe)
+[OK  ] A17  el campo con beta=0 es EXACTAMENTE un banco de filtros LTI
+         wave: superposicion 1.1e-15, invariancia 0.0e+00, convolucion 4.4e-16 | diffusion: superposicion 8.9e-16, invariancia 0.0e+00, convolucion 4.4e-16
+[OK  ] A18  forcing='target' NO transporta en continua; 'source' si, y por igual en ambas ramas
+         target: peor ganancia cruzada 1.5e-323 (cero) | source: d=1,2,3 -> [0.2471, 0.1101, 0.0496] | |onda - difusion| = 3.3e-16
+==============================================================================
+18/18 comprobaciones OK

@@ -1,0 +1,65 @@
+==============================================================================
+E0  CALIBRACION: el mejor peso CONSTANTE debe caer en el INTERIOR
+==============================================================================
+  (si cayera en un extremo, el problema no tendria compromiso que arbitrar)
+
+    alpha     coste real
+     0.05        55383.0
+     0.15        41803.5
+     0.20        41193.7  <== MEJOR CONSTANTE
+     0.25        41228.1
+     0.35        41870.1
+     0.50        43076.1
+     0.75        44925.6
+     0.95        46372.4
+
+  alpha* constante = 0.20  (interior: True)
+
+==============================================================================
+E1+E2  SEGUIR alpha_d FRENTE AL MEJOR CONSTANTE, CON EL NULO DE MECANISMO
+==============================================================================
+  mejora > 0 significa que MODULAR gana. La regla refinada predice que
+  narrow gana y broad no. Si ambos pierden, la banda no era el mecanismo.
+
+     banda  sigma   gain   constante    modulado   mejora %
+    narrow   0.00    0.6     41193.7     58157.5     -41.18
+    narrow   0.00    1.0     41193.7     57894.0     -40.54
+    narrow   0.20    0.6     41650.6     59956.3     -43.95
+    narrow   0.20    1.0     41650.6     59515.0     -42.89
+     broad   0.00    0.6     29744.0     69532.9    -133.77
+     broad   0.00    1.0     29744.0     67807.1    -127.97
+     broad   0.20    0.6     29883.5     66336.0    -121.98
+     broad   0.20    1.0     29883.5     62141.5    -107.95
+
+  configuraciones en que MODULAR gana: 0/8 (de banda estrecha: 0)
+  => la prediccion de la regla refinada NO se cumple, y el nulo de
+     mecanismo no separa: la banda estrecha no era el motor.
+
+==============================================================================
+E3  EL HORIZONTE OPTIMO FRENTE AL NIVEL DE ENVOLVENTE
+==============================================================================
+  si N* dependiera del nivel, habria algo que un gobernador podria seguir
+
+      E0   N*       coste*   coste*/E0^2
+     1.0   24        818.0       817.952
+     1.5   24       1840.4       817.952
+     2.6   24       5529.4       817.952
+     4.0   24      17596.8      1099.802
+
+  N* invariante al nivel: True  (valores [24])
+  coste*/E0^2 constante : dispersion relativa 1.37e-01
+
+==============================================================================
+VEREDICTO
+==============================================================================
+  La arena se construyo para que el campo ganara y NO gana, pero el motivo
+  no es de sintonia: es que en regimen lineal el peso optimo y el horizonte
+  optimo NO DEPENDEN de la amplitud de la perturbacion (ver A15 y
+  run_scale_invariance.py). Una demanda fabricada modulando AMPLITUDES no
+  tiene ningun optimo variable en el tiempo que seguir.
+
+  Para que exista algo que modular hay que cruzar una NO LINEALIDAD; y al
+  cruzarla la demanda se vuelve EVENTUAL -- pulsos, banda ANCHA -- que es
+  justo el regimen donde alpha_N mostro que gana el integrador con fugas.
+
+escrito E:\ARTICULOS-CIENTIFICOS\NewMPC\code\results\vibration.json

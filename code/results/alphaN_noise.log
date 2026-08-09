@@ -1,0 +1,56 @@
+==============================================================================
+BARRIDO DE RUIDO EN alpha  --  la prediccion falsable de la regla de agosto
+==============================================================================
+escenario B_OOD_kick (kicks U[3.5,6.5]); mismo alpha ruidoso para todos
+H5: debe aparecer un CRUCE orden-1 -> orden-2 al crecer sigma_alpha
+H6: zeta=1 repara la correlacion del 2o orden ya sin ruido
+
+### sigma_alpha = 0.0
+  gobernador    computo     coste  fr<0.1   corr  div
+  umbral           2229   15827.4   0.217  0.686    0
+  orden-1          1602    9919.7   0.182  0.954    0
+  orden-2          2584   12807.9   0.150 -0.424    0
+  orden-2-z1       2319   15064.5   0.150  0.434    0
+
+### sigma_alpha = 0.25
+  gobernador    computo     coste  fr<0.1   corr  div
+  umbral           1898   10798.0   0.167  0.677    0
+  orden-1          1685    9924.3   0.181  0.855    0
+  orden-2          2687   13056.7   0.142 -0.232    0
+  orden-2-z1       2191   11708.0   0.131  0.673    0
+
+### sigma_alpha = 0.5
+  gobernador    computo     coste  fr<0.1   corr  div
+  umbral           2604   10229.7   0.139  0.463    0
+  orden-1          2207    9899.2   0.160  0.601    0
+  orden-2          3254   11710.2   0.114  0.066    0
+  orden-2-z1       2866   10666.2   0.106  0.484    0
+
+### sigma_alpha = 1.0
+  gobernador    computo     coste  fr<0.1   corr  div
+  umbral           6576    9889.7   0.051  0.002    0
+  orden-1          3353    9890.3   0.122  0.098    0
+  orden-2          4598   10681.2   0.083 -0.017    0
+  orden-2-z1       4434   10038.8   0.072  0.068    0
+
+### sigma_alpha = 2.0
+  gobernador    computo     coste  fr<0.1   corr  div
+  umbral           8836    9888.6   0.016 -0.241    0
+  orden-1          4240    9889.4   0.084 -0.029    0
+  orden-2          5581   10320.3   0.067 -0.021    0
+  orden-2-z1       5649    9993.0   0.050 -0.059    0
+
+==============================================================================
+H5: coste orden-2 vs orden-1, pareado, por nivel de ruido
+    (delta > 0 => gana el orden-2; el CRUCE es el cambio de signo)
+  sigma=0.0   delta=   -2888.2+-309.0     t=  -9.35 p=0.0000 *
+  sigma=0.25  delta=   -3132.4+-738.3     t=  -4.24 p=0.0022 *
+  sigma=0.5   delta=   -1811.0+-388.0     t=  -4.67 p=0.0012 *
+  sigma=1.0   delta=    -790.9+-179.0     t=  -4.42 p=0.0017 *
+  sigma=2.0   delta=    -430.9+-167.6     t=  -2.57 p=0.0301 *
+
+H6: corr de asignacion sin ruido, orden-2 (z=0.5) vs orden-2-z1 (z=1.0)
+  corr z=0.5: -0.424   corr z=1.0: +0.434   delta=+0.859  t=+7.26  p=0.0000
+
+tiempo: 8.7s
+escrito E:\ARTICULOS-CIENTIFICOS\NewMPC\code\results\alphaN_noise.json

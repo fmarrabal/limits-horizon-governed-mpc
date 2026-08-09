@@ -13,6 +13,8 @@ __pycache__/
 *.out
 *.spl
 *.synctex.gz
+# los logs de RESULTADOS no son aux de LaTeX: se re-incluyen
+!code/results/*.log
 
 # --- internal working documents (Spanish lab notes; not needed to reproduce) ---
 /PROPUESTA-MPC-HOMEOSTATICO.md
