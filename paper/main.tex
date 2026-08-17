@@ -75,7 +75,12 @@ temporal mechanism pays always, while cross-loop allocation pays only when
 disturbances are independent. Second, structural limits that explain why
 nothing more elaborate could win: amplitude-scale invariance of the optimal
 meta-parameter, the linear-time-invariance of the graph field, the DC
-cross-gain of its forcing, and a quantization-limited reach law. Third, the part most
+cross-gain of its forcing, and a quantization-limited reach law. Third, a sign
+correction to the multiparametric machinery of a widely used multiobjective
+MPC formulation: its weighted value function is concave, not convex, in the
+weights, so its weight-selection program is a safe inner approximation
+rather than an equivalent one --- stated, proved, and repaired here.
+Fourth, the part most
 likely to be useful beyond our own problem: five experimental leaks, two
 acausal, two of accounting, one of channel, every one of which inverted a
 conclusion of ours before adversarial review caught it, together with the
@@ -141,10 +146,12 @@ accounting, boundary-optimum rejection) are cheap enough to run inside a tuning
 loop.
 
 A sign error we found in the multiparametric machinery of a widely cited
-multiobjective MPC formulation \cite{bemporad2009mompc} is used here only
-where it matters for implementation (Section~\ref{sec:setting}); its full
-statement and consequences are the subject of a separate Comment submitted to
-Automatica.
+multiobjective MPC formulation \cite{bemporad2009mompc} is stated and proved
+in Section~\ref{sec:sign}, with its consequences for that formulation's
+weight-selection subproblems; Section~\ref{sec:setting} uses only the piece
+that matters for implementation. The authors of \cite{bemporad2009mompc}
+were contacted about the observation prior to this submission; no response
+had been received at the time of writing.
 
 \subsection*{Relation to existing work}
 Feedforward compensation of a \emph{known} transport delay is classical, and it
@@ -193,6 +200,13 @@ stated in full and their necessity demonstrated by counterexample.
 \item \textbf{An audit methodology} (Section~\ref{sec:methodology}): five real
 leaks, the conclusion each inverted, and the executable test that now guards
 each; all distributed as a regression suite.
+\item \textbf{A sign correction} (Section~\ref{sec:sign}): the value
+function of the weighted multiparametric program at the core of the
+multiobjective formulation of \cite{bemporad2009mompc} is \emph{concave},
+not convex, in the weights; their weight-selection LP is a safe inner
+approximation rather than an equivalent program, their quadratic-branch
+online problem is not a convex program, and the exact remedy ---
+enumeration or gridding --- is what Section~\ref{sec:setting} implements.
 \end{enumerate}
 
 % ====================================================================
@@ -231,8 +245,8 @@ Ex.~3.9]{boyd2004}, so the admissible weight set
 $\mathcal{A}(x,\Ja)=\{\alpha:\vstar(x,\alpha)\le\Ja\}$ is in general
 non-convex --- in our instances it was non-convex at roughly one fifth of the
 sampled contraction levels --- and must be gridded or enumerated rather than
-projected onto. The sign and its consequences for the original formulation are
-treated in the companion Comment.
+projected onto. The sign, its origin, and its consequences for the original
+formulation are the subject of Section~\ref{sec:sign}.
 
 \subsection{Horizon-governed MPC and the suboptimality index}
 For the single-objective case we use the relaxed dynamic programming index of
@@ -275,6 +289,101 @@ steady-state profile, so wave-versus-diffusion is a mechanism null by
 construction. The choice of forcing $f(\cdot)$ looks like a detail;
 Proposition~\ref{prop:dc} shows it decides whether the field can transport
 anything sustained at all.
+
+% ====================================================================
+\section{A Sign Correction to the Multiparametric Machinery of a
+Weighted Multiobjective Formulation}\label{sec:sign}
+% ====================================================================
+This section is self-contained and concerns only the multiobjective
+formulation our weight governor builds on. Lemma~4 of
+\cite{bemporad2009mompc} considers the multiparametric linear program ---
+their problem (13) --- with weights $\mu$ entering the cost and the state
+$x$ entering the right-hand side, and asserts that the value function is
+``convex and piecewise affine w.r.t.\ $\mu$ for any given $x$.'' Piecewise
+affinity is correct, and so is the statement in $x$; the convexity claim in
+$\mu$ has the wrong sign.
+
+\begin{lemma}\label{lem:concave}
+Let $V^\ast(\mu,x)=\min_z\{(c_0+C_\mu^\top\mu)^\top z:\ Gz\le b+Sx\}$
+be the value function of problem (13) of \cite{bemporad2009mompc}. For each
+fixed $x$ with nonempty feasible set and attained minimum,
+$\mu\mapsto V^\ast(\mu,x)$ is \emph{concave} and piecewise affine on
+its domain.
+\end{lemma}
+
+\begin{proof}
+For each fixed feasible $z$ the map $\mu\mapsto(c_0+C_\mu^\top\mu)^\top z$
+is affine, and the feasible set does not depend on $\mu$; hence
+$V^\ast(\cdot,x)$ is a pointwise minimum of affine functions of $\mu$,
+therefore concave, and --- the minimum being attained at one of finitely
+many vertices, or the problem being unbounded --- a minimum of finitely many
+of them where finite, therefore piecewise affine on its domain.
+\end{proof}
+
+This is the classical sensitivity dichotomy of parametric programming:
+under minimization the optimal value is convex in right-hand-side
+perturbations --- the side treated by classical multiparametric linear
+programming \cite{gal1972} --- and concave in parameters entering the
+objective linearly \cite[Sec.~5.6.1, Ex.~3.9]{boyd2004}; both signs invert
+under maximization. The slip traces to the companion conference paper
+\cite[p.~2406]{bemporad2009ecc}, which establishes the properties in $x$ and
+adds that ``by duality, the same properties hold with respect to $\mu$'':
+duality does exchange cost and right-hand-side parameters, but it also turns
+the primal minimum into a dual maximum, and that is the step that flips the
+curvature. We also confirmed the sign numerically, on two families. Over
+$300$ random chord tests on quadratic instances with this parametric
+structure, the concavity inequality in $\mu$ held in every case and the
+convexity inequality failed in every case. Over $1{,}200$ chord tests on
+randomly generated instances of their problem (13) itself, strict concavity
+appeared in $791$ cases and strict convexity in none, the remaining chords
+falling on affine pieces where both inequalities hold with equality; the
+same test in $x$ confirmed convexity --- exactly the corrected
+statement.
+
+\emph{Consequence for their Theorem~6.} The proof invokes
+\cite{schechter1987} for \emph{convex} piecewise affine functions to
+evaluate $V^\ast(\mu,x)$ as the \emph{maximum} of its affine pieces, and
+the weight-selection LP --- their (17) --- imposes every piece
+$\le J_a$. By Lemma~\ref{lem:concave} the value function is the
+\emph{minimum} of those pieces, so (17) describes a convex \emph{inner
+approximation} of the true admissible weight set
+$\mathcal{A}(x,J_a)=\{\mu: V^\ast(\mu,x)\le J_a\}$, which is a sublevel
+set of a concave function and in general non-convex. One consequence is
+reassuring and one is not: every weight accepted by (17) satisfies the
+contractive constraint, so all closed-loop stability guarantees
+\emph{built on that constraint} are preserved --- the piecewise affine
+branch is safe as published; but the claimed equivalence fails, (17) can be infeasible while
+admissible weights exist, and its optimizer need not be the admissible
+weight closest to the desired one. In our instances the admissible set was
+non-convex at roughly one fifth of the sampled contraction levels, so the
+gap is not a measure-zero curiosity.
+
+\emph{Consequence for their Theorem~7.} For the branch with a quadratic
+objective, joint convexity of the value function in $(\mu,x)$ is asserted
+``by the results of Mangasarian and Rosen,'' and the online problem ---
+their (21) --- is concluded to be a convex program. The cited result
+\cite{mangasarian1964} concerns perturbations of the constraint right-hand
+side; in their problem (20), however, $\mu$ enters the objective linearly
+while the constraints do not depend on it, so the argument of Lemma~\ref{lem:concave} applies verbatim:
+the value function is concave in $\mu$, joint convexity cannot hold except
+degenerately, and (21) is not a convex program. Unlike the piecewise affine
+case, no inner-approximation safety net arises here, so any weight returned
+by a solver should be certified a posteriori by evaluating the value
+function directly --- which is cheap.
+
+\emph{Remedy, and what this paper does.} For the low weight dimensions
+typical of scalarized multiobjective problems \cite{miettinen1999,
+marler2004}, the
+admissible set is handled exactly by enumeration over the affine pieces or
+by gridding the simplex and testing $V^\ast(\mu,x)\le J_a$ pointwise;
+projections, gradient steps on the weight, and any construction presuming
+convexity of $\mathcal{A}(x,J_a)$ can silently leave the admissible set.
+That is what Section~\ref{sec:setting} already implements, and it is the
+only point where the correction touches the rest of this paper. The
+contribution of \cite{bemporad2009mompc} --- closed-loop guarantees through
+a contractive constraint on a weighted value function --- is not in
+question: the correction concerns the exactness claims attached to the
+weight-selection subproblems.
 
 % ====================================================================
 \section{Structural Limits}\label{sec:limits}

@@ -1,14 +1,17 @@
 # Paper: *When Does Adapting the Meta-Parameter Pay?*
 
-**Encuadre final (confirmado por el investigador el 9-ago-2026): división en dos.**
-
-1. **Este manuscrito** — paper de control, IEEEtran journal (TCST/JPC como destinos naturales): dos gobernadores mínimos que sí pagan, los límites estructurales que explican por qué nada más elaborado podía ganar, y la metodología de las cinco fugas.
-2. **`../bemporad-2009/comment/comment.tex`** — el *Comment* a Automatica con la corrección al Lema 4 de Bemporad & Muñoz de la Peña (2009), reencuadrada sobre su mp-LP (13).
+**Encuadre final (revisado el 17-ago-2026): un solo manuscrito.** El
+*Comment* a Automatica NO se enviará; la corrección al Lema 4 de Bemporad &
+Muñoz de la Peña (2009) va como **Sección III** de este paper
+(`\label{sec:sign}`), y `../bemporad-2009/comment/comment.tex` se conserva
+como versión extendida de registro, sin envío previsto a ninguna parte.
+El manuscrito: dos gobernadores mínimos que sí pagan, los límites
+estructurales, la corrección de signo, y la metodología de las cinco fugas.
 
 ```bash
 cd paper
 python make_figures.py        # regenera las 6 figuras desde code/results/
-latexmk -pdf main.tex         # compila -> main.pdf (9 páginas, 0 desbordes)
+latexmk -pdf main.tex         # compila -> main.pdf (10 páginas, 0 desbordes)
 python _check_numbers.py      # contrasta cada cifra del texto con su JSON
 ```
 
@@ -33,7 +36,7 @@ La quinta es la clave de la moraleja: las fugas no favorecen sistemáticamente a
 ## Historial y notas de reproducibilidad
 
 - `main_v1_backup.tex` — primera versión (pre-auditorías). `main_v2_backup.tex` — segunda (encuadre antiguo, números pre-3ª ronda).
-- `refs.bib` — 27 entradas verificadas contra fuente primaria o corroboración múltiple (19 citadas); niveles de verificación en `refs_verificadas.bib`.
+- `refs.bib` — 31 entradas (23 citadas); 27 verificadas contra fuente primaria o corroboración múltiple, y 4 añadidas el 17-ago (schechter1987, gal1972, miettinen1999, marler2004) con DOI, **pendientes de pasar al ledger** `refs_verificadas.bib` tras verificación contra fuente.
 - Las figuras **no** usan `usetex`: el glifo del signo menos no se dibuja en esta MiKTeX por esa ruta (comprobado con fonttype 42/3 y cm/lmodern/mathptmx). Se usa `mathtext` con STIX.
 - Ojo con `\t`/`\r` dentro de cadenas no-raw de Python: dos figuras salieron con TAB/CR embebidos por eso. Etiquetas con LaTeX siempre en raw strings.
 - Semillas de sintonía y evaluación disjuntas en todos los experimentos; la suite de auditoría (21 comprobaciones sobre 18 aserciones) pasa entera.

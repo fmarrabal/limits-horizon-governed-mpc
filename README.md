@@ -7,8 +7,10 @@ A. Campa-Pinto (Universidad de la Costa, Barranquilla) and
 F. M. Arrabal-Campos* (University of Almería, CIAIMBITAL; *corresponding).
 
 This repository contains everything needed to reproduce the paper in
-[`paper/`](paper/) and the companion Comment to Automatica in
-[`bemporad-2009/comment/`](bemporad-2009/comment/): the Python reference
+[`paper/`](paper/), including the sign correction to Bemporad & Munoz de la
+Pena (2009) that is now Section III of the manuscript (a standalone extended
+version is kept in [`bemporad-2009/comment/`](bemporad-2009/comment/); it is
+not under submission anywhere): the Python reference
 implementation, a native MATLAB port with numerical cross-validation, every
 experiment script, the stored results each figure and table is built from, and
 an executable audit suite in which every defect ever found in this work is a
@@ -58,7 +60,9 @@ vigilance.
 
 ```
 paper/                  the manuscript (IEEEtran) + figure generator + number checker
-bemporad-2009/comment/  Comment to Automatica on Bemporad & Muñoz de la Peña (2009)
+bemporad-2009/comment/  standalone extended version of the sign correction
+                        (integrated as Section III of the paper; not under
+                        submission anywhere)
 code/python/ghi/        reference implementation (plant, terminal ingredients,
                         MOMPC as a dense QP, admissible weight set, governors,
                         graph field, transport & fleet arenas, audit suite)
@@ -112,7 +116,8 @@ must be raw strings or `\t`/`\r` become control characters.
 ## What is deliberately not here
 
 The `bemporad-2009/` verification archive (full-text sources of third-party
-papers) is excluded for copyright reasons; only the Comment itself is tracked.
+papers) is excluded for copyright reasons; only the standalone note itself is
+tracked.
 Internal working notes in Spanish and a superseded prototype are excluded as
 well — they document the path, not the results.
 

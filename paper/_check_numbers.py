@@ -100,6 +100,21 @@ ok = ok and todos
 c = J("concavidad.json")
 frac = c["no_convexidad"]["no_convexos"] / c["no_convexidad"]["niveles"]
 quinto = abs(frac - 0.2) < 0.03 and "one fifth" in tex
+# sec:sign: los dos lotes de chequeos de curvatura citados en el texto
+import json as _json, os as _os
+_conc = _json.load(open(_os.path.join(RES, "concavidad.json")))["concavidad"]
+assert _conc["tests"] == 300 and "$300$" in tex, "lote de 300 chords"
+assert _conc["violaciones_concavidad"] == 0 and _conc["violaciones_convexidad"] == 300
+_bl4 = _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))),
+                     "bemporad-2009", "evidencia", "bemporad_lemma4.json")
+if _os.path.exists(_bl4):
+    _b = _json.load(open(_bl4))
+    _t1 = _b["T1_concava_en_mu"]; _t2 = _b["T2_convexa_en_x"]
+    assert _t1["tests"] == 1200 and "1{,}200" in tex, "lote de 1200"
+    assert _t1["concava"] == 791 and "$791$" in tex, "791 estrictos"
+    assert _t1["convexa"] == 0, "cero convexos en mu"
+    assert _t2["concava"] == 0 and _t2["ok"], "convexidad en x"
+
 print(f"  [{'OK ' if quinto else 'MAL'}] 'one fifth' respaldado ({100*frac:.1f}%)")
 ok = ok and quinto
 
