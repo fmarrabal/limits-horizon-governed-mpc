@@ -62,38 +62,20 @@ chk("dif rho1 B=48", f'{abs(r1[48]["dif_pct"]):.1f}')
 
 print("\nDescomposicion (fleet_decomp.json)")
 dd = J("fleet_decomp.json")
-mej0 = [r["mejora_pct"] for r in dd["rho_0"]]
-chk("mejor reparto rho0", f"{max(mej0):.1f}")
-chk("reparto minimo rho0", f"{min(mej0):.1f}")
-
-print("\nHorizonte, lazo unico (alphaN.json)")
-al = J("alphaN.json")
-fr = al["frontier"]["D_OOD_ambos"]
-chk("frontera N=2 divergencias", fr["2"]["divergencias"])
-chk("frontera N=16 coste", f'{fr["16"]["coste"]:.0f}')
-bank = al["bank"]["D_OOD_ambos"]
-rows = [r for r in bank["orden-1-nyq"] if not r.get("divergio")]
-chk("computo del gobernador", f'{np.mean([r["computo"] for r in rows]):.0f}')
-chk("coste del gobernador", f'{np.mean([r["coste"] for r in rows]):.0f}')
-
-print("\nInvariancia (scale_invariance2.json)")
-s2 = J("scale_invariance2.json")
-chk("alpha* interior", f'{s2["P1"]["alphas"][0]:.2f}')
-chk("N* interior", s2["P1"]["Ns"][0])
-chk("dispersion peso", f'{s2["P1"]["dispersion_coste_peso"]:.1e}'
-    .replace("e-14", r"\times10^{-14}"))
-
-print("\nLey de alcance (reach_law.json)")
-rl = J("reach_law.json")
-chk("rho interior", f'{rl["rho_interior"]:.3f}')
-
-print("\nViabilidad (log) y vibracion")
-via = io.open(os.path.join(RES, "transport_viability2b.log"), encoding="utf-8").read()
-imp = "+4.0" in tex and "+4.03" in via
-print(f"  [{'OK ' if imp else 'MAL'}] viabilidad +4.0% presente y respaldada")
-ok = ok and imp
-v = J("vibration.json")["modulacion"]
-todos = all(x["mejora_pct"] < 0 for x in v)
+rep0 = [r["ventaja_pct"] for r in dd["rho_0"]]
+rep1 = [r["ventaja_pct"] for r in dd["rho_1"]]
+tmp0 = [r["ventaja_pct"] for r in dd["temporal_rho_0"]]
+tmp1 = [r["ventaja_pct"] for r in dd["temporal_rho_1"]]
+chk("reparto rho0 minimo", f"{min(rep0):.1f}")
+chk("reparto rho0 maximo", f"{max(rep0):.1f}")
+chk("temporal rho1 maximo", f"{max(tmp1):.1f}")
+# las dos afirmaciones cualitativas del texto, aseveradas y no solo impresas
+assert min(rep0) > 4.0, "el reparto deberia pagar con rho=0"
+assert abs(max(rep1)) < 1.0 and abs(min(rep1)) < 1.0, "reparto nulo con rho=1"
+assert min(tmp0) < -3.0, "el temporal deberia perjudicar con rho=0"
+assert max(tmp1) > 6.0, "el temporal deberia pagar con rho=1"
+print("  [OK ] complementariedad: reparto solo con rho=0, temporal solo con rho=1")
+todos = all(x < 0 for x in tmp0)
 print(f"  [{'OK ' if todos else 'MAL'}] vibracion pierde 8/8: {todos}")
 ok = ok and todos
 

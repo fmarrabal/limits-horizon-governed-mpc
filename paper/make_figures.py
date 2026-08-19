@@ -342,20 +342,30 @@ def fig_fleet():
     ax[0].text(0.55, 0.90, "filled: $p<0.05$", transform=ax[0].transAxes,
                fontsize=6)
 
+    # (b) los DOS mecanismos, uno por brazo, en los dos regimenes
     Bs = [r["B"] for r in dd["rho_0"]]
     x = np.arange(len(Bs))
-    y0 = [r["mejora_pct"] for r in dd["rho_0"]]
-    y1 = [r["mejora_pct"] for r in dd["rho_1"]]
-    ax[1].bar(x - 0.19, y0, width=0.36, color=C["matched"],
-              label=r"independent ($\rho$=0)")
-    ax[1].bar(x + 0.19, y1, width=0.36, color=C["wave"],
-              label=r"common front ($\rho$=1)")
+    rep0 = [r["ventaja_pct"] for r in dd["rho_0"]]
+    rep1 = [r["ventaja_pct"] for r in dd["rho_1"]]
+    tmp0 = {r["B"]: r["ventaja_pct"] for r in dd["temporal_rho_0"]}
+    tmp1 = {r["B"]: r["ventaja_pct"] for r in dd["temporal_rho_1"]}
+    t0 = [tmp0.get(b, np.nan) for b in Bs]
+    t1 = [tmp1.get(b, np.nan) for b in Bs]
+    w = 0.20
+    ax[1].bar(x - 1.5 * w, rep0, width=w, color=C["matched"],
+              label=r"allocation, $\rho$=0")
+    ax[1].bar(x - 0.5 * w, rep1, width=w, color=C["matched"], alpha=0.45,
+              label=r"allocation, $\rho$=1")
+    ax[1].bar(x + 0.5 * w, t0, width=w, color=C["wave"],
+              label=r"timing, $\rho$=0")
+    ax[1].bar(x + 1.5 * w, t1, width=w, color=C["wave"], alpha=0.45,
+              label=r"timing, $\rho$=1")
     ax[1].axhline(0, color="k", lw=0.9)
     ax[1].set_xticks(x)
     ax[1].set_xticklabels([f"B={b}" for b in Bs], fontsize=6.5)
-    ax[1].set_ylabel("proportional vs. equal\nallocation [%]")
-    ax[1].set_title("(b) allocation pays only if uncorrelated", loc="left")
-    ax[1].legend(frameon=False, fontsize=6.5)
+    ax[1].set_ylabel("gain of the mechanism [%]")
+    ax[1].set_title("(b) each regime carried by one mechanism", loc="left")
+    ax[1].legend(frameon=False, fontsize=5.6, ncol=2, loc="upper right")
     save(fig, "fig_fleet")
 
 

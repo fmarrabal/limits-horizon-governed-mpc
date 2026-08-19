@@ -219,10 +219,26 @@ def run_fleet(plant: Plant, Q: np.ndarray, R: np.ndarray, D: np.ndarray,
         if budget is None:
             Ng = list(peticion)
         elif reparto_igual:
-            # nulo de H3: el presupuesto se reparte a partes iguales, ignorando
-            # lo que el gobernador dice sobre que lazo esta en apuros
-            q = max(N_min, min(N_max, budget // M))
-            Ng = [q] * M
+            # NULO DE REPARTO (corregido el 19-ago-2026). El brazo igualitario
+            # debe aislar UNA cosa: el reparto entre lazos. Por eso conserva al
+            # gobernador y su adaptacion TEMPORAL -- gasta en cada paso el mismo
+            # total que gastaria el reparto proporcional -- y solo cambia COMO
+            # se distribuye ese total: a partes iguales, ignorando que lazo esta
+            # en apuros. El resto de la division se rota con t para no favorecer
+            # sistematicamente a ningun lazo.
+            #
+            # La version anterior fijaba q = budget // M en todos los pasos, con
+            # lo que destruia tambien la adaptacion temporal y colapsaba EXACTO
+            # al horizonte fijo N = budget/M (coincidencia digito a digito con
+            # la frontera fija): no descomponia nada. Ese caso sigue disponible
+            # como gov_kind='fijo' con N=budget//M.
+            ref = allocate(peticion, budget, N_min, N_max)
+            total = int(sum(ref))
+            base, resto = divmod(total - N_min * M, M)
+            Ng = [N_min + base] * M
+            for k in range(resto):
+                Ng[(t + k) % M] += 1
+            Ng = [int(min(N_max, max(N_min, g))) for g in Ng]
         else:
             Ng = allocate(peticion, budget, N_min, N_max)
         if budget is not None and sum(peticion) > budget:

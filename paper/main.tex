@@ -69,10 +69,13 @@ missing constant term is precisely why. In a fleet of loops sharing one
 embedded controller under a hard computation budget, a governor that requests
 the maximum horizon \emph{only} when the relaxed-dynamic-programming
 certificate breaks, and decays slowly otherwise, beats the best fixed horizon
-at equal \emph{spent} computation by $5$--$6\%$ across budgets, for independent
-and for perfectly correlated disturbances alike; a decomposition shows the
-temporal mechanism pays always, while cross-loop allocation pays only when
-disturbances are independent. Second, structural limits that explain why
+at equal \emph{spent} computation by up to $7\%$ --- in seven of
+eight budgets when disturbances are independent, and in four of eight under a
+perfectly correlated front. A decomposition into its two mechanisms shows them
+to be complementary rather than cumulative: cross-loop allocation pays only
+when disturbances are independent, temporal adaptation only under a common
+front --- where nothing can be reallocated but the moment to spend is well
+defined --- and each is neutral or harmful in the other's regime. Second, structural limits that explain why
 nothing more elaborate could win: amplitude-scale invariance of the optimal
 meta-parameter, the linear-time-invariance of the graph field, the DC
 cross-gain of its forcing, and a quantization-limited reach law. Third, a sign
@@ -119,8 +122,8 @@ transport-coupled chain, upstream information is worth $12.4\%$ of closed-loop
 cost, and the mechanism that captures it is an affine delay line: what matters
 is that every node receives its warning with the \emph{same} anticipation,
 which a proportional delay cannot provide and a constant term can. In a fleet
-of loops sharing one embedded controller, governing the horizon is worth
-$5$--$6\%$ at equal spent computation, and the governor that achieves it is
+of loops sharing one embedded controller, governing the horizon is worth up to
+$7\%$ at equal spent computation, and the governor that achieves it is
 simply a detector of certificate violation behind a slow leak: two effective
 parameters. In both cases everything more sophisticated, including the field we
 were defending, is statistically no better or significantly worse.
@@ -192,9 +195,10 @@ family explained.
 \item \textbf{The certificate-detector result} (Section~\ref{sec:alphaN}): a
 horizon governor that maps certificate violation ($\alpha_t\le0$) to maximal
 horizon and decays otherwise sits below the fixed-horizon frontier in a single
-loop and beats the best fixed horizon by $5$--$6\%$ in a fleet at equal spent
-computation, robustly to disturbance correlation; with a clean decomposition of
-temporal versus allocation gains.
+loop and beats the best fixed horizon by up to $7\%$ in a fleet at equal
+spent computation, under both disturbance-correlation regimes; with a
+decomposition, one arm per mechanism, showing that allocation and timing carry
+one regime each.
 \item \textbf{Structural limits} (Section~\ref{sec:limits}) with hypotheses
 stated in full and their necessity demonstrated by counterexample.
 \item \textbf{An audit methodology} (Section~\ref{sec:methodology}): five real
@@ -427,10 +431,22 @@ What follows is bounded, and our first draft over-claimed it. Homogeneity
 forbids the optimal meta-parameter from depending on the \emph{absolute
 amplitude} of the disturbance; it does not forbid dependence on the shape or
 phase of a normalized envelope, which are scale-invariant. So a bench is empty
-exactly when its demand signal is \emph{postulated as a function of absolute
-amplitude} --- as was the fatigue-derived schedule
-$\alpha_d=1/(1+\kappa E^2)$ of our narrow-band arena, which duly lost in all
-eight configurations (Fig.~\ref{fig:vibration}).
+exactly when its demand signal is \emph{postulated as a function of
+absolute amplitude} \emph{and} its evaluation metric is homogeneous of
+degree two. Our narrow-band arena satisfies the first condition and
+\emph{not} the second: it is evaluated with a superlinear fatigue cost
+$q\,e^2+r\lvert u\rvert^4$, which is not homogeneous of
+degree two, so Proposition~\ref{prop:scale} does not apply to it --- and
+could not, since the schedule $\alpha_d=1/(1+\kappa E^2)$ tested
+there is \emph{derived} from precisely that non-homogeneity. That arena
+lost in all eight configurations (Fig.~\ref{fig:vibration}) for a
+different and more mundane reason, which we state because a defeat of $41$ to
+$134\%$ deserves a cause rather than a citation: the rival constant
+weight is re-optimized for each operating condition, so it already sits
+wherever the amplitude dependence would place it, and what the schedule adds
+on top is modulation \emph{within} a condition, which the loop pays for
+and does not recover. The proposition and the arena point the same way, but
+only the arena is evidence here.
 
 \begin{figure*}[t]
 \centering
@@ -732,11 +748,13 @@ alternating horizons between steps, so it concedes nothing.
 
 \begin{table}[t]
 \caption{Fleet of $M=8$ loops, eight evaluation seeds disjoint from the three
-tuning seeds, certificate-detector governor ($\tau=30$, reference at the
-detector limit; both interior, the reference on a verified plateau). Cost
-against the fixed-horizon frontier at equal spent computation, paired per
-seed. The $B=16$ row is degenerate: every loop is pinned at $N_{\min}$ and the
-$+0.03\%$ is solver noise with paired variance near zero.}
+tuning seeds. Governor tuned by a grid sweep archived with the script
+(\$\tau=11$, interior; reference $a_{\mathrm{ref}}=0.1$,
+on a plateau whose dispersion below $0.03$ is $0.03\%$, so the pure
+detector limit $a_{\mathrm{ref}}\to0$ is indistinguishable from
+the optimum). Cost against the fixed-horizon frontier at equal spent
+computation, paired per seed against that seed's own frontier. The $B=16$ row
+is degenerate: every loop is pinned at $N_{\min}$.}
 \label{tab:fleet}
 \centering
 \small
@@ -746,38 +764,51 @@ $+0.03\%$ is solver noise with paired variance near zero.}
 $B/(MN_{\max})$ & spent & governed & frontier & change\\
 \midrule
 \multicolumn{5}{@{}l}{\textit{independent disturbances} ($\rho=0$)}\\
-$0.19$ & $26.0$ & $2814$ & $2993$ & $\mathbf{-6.0\%}$\,*\\
-$0.25$ & $35.2$ & $2567$ & $2732$ & $\mathbf{-6.0\%}$\,*\\
-$0.31$ & $41.1$ & $2470$ & $2598$ & $-4.9\%$\,*\\
-$0.38$ & $42.9$ & $2443$ & $2568$ & $-4.9\%$\,*\\
-$\ge0.50$ & $43.1$ & $2440$ & $2564$ & $-4.9\%$\,*\\
+$0.19$ & $27.4$ & $2733$ & $2951$ & $\mathbf{-7.4\%}$\,*\\
+$0.25$ & $38.3$ & $2517$ & $2656$ & $\mathbf{-5.3\%}$\,*\\
+$0.31$ & $46.3$ & $2444$ & $2513$ & $-2.8\%$\,*\\
+$0.38$ & $50.7$ & $2418$ & $2464$ & $-1.9\%$\,*\\
+$\ge0.50$ & $52.9$ & $2409$ & $2447$ & $-1.6\%$\,*\\
 \midrule
 \multicolumn{5}{@{}l}{\textit{common front} ($\rho=1$)}\\
-$0.19$ & $23.8$ & $4589$ & $4599$ & $-0.2\%$\,*\\
-$0.25$ & $29.1$ & $4208$ & $4343$ & $-3.1\%$\,*\\
-$0.31$ & $33.5$ & $3912$ & $4149$ & $\mathbf{-5.7\%}$\,*\\
-$0.38$ & $37.3$ & $3750$ & $4003$ & $\mathbf{-6.3\%}$\,*\\
-$0.50$ & $43.1$ & $3645$ & $3829$ & $-4.8\%$\,*\\
-$\ge0.75$ & $48.2$ & $3638$ & $3716$ & $-2.1\%$\,*\\
+$0.19$ & $23.4$ & $4595$ & $4619$ & $-0.5\%$\phantom{\,*}\\
+$0.25$ & $28.2$ & $4226$ & $4386$ & $-3.7\%$\,*\\
+$0.31$ & $32.1$ & $3940$ & $4203$ & $\mathbf{-6.3\%}$\,*\\
+$0.38$ & $35.5$ & $3779$ & $4072$ & $\mathbf{-7.2\%}$\,*\\
+$0.50$ & $42.1$ & $3650$ & $3852$ & $-5.2\%$\,*\\
+$0.75$ & $53.7$ & $3624$ & $3654$ & $-0.8\%$\phantom{\,*}\\
+$1.00$ & $59.2$ & $3624$ & $3593$ & $+0.9\%$\phantom{\,*}\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:fleet} and Fig.~\ref{fig:fleet}: the governor beats the best
-fixed horizon at equal spent computation in seven of eight budgets, by up to
-$6.0\%$ with independent disturbances ($p<10^{-5}$ throughout) and --- this
-surprised us --- by up to $6.3\%$ under a perfectly correlated front
-($p<0.03$ throughout). The robustness to correlation has a clean explanation,
-which the decomposition in Fig.~\ref{fig:fleet}(b) isolates by comparing
-demand-proportional against equal-split allocation under the same governor:
-the \emph{temporal} mechanism (maximal horizon only while a certificate is
-broken) pays regardless of correlation, because it lives inside each loop;
-the \emph{allocation} mechanism (moving budget toward loops in trouble) pays
-up to $+8.6\%$ under scarcity when disturbances are independent ($+5.5\%$ or
-more at the three tightest budgets, falling to $+1.7\%$ as the budget
-loosens), and is neutral to marginally negative under a common front, when every loop's demand
-is the same and there is nothing to multiplex. The multiplexing intuition is
-right, but it lives in the allocation component only.
+Table~\ref{tab:fleet} and Fig.~\ref{fig:fleet}: the governor
+beats the best fixed horizon at equal spent computation in seven of eight
+budgets with independent disturbances, by up to $7.4\%$ (Holm-adjusted
+$p<1.5\times10^{-2}$ throughout), and in four of eight under a perfectly
+correlated front, by up to $7.2\%$. Under independence the advantage is
+largest where the budget binds and decays to $1.6\%$ once it stops
+binding; under a common front it is concentrated in mid-range budgets and
+vanishes at both ends, the loosest budget being the one point where the fixed
+horizon is nominally ahead ($+0.9\%$, not significant).
+
+The decomposition in Fig.~\ref{fig:fleet}(b) separates the two mechanisms
+with one arm each, and it corrected our own reading of them. \emph{Allocation}
+is isolated by keeping the governor and its temporal adaptation --- the same
+total horizon per step --- and only distributing it equally instead of in
+proportion to demand; \emph{timing} is isolated by comparing that
+equal-split governed arm against a fixed horizon at equal spent computation.
+The two components turn out to be complementary rather than cumulative.
+Allocation pays $+5.2\%$ to $+7.6\%$ when disturbances are
+independent and \emph{nothing} under a common front ($-0.8\%$ to
+$+0.03\%$): with every loop in trouble at once there is no one to take
+horizon from. Timing does the opposite --- it pays $+1.1\%$ to
+$+6.8\%$ under a common front, where the moment to spend is well
+defined, and under independence it is not merely neutral but \emph{harmful},
+down to $-4.0\%$: with someone always in trouble the aggregate demand is
+nearly constant, so modulating it in time only mistimes the spending that the
+allocation arm then has to repair. Each regime is carried by one mechanism,
+which is why the governor wins in both.
 
 \begin{figure*}[t]
 \centering
@@ -785,9 +816,12 @@ right, but it lives in the allocation component only.
 \caption{(a) Fleet cost against the fixed-horizon frontier at equal
 \emph{spent} computation, for independent and perfectly correlated
 disturbances: the certificate-detector governor wins across budgets in both.
-(b) Decomposition: demand-proportional versus equal-split allocation under the
-same governor. Allocation pays only when disturbances are independent; the
-temporal mechanism accounts for the rest.}
+(b) Decomposition into its two mechanisms, each isolated by one arm:
+allocation (demand-proportional versus equal-split, same governor and same
+total horizon per step) and timing (equal-split governed versus fixed
+horizon, at equal spent computation). They are complementary: allocation
+pays only under independence, timing only under a common front --- up to
+$+6.8\%$ --- and timing is actively harmful under independence.}
 \label{fig:fleet}
 \end{figure*}
 
@@ -816,8 +850,9 @@ graph, shared price & global signal & no gain: sharing what is already
 common\\
 $\alpha_N$ horizon & pulse train & pays; certificate detector + leak wins,
 the field rings\\
-narrow-band vibration & postulated from absolute amplitude & empty by
-Proposition~\ref{prop:scale}: loses $8/8$\\
+narrow-band vibration & postulated from absolute amplitude & loses $8/8$
+to a per-condition re-optimized constant; quartic metric, outside
+Proposition~\ref{prop:scale}\\
 transport, storage & travelling event & pays $12.4\%$; affine delay wins,
 field and shaping add nothing\\
 \bottomrule
@@ -830,9 +865,11 @@ field and shaping add nothing\\
 \caption{The narrow-band arena, built expressly to favour the field: resonant
 structure, beat disturbance, fatigue cost, and a schedule
 $\alpha_d=1/(1+\kappa E^2)$ \emph{derived} from that cost. It loses in all
-eight configurations against a per-condition re-optimized constant weight ---
-as Proposition~\ref{prop:scale} predicts for any schedule postulated from
-absolute amplitude.}
+eight configurations against a per-condition re-optimized constant weight,
+which already absorbs the amplitude dependence the schedule was built to
+supply. The fatigue metric is quartic, so this arena lies outside
+Proposition~\ref{prop:scale}: the defeat is empirical, not a
+corollary.}
 \label{fig:vibration}
 \end{figure}
 
@@ -897,7 +934,7 @@ After fixing Leak~4 we re-tuned the governor by raw cost at fixed nominal
 budget --- a criterion that still rewards overspending --- and concluded the
 fleet result had deflated to nothing. Tuned under the evaluation metric
 itself (cost against the frontier at spent computation), the governor wins by
-$5$--$6\%$. This leak is the mirror image of the others: it \emph{deflated}
+up to $7\%$. This leak is the mirror image of the others: it \emph{deflated}
 the result it touched. Leaks do not consistently favour the pet mechanism;
 they favour whatever the criterion mismatch happens to favour, which is why
 the guard must be mechanical. \emph{Guard:} the tuning objective must be the
@@ -967,9 +1004,10 @@ per-hop designs default to significantly and explicably worse. Where a
 horizon must be rationed, react to the one event in the suboptimality signal
 that theory distinguishes --- the certificate breaking --- through a slow
 leak: two effective parameters, below the fixed-horizon frontier in a single
-loop, $5$--$6\%$ ahead of the best fixed horizon in a fleet at equal spent
-computation, robustly to disturbance correlation, with the multiplexing gain
-correctly attributed to the allocation component alone.
+loop, and up to $7\%$ ahead of the best fixed horizon in a fleet at equal
+spent computation under either disturbance-correlation regime --- carried by
+allocation when the loops fail at different times and by timing when they fail
+together, each mechanism useless or harmful in the other's regime.
 
 The structural limits say these are not accidents of tuning: nothing built on
 absolute amplitude can carry information to a meta-parameter, an LTI field
