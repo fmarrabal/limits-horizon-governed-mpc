@@ -37,3 +37,6 @@ paper/main_v2_backup.tex
 # personal documents
 /*.docx
 /*.pdf
+
+# correspondencia privada con terceros: no se publica
+/bemporad-2009/BORRADOR-correo-bemporad.md
