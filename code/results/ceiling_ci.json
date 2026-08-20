@@ -1,0 +1,39 @@
+{
+ "semilla": 20260805,
+ "remuestreos": 20000,
+ "n_semillas": 30,
+ "mecanismos": {
+  "retardo-afin": {
+   "pct_techo": 90.88,
+   "ic95": [
+    84.9,
+    103.9
+   ],
+   "frac_por_encima_del_techo": 0.0633
+  },
+  "afin-conformado": {
+   "pct_techo": 93.4,
+   "ic95": [
+    83.2,
+    116.3
+   ],
+   "frac_por_encima_del_techo": 0.2218
+  },
+  "onda": {
+   "pct_techo": 72.76,
+   "ic95": [
+    66.6,
+    86.7
+   ],
+   "frac_por_encima_del_techo": 0.0026
+  },
+  "retardo-lineal": {
+   "pct_techo": 64.28,
+   "ic95": [
+    55.7,
+    68.1
+   ],
+   "frac_por_encima_del_techo": 0.0
+  }
+ }
+}

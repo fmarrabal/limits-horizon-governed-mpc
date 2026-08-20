@@ -22,6 +22,9 @@ en la memoria de nadie.
     A16 la ANTICIPACION solo es utilizable si hay estado de ALMACENAMIENTO
     A17 el campo con beta=0 es EXACTAMENTE un banco de filtros LTI (no crea info)
     A18 forcing='target' tiene ganancia cruzada NULA en continua; 'source' no
+    A19 la guarda de causalidad muerde en la sintonia PUBLICADA, no solo
+        durante el barrido: los mecanismos publicados la pasan y la
+        referencia clarividente NO
 """
 from __future__ import annotations
 
@@ -546,6 +549,55 @@ def a12_tfm_regression() -> Check:
 
 # --------------------------------------------------------------------------
 
+def a19_causality_guard() -> Check:
+    """A19: la guarda de causalidad, aplicada a la sintonia que se publica.
+
+    POR QUE EXISTE. La guarda se ejecutaba dentro del barrido, descartando
+    configuraciones acausales antes de puntuarlas. Eso no deja constancia de
+    que el ganador *publicado* la pase: si el JSON se reescribe a mano, o si
+    una sintonia se copia de una tanda anterior, nadie se entera. Esta
+    asercion vuelve a pasar la sonda por los parametros archivados, y ademas
+    exige que la referencia clarividente los suspenda --- una referencia que
+    pasara la guarda no seria una referencia acausal, seria un mecanismo, que
+    es exactamente el error que este trabajo documenta.
+    """
+    import json
+    import os
+    import sys
+
+    aqui = os.path.dirname(os.path.abspath(__file__))
+    raiz = os.path.dirname(os.path.dirname(aqui))
+    scripts = os.path.join(os.path.dirname(aqui), "scripts")
+    if scripts not in sys.path:
+        sys.path.insert(0, scripts)
+    import run_transport_mechanism as base
+    import run_transport_causal2 as c2
+    import run_transport_affine as af
+    from . import transport as tp
+
+    sint = json.load(open(os.path.join(raiz, "results",
+                                       "transport_affine.json")))["sintonia"]
+    filas, todo_bien = [], True
+    for clave, mech, rama in (("afin", af.mech_afin, None),
+                              ("lineal", af.mech_lineal, None),
+                              ("afin_conformado", af.mech_afin_conformado, None)):
+        par = sint[clave]
+        pasa = tp.is_causal(c2.gate_of(mech, par, rama))
+        todo_bien = todo_bien and pasa
+        filas.append(f"{clave}: {'causal' if pasa else 'ACAUSAL'}")
+
+    par_c = sint["clarividente"]
+    ref_causal = tp.is_causal(c2.gate_of(af.mech_clarividente, par_c, None))
+    todo_bien = todo_bien and not ref_causal
+    filas.append("clarividente: " + ("CAUSAL (no deberia)" if ref_causal
+                                     else "acausal, como corresponde"))
+    filas.append(f"antelacion clarividente = {par_c['lead']} contra "
+                 f"{base.TAU_HOP} por salto")
+    return Check("A19", "la guarda muerde en la sintonia publicada",
+                 todo_bien, "; ".join(filas),
+                 {"lead_clarividente": par_c["lead"], "tau_hop": base.TAU_HOP})
+
+
 def run_all(verbose: bool = True, quick: bool = False) -> List[Check]:
     checks: List[Check] = []
 
@@ -568,6 +620,7 @@ def run_all(verbose: bool = True, quick: bool = False) -> List[Check]:
     checks.append(a16_anticipation_needs_storage())
     checks.append(a17_field_is_lti())
     checks.append(a18_dc_cross_gain())
+    checks.append(a19_causality_guard())
 
     if verbose:
         print("=" * 78)

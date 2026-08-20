@@ -234,7 +234,9 @@ def main(n_problems: int = 200, n_pairs: int = 6, seed: int = 0) -> dict:
     print("VEREDICTO: " + ("CONFIRMADO en las cinco comprobaciones" if ok
                            else "REVISAR: alguna comprobacion no concluye"))
     print("=" * 78)
-    return {"T1_concava_en_mu": {"tests": nmu, "concava": nv_mu, "convexa": nc_mu,
+    return {"protocolo": {"problemas": n_problems, "cuerdas": n_pairs,
+                          "seed": seed},
+            "T1_concava_en_mu": {"tests": nmu, "concava": nv_mu, "convexa": nc_mu,
                                  "d_media": dmu_sum / max(nmu, 1), "ok": bool(t1)},
             "T2_convexa_en_x": {"tests": nx, "convexa": nc_x, "concava": nv_x,
                                 "d_media": dx_sum / max(nx, 1), "ok": bool(t2)},
@@ -247,9 +249,10 @@ def main(n_problems: int = 200, n_pairs: int = 6, seed: int = 0) -> dict:
 
 if __name__ == "__main__":
     res = main()
-    here = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    dst = os.path.join(here, "results")
-    os.makedirs(dst, exist_ok=True)
+    # la evidencia del Comment vive junto al script que la genera; escribirla
+    # en el arbol de resultados del articulo principal creaba una copia que
+    # nadie leia y una que nadie regeneraba
+    dst = os.path.dirname(os.path.abspath(__file__))
     with open(os.path.join(dst, "bemporad_lemma4.json"), "w") as fh:
         json.dump(res, fh, indent=1)
     print(f"\nescrito {os.path.join(dst, 'bemporad_lemma4.json')}")

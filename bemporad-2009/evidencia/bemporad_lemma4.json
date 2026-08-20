@@ -1,4 +1,9 @@
 {
+ "protocolo": {
+  "problemas": 200,
+  "cuerdas": 6,
+  "seed": 0
+ },
  "T1_concava_en_mu": {
   "tests": 1200,
   "concava": 791,

@@ -39,7 +39,10 @@ def en_texto(*cadenas):
 
 print("Lema y verificacion directa (bemporad_lemma4.json)")
 t1, t2, t3 = L4["T1_concava_en_mu"], L4["T2_convexa_en_x"], L4["T3_minimo_de_piezas"]
-chk("1.200 cuerdas en mu", t1["tests"] == 1200 and en_texto("$1{,}200$"))
+chk("200 problemas x 6 cuerdas = 1.200 pruebas",
+    L4["protocolo"]["problemas"] == 200
+    and L4["protocolo"]["cuerdas"] == 6
+    and t1["tests"] == 1200 and en_texto("$200$", "$1{,}200$"))
 chk("791 estrictamente concavas", t1["concava"] == 791 and en_texto("$791$"))
 chk("ninguna convexa en mu", t1["convexa"] == 0)
 chk("1.200 cuerdas en x, 320 estrictas", t2["tests"] == 1200 and t2["convexa"] == 320
@@ -76,6 +79,46 @@ chk("no se caracteriza el alcance de Mangasarian-Rosen",
 chk("el remedio NO llama exacto al mallado",
     "an approximation, not an exact method" in TEX)
 chk("fecha del contacto con los autores", "7~August 2026" in TEX)
+
+
+# --- trazabilidad: ninguna cifra del cuerpo sin origen ----------------------
+# Las comprobaciones de arriba van del archivo al texto. Este pase va al reves:
+# cada literal informativo del Comment tiene que salir de la evidencia
+# archivada o estar declarado como constante que no viene de ningun computo.
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(HERE)),
+                                "code", "python"))
+from ghi.anclaje import trazabilidad as _traza
+
+DECLARADOS = {
+    "080002": "codigo postal de la afiliacion",
+    "04120": "codigo postal de la afiliacion",
+    "2009": "ano del articulo comentado",
+    "2026": "ano del contacto con los autores",
+    "13": "numero de ecuacion del articulo comentado",
+    "17": "numero de ecuacion del articulo comentado",
+    "0.05": "nivel nominal, constante de diseno",
+    "1964": "ano de la referencia citada en prosa",
+    "2823": "pagina inicial del articulo comentado, en el titulo",
+    "2830": "pagina final del articulo comentado, en el titulo",
+}
+# los porcentajes se derivan de los recuentos archivados: se pasan como
+# formas adicionales para no tener que declararlos como si no tuvieran origen
+from ghi.anclaje import variantes as _var
+_derivados = set()
+for _num, _den in ((r2["estrictamente_menor"], n), (r3["veces"], n),
+                   (r4["no_convexos"], n), (r1["exactos"], n),
+                   (t1["concava"], t1["tests"]), (t2["convexa"], t2["tests"])):
+    _derivados |= _var(100.0 * _num / _den)
+_inform, _huerf = _traza(os.path.join(HERE, "comment.tex"),
+                         [os.path.join(EV, "*.json")], declarados=DECLARADOS,
+                         extra=_derivados)
+for _h in _huerf:
+    print(f"  [FALLA] sin origen archivado: {_h}")
+fallos += len(_huerf)
+print(f"trazabilidad: {len(_inform)} literales informativos, "
+      f"{len(_inform) - len(_huerf) - len(set(DECLARADOS) & _inform)} "
+      f"con origen, {len(set(DECLARADOS) & _inform)} declarados, "
+      f"{len(_huerf)} sin origen")
 
 print(f"\n{'TODAS LAS CIFRAS DEL COMMENT COINCIDEN' if not fallos else f'{fallos} FALLOS'}")
 sys.exit(1 if fallos else 0)

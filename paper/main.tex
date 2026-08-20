@@ -62,7 +62,8 @@ neighbours. It lost in every physically grounded arena we built. What replaces
 it is sharper than a negative result. First, two minimal governors that do pay.
 In a chain with a physically travelling disturbance, an \emph{affine} delay
 line --- per-hop delay minus a constant anticipation term --- recovers $91\%$
-of a clairvoyant bound and cuts closed-loop cost by $12.4\%$ against the best
+of an acausal clairvoyant reference --- bootstrap $95\%$ interval $[84.9,103.9]$,
+which contains $100\%$ --- and cuts closed-loop cost by $12.4\%$ against the best
 possible local detector; the field, a shaped filter, and the proportional delay
 family that most designs default to are all significantly worse, and the
 missing constant term is precisely why. In a fleet of loops sharing one
@@ -181,7 +182,8 @@ suboptimality signal, and we connect the winner to the certificate itself.
 \begin{enumerate}
 \item \textbf{The affine-delay result} (Section~\ref{sec:transport}): in a
 transport-coupled storage chain, constant-anticipation delivery through the
-meta-parameter channel recovers $90.9\%$ of a clairvoyant bound; the
+meta-parameter channel recovers $90.9\%$ of an acausal clairvoyant
+reference, an interval wide enough to contain the reference itself; the
 proportional-delay family, a matched shaped filter, and a wave field are
 structurally or statistically inferior, with the failure of the proportional
 family explained.
@@ -313,8 +315,14 @@ Numerically, with both optima interior to their grids
 $\lambda\in\{0.5,1,2,4,8\}$ coincide to relative dispersion
 $5.4\times10^{-14}$ (weight) and $1.2\times10^{-16}$ (horizon)
 (Fig.~\ref{fig:scale}). The hypotheses are not decorative: with
-$x_0=(0,-4)$ on the same strictly linear plant the optimal horizon moves with
-$\lambda$ and the normalized cost disperses by order one. And the statement is
+$x_0=(0,-4)$ on the same strictly linear plant --- one point, not a
+family, and reported as such --- the normalized cost curves stop
+coinciding and disperse by $0.999$, order one against the $10^{-14}$ of
+the hypothesis-satisfying case. The argmin, however, did \emph{not}
+move at that point ($N^\star=8$ at both scales), and the archived
+assertion records exactly that. We keep the counterexample because the
+proposition is about the curve; a reader who tested it on argmins alone
+would have concluded the hypotheses were decorative. And the statement is
 about the \emph{curve}, deliberately: when the minimum is flat, the literal
 argmin can hop between points whose costs differ by $10^{-16}$, so comparing
 argmins is the wrong test --- our own audit assertion failed for exactly that
@@ -413,9 +421,14 @@ the meta-parameter.
 \end{observation}
 
 Measured on an eight-node chain with $\rho=0.358$ fitted on interior nodes,
-the step law matches at three of four resolutions and overpredicts by one hop
-at the finest, where the disputed amplitude sits within the resolution of the
-measurement (Fig.~\ref{fig:quantization}). Two cautions we needed: the reach is
+the step law matches at three of four resolutions and overpredicts by one
+hop at $\Delta=0.005$ --- the third of the four, not the finest, which it
+gets right. At that resolution the geometric law puts the disputed hop's
+amplitude at $0.0059$ against a step of $0.005$: a fifth of a step above
+threshold, so a single quantization event decides it
+(Fig.~\ref{fig:quantization}). We report the pre-registered verdict as the
+script recorded it --- the law is \emph{not} validated, four resolutions
+being too few to call one miss a coincidence. Two cautions we needed: the reach is
 an integer, so plotting the continuous expression against integer measurements
 makes a correct law look wrong; and the terminal node of a chain has degree
 one and retains signal, so fitting $\rho$ through it biases the estimate ---
@@ -491,10 +504,17 @@ between the two.
 Table~\ref{tab:transport} and Fig.~\ref{fig:transport} give the final
 comparison: thirty evaluation seeds disjoint from the three tuning seeds,
 causality guard active inside the tuning loop, causal (parameter-only)
-normalization, equal tuning-grid densities for all mechanisms, and every tuned
-optimum interior to its grid except at physical simplex limits. The genuinely
-acausal ceiling uses per-node anticipation beyond what the source can supply
-and is labelled as a bound, not a mechanism.
+normalization, equal tuning-grid densities for all mechanisms, and every tuned optimum
+interior to its grid with one declared exception: the proportional family's
+high weight lands on $a_{\mathrm{hi}}=1$, the top of the simplex, which is a
+physical limit and not a grid artifact --- and it is the \emph{rival} whose
+optimum sits there, so the exception does not favour our mechanism. The
+archived sweep records the boundary status of every tuning, and the build
+check re-reads it. The genuinely
+acausal ceiling uses per-node anticipation beyond what the source can
+supply and is labelled as a reference, not a mechanism and not a bound:
+a causal mechanism turned out to reach it, which is the point of
+Section~\ref{sec:transport}.
 
 \begin{table}[t]
 \caption{Transport chain, $30$ evaluation seeds. ``MDE'' is the minimum
@@ -522,7 +542,7 @@ affine vs.\ proportional & \multicolumn{3}{r}{$+2060$,\ $t{=}{+}17.87$,\ $p{<}10
 affine vs.\ wave field   & \multicolumn{3}{r}{$+1403$,\ $t{=}{+}4.64$,\ $p{=}0.0002$\,*,\ $1.5\%$}\\
 shaping the affine       & \multicolumn{3}{r}{$-195$,\ $t{=}{-}0.97$,\ $p{=}0.34$,\ $1.0\%$}\\
 affine vs.\ local        & \multicolumn{3}{r}{$+7040$,\ $t{=}{+}6.29$,\ $p{<}10^{-4}$\,*,\ $5.5\%$}\\
-ceiling vs.\ affine      & \multicolumn{3}{r}{$+707$,\ $t{=}{+}1.49$,\ $p{=}0.29$,\ $2.3\%$}\\
+ceiling vs.\ affine      & \multicolumn{3}{r}{$+706$,\ $t{=}{+}1.49$,\ $p{=}0.29$,\ $2.3\%$}\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -548,7 +568,12 @@ grid. And nothing richer helps: adding the second-order shaping stage changes
 nothing resolvable ($t=-0.97$ against an MDE of $1.0\%$), the wave field is
 significantly worse than the plain affine line ($t=+4.64$), and the affine line
 is statistically at the ceiling ($p=0.29$, MDE $2.3\%$ --- an equivalence
-bound, not a proof of optimality). We state the one asymmetry that survives:
+bound, not a proof of optimality). Resampling the thirty paired seeds puts
+the recovered fraction at $90.9\%$ with a $95\%$ interval of
+$[84.9,103.9]$, and in $6.3\%$ of the resamples the causal line is \emph{cheaper}
+than the acausal reference. That is why we report a reference rather than a
+bound: a quantity a causal mechanism can beat six times in a hundred is not
+bounding anything. We state the one asymmetry that survives:
 the field's kernel does differ across hops (Proposition~\ref{prop:lti}
 discussion), so its defeat is empirical, bounded by these MDEs, not
 structural.
@@ -567,8 +592,10 @@ scenario (larger kicks plus model mismatch) against the frontier traced by
 fixed horizons at equal computation.
 
 \begin{table}[t]
-\caption{Horizon governance, out-of-envelope scenario, ten seeds. Divergent
-runs are excluded pairwise from contrasts and reported as counts; the $N=2$
+\caption{Horizon governance, out-of-envelope scenario, ten seeds. Computation, cost
+and assignment correlation are means over the seeds that did \emph{not}
+diverge; the last column counts the divergences. Divergent runs are also
+excluded pairwise from the contrasts; the $N=2$
 row's computation and cost are means over a run set with half the seeds dead,
 and are shown for completeness rather than comparison.}
 \label{tab:alphaN}
@@ -841,7 +868,9 @@ Proposition~\ref{prop:scale}. Report, with every null contrast, the minimum
 detectable effect: ``no difference'' in Table~\ref{tab:transport} means
 ``bounded by the stated MDE,'' never ``proved zero.'' And treat an
 ``unreachable'' bound that a guard fails to disqualify as a finding: our
-oracle passed the causality guard, which is how we learned the competitor
+oracle passed the causality guard --- assertion A19 re-runs that probe on
+the published tuning rather than only inside the sweep --- which is how we
+learned the competitor
 family was mis-specified (Section~\ref{sec:transport}).
 
 \begin{table}[t]
@@ -870,6 +899,8 @@ A15 & scale invariance: normalized cost \emph{curves} coincide; fails on
 A16 & anticipation unusable without storage (viability filter)\\
 A17 & the field with $\beta=0$ is exactly LTI (Prop.~\ref{prop:lti})\\
 A18 & DC cross-gain of the two forcings (Prop.~\ref{prop:dc})\\
+A19 & the causality guard bites at the \emph{published} tuning, and the
+      clairvoyant reference fails it\\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -915,9 +946,17 @@ matter of instrumentation.
 
 \section*{Reproducibility}
 All experiments, figures and the audit suite are generated by archived
-scripts; a build-time check verifies every number in this manuscript against
-the corresponding result file. Tuning and evaluation seeds are disjoint in
-every experiment reported.
+scripts. A build-time check regenerates each reported quantity from its
+result file and requires it to occur in this manuscript as a standalone
+numeric token: of the $160$ numeric literals in the body, $150$ are
+regenerated from an archived run and the rest are declared constants that
+come from no experiment, such as postal codes and column widths. Substring
+matching would not be enough --- a stray $8$ matches inside $0.85$ --- so the
+match is anchored on both sides. A mutation test then alters each regenerated
+figure in the source, one at a time, and re-runs the whole check: every
+mutant is caught, so no verified number can be edited here without the build
+failing. Tuning and evaluation seeds are disjoint in every experiment
+reported.
 
 %% -------------------------------------------------------------------
 %% ACKNOWLEDGMENT -- convencion IEEE/TCST: financiacion y agradecimientos a
