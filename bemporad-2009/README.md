@@ -71,15 +71,13 @@ Y hay un deslizamiento que lo hace invisible: la literatura reporta que **las re
 
 ## Qué hacer cuando contesten
 
-**Si proponen corrigendum conjunto** → acéptalo sin regatear. Vale más que la nota en solitario y abre la puerta al artículo del GHI.
+El protocolo de respuesta (qué hacer según contesten confirmando, refutando o
+no contestando) se mantiene en las notas de trabajo privadas y no se publica
+aquí: discute cómo tratar a dos investigadores identificables, que es la misma
+razón por la que el borrador del correo dejó de versionarse.
 
-**Si dicen «tienes razón, publícalo tú»** → sale [`NOTA-TECNICA-concavidad.md`](NOTA-TECNICA-concavidad.md), que ya está escrita. Pide permiso explícito para mencionar el intercambio. Antes de enviar, las dos únicas cosas pendientes:
-- releer el artículo **entero**, no solo los tres enunciados, por si hay una hipótesis en el *Assumption 1* o en el cambio de variables α₀ = 1/(1+Σμ) que se nos haya escapado;
-- *(opcional, baja probabilidad)* las dos páginas del §9.6 del libro Wiley 2020 sobre mp-MOO, pp. 173–174, que es la única pieza no leída.
-
-**Si refutan** → escúchalo con atención antes de defender nada. Habrás ahorrado un ridículo público a cambio de un correo, que es exactamente el motivo de escribir antes de publicar.
-
-**Si no contestan** → tres o cuatro semanas, recordatorio de dos líneas, y si sigue el silencio publica igual.
+Lo que sí es público, porque es la traza de prioridad y el manuscrito lo
+declara: el correo se envió el 7 de agosto de 2026 y no ha habido respuesta.
 
 ---
 
