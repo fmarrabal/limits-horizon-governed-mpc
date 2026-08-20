@@ -1,0 +1,27 @@
+{
+ "protocolo": {
+  "problemas": 120,
+  "l": 2,
+  "rejilla": "simplex mu>=0, sum mu<=1, paso 1/40",
+  "niveles_por_problema": 4,
+  "seed": 11
+ },
+ "T1_union_reproduce_el_conjunto": {
+  "casos": 480,
+  "exactos": 466,
+  "peor_error_min_piezas_vs_V": 1.9664945227759745e-09
+ },
+ "T2_la_17_es_subconjunto": {
+  "casos": 480,
+  "subconjunto": 480,
+  "estrictamente_menor": 468
+ },
+ "T3_17_infactible_con_admisible_no_vacio": {
+  "casos": 480,
+  "veces": 302
+ },
+ "T4_no_convexidad_en_el_simplex": {
+  "casos": 480,
+  "no_convexos": 232
+ }
+}

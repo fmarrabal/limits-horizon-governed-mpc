@@ -1,12 +1,13 @@
 # Paper: *When Does Adapting the Meta-Parameter Pay?*
 
-**Encuadre final (revisado el 17-ago-2026): un solo manuscrito.** El
-*Comment* a Automatica NO se enviará; la corrección al Lema 4 de Bemporad &
-Muñoz de la Peña (2009) va como **Sección III** de este paper
-(`\label{sec:sign}`), y `../bemporad-2009/comment/comment.tex` se conserva
-como versión extendida de registro, sin envío previsto a ninguna parte.
-El manuscrito: dos gobernadores mínimos que sí pagan, los límites
-estructurales, la corrección de signo, y la metodología de las cinco fugas.
+**Encuadre final (revisado el 20-ago-2026): dos manuscritos, sin solape.**
+La corrección al Lema 4 de Bemporad & Muñoz de la Peña (2009) es el
+*Comment* de `../bemporad-2009/comment/`, que pasa a ser su registro
+primario: allí van el lema, la prueba, las consecuencias para sus Teoremas
+6 y 7, el remedio exacto y toda la evidencia. Este manuscrito usa solo el
+hecho que necesita su Sección II y lo cita. El paper: dos gobernadores
+mínimos que sí pagan, los límites estructurales, y la metodología de las
+cinco fugas.
 
 ```bash
 cd paper

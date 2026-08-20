@@ -26,7 +26,8 @@ __pycache__/
 
 # --- third-party copyrighted material used to verify the Bemporad correction
 #     (full-text sources, dossiers); only the Comment itself is tracked ---
-/bemporad-2009/*
+/bemporad-2009/fuentes/
+bemporad-2009/*.pdf
 !/bemporad-2009/comment/
 
 # --- manuscript backups ---
