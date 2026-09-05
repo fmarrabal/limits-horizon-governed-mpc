@@ -104,6 +104,8 @@ from ghi.anclaje import trazabilidad as _traza
 
 DECLARADOS = {
     "080002": "codigo postal de la afiliacion",
+    "4.6": "version del sistema de IA, declarada en agradecimientos",
+    "5.1": "version del sistema de IA, declarada en agradecimientos",
     "04120": "codigo postal de la afiliacion",
     "2009": "ano del articulo comentado",
     "2026": "ano del contacto con los autores",
