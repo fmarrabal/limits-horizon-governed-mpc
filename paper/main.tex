@@ -70,13 +70,14 @@ missing constant term is precisely why. In a fleet of loops sharing one
 embedded controller under a hard computation budget, a governor that requests
 the maximum horizon \emph{only} when the relaxed-dynamic-programming
 certificate breaks, and decays slowly otherwise, beats the best fixed horizon
-at equal \emph{spent} computation by up to $7\%$ --- in seven of
-eight budgets when disturbances are independent, and in four of eight under a
-perfectly correlated front. A decomposition into its two mechanisms shows them
-to be complementary rather than cumulative: cross-loop allocation pays only
-when disturbances are independent, temporal adaptation only under a common
-front --- where nothing can be reallocated but the moment to spend is well
-defined --- and each is neutral or harmful in the other's regime. Second, structural limits that explain why
+at equal \emph{spent} computation by up to $6\%$ --- at every
+budget that binds when disturbances are independent, and at 4 of eight
+budgets under a perfectly correlated front (Holm-adjusted). A decomposition into
+its two mechanisms shows them to be complementary rather than cumulative:
+cross-loop allocation pays only when disturbances are independent, temporal
+adaptation only under a common front --- where nothing can be reallocated but
+the moment to spend is well defined --- and each is neutral or harmful in the
+other's regime. Second, structural limits that explain why
 nothing more elaborate could win: amplitude-scale invariance of the optimal
 meta-parameter, the linear-time-invariance of the graph field, the DC
 cross-gain of its forcing, and a quantization-limited reach law. Third, the part most
@@ -190,7 +191,7 @@ family explained.
 \item \textbf{The certificate-detector result} (Section~\ref{sec:alphaN}): a
 horizon governor that maps certificate violation ($\alpha_t\le0$) to maximal
 horizon and decays otherwise sits below the fixed-horizon frontier in a single
-loop and beats the best fixed horizon by up to $7\%$ in a fleet at equal
+loop and beats the best fixed horizon by up to $6\%$ in a fleet at equal
 spent computation, under both disturbance-correlation regimes; with a
 decomposition, one arm per mechanism, showing that allocation and timing carry
 one regime each.
@@ -198,7 +199,9 @@ one regime each.
 stated in full and their necessity demonstrated by counterexample.
 \item \textbf{An audit methodology} (Section~\ref{sec:methodology}): five real
 leaks, the conclusion each inverted, and the executable test that now guards
-each; all distributed as a regress\end{enumerate}
+each; all distributed as a regression suite whose every assertion encodes a
+defect found at least once.
+\end{enumerate}
 
 % ====================================================================
 \section{Problem Setting}\label{sec:setting}
@@ -235,8 +238,9 @@ affine in $\alpha$, hence \emph{concave} \cite[Sec.~5.6.1,
 Ex.~3.9]{boyd2004}, so the admissible weight set
 $\mathcal{A}(x,\Ja)=\{\alpha:\vstar(x,\alpha)\le\Ja\}$ is in general
 non-convex --- in our instances it was non-convex at roughly one fifth of the
-sampled contraction levels --- and must be gridded or enumerated rather than
-projected onto. That sign is the opposite of the one stated in
+sampled contraction levels --- and must be enumerated piece by piece (one
+linear program per active piece, the exact repair of \cite{comment2026}) or,
+in the scalar case used here, gridded, rather than projected onto. That sign is the opposite of the one stated in
 \cite[Lemma~4]{bemporad2009mompc}; we use the corrected version, and the
 correction itself --- its proof, its consequences for Theorems~6 and~7 of
 that formulation, and an exact repair at the same computational cost --- is
@@ -375,10 +379,9 @@ caveats, both of which we got wrong before getting them right. First, the field
 belongs to the class of LTI banks of order $2M$; a rival parametrizing that
 whole class would contain it, but the seven-parameter shaped delay we use in
 Section~\ref{sec:transport} does \emph{not}: measured on interior hops of an
-eight-node chain, the field's kernels broaden with hop count by a factor of
-$1.2$ to $1.8$ over four hops depending on the measure (absolute-value
-dispersion, energy dispersion, half-amplitude width), at the operating point as
-well as at nominal parameters. The field's defeat there is an empirical
+eight-node chain, the field's kernels broaden with hop count, by a factor
+that depends on the width measure used, at the operating point as well as at
+nominal parameters. The field's defeat there is an empirical
 finding, not a corollary. Second, the deployed governor is \emph{not} LTI ---
 between $h$ and the applied meta-parameter sit a saturation, a projection onto
 $\mathcal{A}$, and a quantizer --- and the reach law below depends on the
@@ -483,8 +486,8 @@ opens a gate a fixed lead before each arrival.
 Getting this comparison honest took three corrections, described in
 Section~\ref{sec:methodology}; here is the one that produced the result. After
 the causality guard was in place, the tuned oracle --- supposedly an
-unreachable bound --- opened its gates at $t=200,206,212$ for arrivals at
-$206,212,218$: never before the source measured. It was causal, and it was
+unreachable bound --- opened its gates a fixed number of samples ahead of
+each arrival at every node, and never before the source measured. It was causal, and it was
 reproduced \emph{exactly} (difference $0.0$) by a delay line
 \begin{equation}
 k_i=\max\{0,\ \tau i-\ell\},
@@ -510,7 +513,9 @@ high weight lands on $a_{\mathrm{hi}}=1$, the top of the simplex, which is a
 physical limit and not a grid artifact --- and it is the \emph{rival} whose
 optimum sits there, so the exception does not favour our mechanism. The
 archived sweep records the boundary status of every tuning, and the build
-check re-reads it. The genuinely
+check re-reads it. The acausal reference itself sits at both simplex limits
+($a_{\mathrm{lo}}=0$, $a_{\mathrm{hi}}=1$) by construction: it is a reference,
+not a tuned mechanism, and the rule does not apply to it. The genuinely
 acausal ceiling uses per-node anticipation beyond what the source can
 supply and is labelled as a reference, not a mechanism and not a bound:
 a causal mechanism turned out to reach it, which is the point of
@@ -554,8 +559,9 @@ ceiling vs.\ affine      & \multicolumn{3}{r}{$+706$,\ $t{=}{+}1.49$,\ $p{=}0.29
 the proportional family either wastes the near nodes' information or floods the
 far nodes early; the affine family delivers constant anticipation, saturated at
 what is physically available. (b) Final comparison, thirty seeds, error bars
-one s.e.m.: the affine delay is statistically at the acausal ceiling, and
-neither shaping nor the wave field improves on it.}
+one s.e.m.: the affine delay is within $-0.3\%$ to $+3.7\%$ ($95\%$
+interval) of the acausal reference, and neither shaping nor the wave field
+improves on it.}
 \label{fig:transport}
 \end{figure*}
 
@@ -567,8 +573,11 @@ $t=+5.40$ even against the proportional family's best tuning from a denser
 grid. And nothing richer helps: adding the second-order shaping stage changes
 nothing resolvable ($t=-0.97$ against an MDE of $1.0\%$), the wave field is
 significantly worse than the plain affine line ($t=+4.64$), and the affine line
-is statistically at the ceiling ($p=0.29$, MDE $2.3\%$ --- an equivalence
-bound, not a proof of optimality). Resampling the thirty paired seeds puts
+is within $-0.3\%$ to $+3.7\%$ of the acausal reference ($95\%$
+interval; it is cheaper than the reference in $13$ of
+$30$ seeds, paired $t=+1.49$, raw $p=0.15$,
+Holm $p=0.29$; MDE $2.3\%$ --- an equivalence bound, not a proof of
+optimality). Resampling the thirty paired seeds puts
 the recovered fraction at $90.9\%$ with a $95\%$ interval of
 $[84.9,103.9]$, and in $6.3\%$ of the resamples the causal line is \emph{cheaper}
 than the acausal reference. That is why we report a reference rather than a
@@ -629,7 +638,8 @@ correlation in the large-kick scenario ($-0.42$ to $+0.43$, $t=+7.26$), which
 identifies ringing as the mechanism, but a critically damped second-order
 filter is a first-order filter with extra lag and does not beat one. On
 assignment correlation the leaky integrator is best in two of the four
-scenarios, including both that combine kicks with mismatch. What broke
+scenarios, including both out-of-envelope kick scenarios (with and without
+model mismatch). What broke
 out-of-envelope was not short \emph{fixed} horizons at moderate $N$ ---
 replanning compensates from $N=4$ up, though $N=2$ does diverge on half the
 seeds --- but short-\emph{memory adaptive} governors, which under-assign right
@@ -641,7 +651,9 @@ of pulse durations is a leaky integrator, not a resonator. Pushing the
 governor's reference toward zero turned out to improve it monotonically, with
 a plateau at the limit: the optimal governor is a \emph{detector of certificate
 violation} --- request $N_{\max}$ when $\alpha_t\le0$, request $N_{\min}$
-otherwise --- behind a slow leak ($\tau\approx30$ samples). Two effective
+otherwise --- behind a slow leak ($\tau=30$ samples in the fleet;
+the single-loop bank of Table~\ref{tab:alphaN} ran with $\tau=14.7$ and
+$a_{\mathrm{ref}}=0.6$, and is therefore not this detector limit). Two effective
 parameters, and the event it reacts to is the one event in the signal with a
 meaning in the theory \cite{gruene2017nmpc}.
 
@@ -654,8 +666,9 @@ $\tau_f=2$\,min, $\tau_m=5$\,min, $dt=30$\,s), with cloud-passage disturbances
 and a knob $\rho$ setting the fraction that sweeps all loops at once. The
 penalized variable is the \emph{absorber} temperature, which the flow reaches
 only through the fluid; without that delay between action and effect the bench
-is empty --- penalizing the directly actuated state gives
-$J(N{=}2)/J(N{=}16)=1.01$ and nothing to govern, against $1.46$ here.
+is empty --- penalizing the directly actuated state leaves the fixed-horizon
+frontier flat in $N$ and nothing to govern, against a ratio
+$J(N{=}2)/J(N{=}16)=1.47$ here.
 
 Two accounting disciplines decide whether this comparison means anything, and
 we broke both before fixing them (Section~\ref{sec:methodology}). The budget
@@ -668,11 +681,10 @@ alternating horizons between steps, so it concedes nothing.
 
 \begin{table}[t]
 \caption{Fleet of $M=8$ loops, eight evaluation seeds disjoint from the three
-tuning seeds. Governor tuned by a grid sweep archived with the script
-(\$\tau=11$, interior; reference $a_{\mathrm{ref}}=0.1$,
-on a plateau whose dispersion below $0.03$ is $0.03\%$, so the pure
-detector limit $a_{\mathrm{ref}}\to0$ is indistinguishable from
-the optimum). Cost against the fixed-horizon frontier at equal spent
+tuning seeds. Governor tuned by a grid sweep archived with the script, under the
+evaluation metric itself ($\tau=30$, interior to the grid; reference
+$a_{\mathrm{ref}}\to0$, the certificate-detector limit, on a plateau whose
+dispersion below $0.03$ is $0.65\%$). Cost against the fixed-horizon frontier at equal spent
 computation, paired per seed against that seed's own frontier. The $B=16$ row
 is degenerate: every loop is pinned at $N_{\min}$.}
 \label{tab:fleet}
@@ -684,33 +696,37 @@ is degenerate: every loop is pinned at $N_{\min}$.}
 $B/(MN_{\max})$ & spent & governed & frontier & change\\
 \midrule
 \multicolumn{5}{@{}l}{\textit{independent disturbances} ($\rho=0$)}\\
-$0.19$ & $27.4$ & $2733$ & $2951$ & $\mathbf{-7.4\%}$\,*\\
-$0.25$ & $38.3$ & $2517$ & $2656$ & $\mathbf{-5.3\%}$\,*\\
-$0.31$ & $46.3$ & $2444$ & $2513$ & $-2.8\%$\,*\\
-$0.38$ & $50.7$ & $2418$ & $2464$ & $-1.9\%$\,*\\
-$\ge0.50$ & $52.9$ & $2409$ & $2447$ & $-1.6\%$\,*\\
+$0.19$ & $26.0$ & $2814$ & $2993$ & $\mathbf{-6.0\%}$\,*\\
+$0.25$ & $35.2$ & $2567$ & $2732$ & $\mathbf{-6.0\%}$\,*\\
+$0.31$ & $41.1$ & $2470$ & $2598$ & $-4.9\%$\,*\\
+$0.38$ & $42.9$ & $2443$ & $2568$ & $-4.9\%$\,*\\
+$\ge0.50$ & $43.1$ & $2440$ & $2564$ & $-4.8\%$\,*\\
 \midrule
 \multicolumn{5}{@{}l}{\textit{common front} ($\rho=1$)}\\
-$0.19$ & $23.4$ & $4595$ & $4619$ & $-0.5\%$\phantom{\,*}\\
-$0.25$ & $28.2$ & $4226$ & $4386$ & $-3.7\%$\,*\\
-$0.31$ & $32.1$ & $3940$ & $4203$ & $\mathbf{-6.3\%}$\,*\\
-$0.38$ & $35.5$ & $3779$ & $4072$ & $\mathbf{-7.2\%}$\,*\\
-$0.50$ & $42.1$ & $3650$ & $3852$ & $-5.2\%$\,*\\
-$0.75$ & $53.7$ & $3624$ & $3654$ & $-0.8\%$\phantom{\,*}\\
-$1.00$ & $59.2$ & $3624$ & $3593$ & $+0.9\%$\phantom{\,*}\\
+$0.19$ & $23.8$ & $4589$ & $4599$ & $-0.2\%$\phantom{\,*}\\
+$0.25$ & $29.1$ & $4208$ & $4343$ & $-3.1\%$\,*\\
+$0.31$ & $33.5$ & $3912$ & $4149$ & $\mathbf{-5.7\%}$\,*\\
+$0.38$ & $37.3$ & $3750$ & $4003$ & $\mathbf{-6.3\%}$\,*\\
+$0.50$ & $43.1$ & $3645$ & $3829$ & $-4.8\%$\,*\\
+$0.75$ & $48.2$ & $3638$ & $3716$ & $-2.1\%$\phantom{\,*}\\
+$1.00$ & $48.3$ & $3638$ & $3715$ & $-2.1\%$\phantom{\,*}\\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:fleet} and Fig.~\ref{fig:fleet}: the governor
-beats the best fixed horizon at equal spent computation in seven of eight
-budgets with independent disturbances, by up to $7.4\%$ (Holm-adjusted
-$p<1.5\times10^{-2}$ throughout), and in four of eight under a perfectly
-correlated front, by up to $7.2\%$. Under independence the advantage is
-largest where the budget binds and decays to $1.6\%$ once it stops
-binding; under a common front it is concentrated in mid-range budgets and
-vanishes at both ends, the loosest budget being the one point where the fixed
-horizon is nominally ahead ($+0.9\%$, not significant).
+Table~\ref{tab:fleet} and Fig.~\ref{fig:fleet}: with independent disturbances
+the governor beats the best fixed horizon at equal spent computation at every
+budget that binds --- seven of the eight rows, of which the three loosest are
+one experiment, since the governor saturates at the same spent computation ---
+by up to $6.0\%$ (Holm-adjusted $p<10^{-4}$ throughout); under a
+perfectly correlated front it wins at 4 of eight budgets after Holm
+adjustment, by up to $6.3\%$, and the two loosest budgets favour it by
+$2.1\%$ at raw $p<0.03$ but not after adjustment
+($p=0.073$). Under independence the advantage is largest where the
+budget binds and settles at $4.8\%$ once it stops binding; under a
+common front it is concentrated in mid-range budgets and vanishes at both
+ends. The eighth budget, $B=16$ ($0.125$), is omitted from the table: every
+loop is pinned at $N_{\min}$ and the two arms coincide to $0.03\%$.
 
 The decomposition in Fig.~\ref{fig:fleet}(b) separates the two mechanisms
 with one arm each, and it corrected our own reading of them. \emph{Allocation}
@@ -719,16 +735,19 @@ total horizon per step --- and only distributing it equally instead of in
 proportion to demand; \emph{timing} is isolated by comparing that
 equal-split governed arm against a fixed horizon at equal spent computation.
 The two components turn out to be complementary rather than cumulative.
-Allocation pays $+5.2\%$ to $+7.6\%$ when disturbances are
-independent and \emph{nothing} under a common front ($-0.8\%$ to
-$+0.03\%$): with every loop in trouble at once there is no one to take
-horizon from. Timing does the opposite --- it pays $+1.1\%$ to
-$+6.8\%$ under a common front, where the moment to spend is well
-defined, and under independence it is not merely neutral but \emph{harmful},
-down to $-4.0\%$: with someone always in trouble the aggregate demand is
-nearly constant, so modulating it in time only mistimes the spending that the
-allocation arm then has to repair. Each regime is carried by one mechanism,
-which is why the governor wins in both.
+Allocation pays $+6.1\%$ to $+7.1\%$ when disturbances
+are independent (all six budgets at equal spent computation, eight seeds each)
+and next to nothing under a common front ($0.0\%$ to
+$+1.4\%$, significant after Holm at 2 of six budgets):
+with every loop in trouble at once there is no one to take horizon from.
+Timing does the opposite --- it pays $+2.2\%$
+to $+5.2\%$ under a common front at
+the 4 middle budgets, where the moment to spend is well defined,
+and nothing at the tightest and loosest; under independence it is not merely
+neutral but \emph{harmful}, down to $-3.7\%$: with someone always
+in trouble the aggregate demand is nearly constant, so modulating it in time
+only mistimes the spending that the allocation arm then has to repair. Each
+regime is carried by one mechanism, which is why the governor wins in both.
 
 \begin{figure*}[t]
 \centering
@@ -741,7 +760,8 @@ allocation (demand-proportional versus equal-split, same governor and same
 total horizon per step) and timing (equal-split governed versus fixed
 horizon, at equal spent computation). They are complementary: allocation
 pays only under independence, timing only under a common front --- up to
-$+6.8\%$ --- and timing is actively harmful under independence.}
+$+5.2\%$ --- and timing is actively harmful under
+independence.}
 \label{fig:fleet}
 \end{figure*}
 
@@ -832,8 +852,8 @@ configuration whose output moves before the input does.
 \paragraph{Leak 3: an acausal normalization}
 The map from field value to weight was normalized by the trace's min and max
 --- computed over the \emph{whole} trace, so the scale at time $t$ depended on
-the future. Truncating the trace after the event changed the gate
-\emph{before} the event by $0.42$. Only the two seven-parameter mechanisms
+the future. Truncating the trace after the event measurably changed the gate
+\emph{before} the event. Only the two seven-parameter mechanisms
 used the normalization; the delay line did not. \emph{Guard:} the truncation
 probe --- run the mechanism on the full and on a truncated input; on the
 shared prefix the outputs must agree exactly. This test requires no hypothesis
@@ -851,14 +871,18 @@ fleet inherited the budget from the wrong side of the ledger.
 
 \paragraph{Leak 5: tuning under one metric, evaluating under another}
 After fixing Leak~4 we re-tuned the governor by raw cost at fixed nominal
-budget --- a criterion that still rewards overspending --- and concluded the
-fleet result had deflated to nothing. Tuned under the evaluation metric
-itself (cost against the frontier at spent computation), the governor wins by
-up to $7\%$. This leak is the mirror image of the others: it \emph{deflated}
-the result it touched. Leaks do not consistently favour the pet mechanism;
-they favour whatever the criterion mismatch happens to favour, which is why
-the guard must be mechanical. \emph{Guard:} the tuning objective must be the
-evaluation metric, computed the same way.
+budget --- a criterion that still rewards overspending --- and it moved the
+optimum to a faster leak and shrank the advantage at every budget that did not
+bind. Tuned under the evaluation metric itself (the gap to the per-seed
+frontier at spent computation, summed over the tuning budgets), the optimum
+returns to the slow leak and the governor wins by up to $6\%$. This
+leak is the mirror image of the others: it \emph{deflated} the result it
+touched, and it did so twice --- the tuning script of an earlier revision still
+used raw cost while the text claimed otherwise, which an adversarial review of
+the script, not of the text, caught. Leaks do not consistently favour the pet
+mechanism; they favour whatever the criterion mismatch happens to favour, which
+is why the guard must be mechanical. \emph{Guard:} the tuning objective must
+be the evaluation metric, computed the same way.
 
 \paragraph{Three disciplines, used throughout}
 Reject any tuned optimum on the boundary of its grid, with the exception of
@@ -874,7 +898,7 @@ learned the competitor
 family was mis-specified (Section~\ref{sec:transport}).
 
 \begin{table}[t]
-\caption{Executable audit suite: $21$ checks over $18$ assertions (A9 runs at
+\caption{Executable audit suite: $21$ checks over $19$ assertions (A9 runs at
 three damping ratios). Each encodes a defect found at least once.}
 \label{tab:audit}
 \centering
@@ -922,8 +946,8 @@ margin by which we can bound the ties is stated with every claim.
 
 What replaces it is a design lesson with two instances. Where a disturbance
 travels, deliver its warning with \emph{constant} anticipation: an affine
-delay line, four parameters, statistically at the clairvoyant ceiling, worth
-$12.4\%$ against the best local detection, with the proportional family that
+delay line, four parameters, within $-0.3\%$ to $+3.7\%$ of the acausal
+clairvoyant reference, worth $12.4\%$ against the best local detection, with the proportional family that
 per-hop designs default to significantly and explicably worse. Where a
 horizon must be rationed, react to the one event in the suboptimality signal
 that theory distinguishes --- the certificate breaking --- through a slow
@@ -946,17 +970,20 @@ matter of instrumentation.
 
 \section*{Reproducibility}
 All experiments, figures and the audit suite are generated by archived
-scripts. A build-time check regenerates each reported quantity from its
-result file and requires it to occur in this manuscript as a standalone
-numeric token: of the $160$ numeric literals in the body, $150$ are
-regenerated from an archived run and the rest are declared constants that
-come from no experiment, such as postal codes and column widths. Substring
-matching would not be enough --- a stray $8$ matches inside $0.85$ --- so the
-match is anchored on both sides. A mutation test then alters each regenerated
-figure in the source, one at a time, and re-runs the whole check: every
-mutant is caught, so no verified number can be edited here without the build
-failing. Tuning and evaluation seeds are disjoint in every experiment
-reported.
+scripts. A checker, run by the authors before each submission (it is not part
+of the \LaTeX{} build), regenerates $94$ reported quantities from their
+result files and requires each to occur in the body of this document as a
+standalone numeric token, anchored on both sides so that a stray $8$ does not
+match inside $0.85$. Of the $157$ numeric literals in the body with three or
+more digits or a decimal point, those $94$ are regenerated in this sense;
+$56$ more coincide with some value stored in an archived result file, which is
+a check of existence rather than of provenance; and $7$ are declared constants
+that come from no experiment, such as postal codes and column widths. A
+mutation test alters, one occurrence at a time, each of the $94$ regenerated
+quantities and re-runs the whole checker; every such mutant is caught.
+Literals of one or two digits, and the counts in this paragraph, are outside
+that audit; the checker asserts the counts. Tuning and evaluation seeds are
+disjoint in every experiment reported.
 
 \section*{Acknowledgment}
 The authors used Claude (Anthropic), a large language model accessed

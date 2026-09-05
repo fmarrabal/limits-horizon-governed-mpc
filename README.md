@@ -33,10 +33,11 @@ turns out to be two effective parameters: request the maximum horizon *only*
 while the relaxed-dynamic-programming certificate is broken (`α_t ≤ 0`), decay
 slowly otherwise. In a fleet of eight thermal loops sharing one embedded
 controller under a hard computation budget it beats the best fixed horizon by
-**5–6 %** at equal *spent* computation, for independent and perfectly
-correlated disturbances alike; a decomposition attributes the correlation
-robustness to the temporal mechanism and confines the multiplexing gain to the
-allocation component.
+**up to 6 %** at equal *spent* computation — at every budget that binds
+under independent disturbances, and at four of eight budgets (Holm-adjusted)
+under a perfectly correlated front; a decomposition shows the two mechanisms to
+be complementary: cross-loop allocation pays only under independence, temporal
+adaptation only under a common front.
 
 ## The five leaks
 
@@ -85,13 +86,15 @@ documents.
 ## Reproducing
 
 ```bash
-# 1. the audit suite: 21 checks over 18 assertions, every past defect encoded
+# 1. the audit suite: 21 checks over 19 assertions, every past defect encoded
 cd code/python
 python -m ghi.audit --quick
 
 # 2. the headline experiments (each writes code/results/*.json + .log)
 python scripts/run_transport_affine.py     # affine vs proportional vs field  (~1 h)
-python scripts/run_fleet2.py               # fleet vs fixed-horizon frontier  (~2 h)
+python scripts/run_fleet3.py               # fleet vs fixed-horizon frontier, tuned under the evaluation metric (~2 h)
+python scripts/run_fleet_decomp.py         # allocation vs timing, one arm each
+python scripts/holm_fleet3.py              # Holm-adjusted p for both
 python scripts/run_alphaN.py               # single-loop horizon governance   (~1 h)
 
 # 3. supporting measurements

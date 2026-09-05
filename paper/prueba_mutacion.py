@@ -56,26 +56,39 @@ def main() -> int:
             if not re.fullmatch(r"[0-9]+(?:[.][0-9]+)?", token):
                 saltados.append(crudo)
                 continue
+            # la seccion Reproducibility declara fuera del audit los literales
+            # de una o dos cifras: un "5" suelto no es unico en ningun texto y
+            # su unica defensa posible es el contexto, que las comprobaciones
+            # de fila y de frase ya cubren
+            if "." not in token and len(token) < 3:
+                saltados.append(crudo)
+                continue
             # el separador de millares parte el numero en el fuente: se admite
             # cualquier separador entre digito y digito
             partes = [re.escape(ch) for ch in token]
             hueco = r"(?:" + re.escape(BARRA + ",") + r"|\{,\}|,)?"
             cuerpo = hueco.join(partes)
-            pat = r"(?<![0-9.])" + cuerpo + r"(?![0-9])"
-            mutado, cuantos = re.subn(
-                pat, lambda m: muta(m.group(0).replace(BARRA + ",", "")
-                                   .replace("{,}", "").replace(",", "")),
-                original)
-            if not cuantos:
+            pat = re.compile(r"(?<![0-9.])" + cuerpo + r"(?![0-9])")
+            sitios = list(pat.finditer(original))
+            if not sitios:
                 vivos.append((crudo, "no aparece en el manuscrito"))
                 continue
-            io.open(tmp, "w", encoding="utf-8", newline="\n").write(mutado)
-            r = subprocess.run([sys.executable, "_check_numbers.py"], cwd=HERE,
-                               env=dict(os.environ, MANUSCRITO="_mutante.tex"),
-                               capture_output=True)
-            probados += 1
-            if r.returncode == 0:
-                vivos.append((crudo, f"sobrevive tras mutar {cuantos} apariciones"))
+            # UNA aparicion a la vez: si una cifra se repite (cuerpo y tabla,
+            # resumen y resultados), editar una sola copia tiene que bastar
+            # para poner el verificador en rojo; mutar todas a la vez no lo
+            # probaria (revision adversarial del 21-ago, B-7)
+            for m in sitios:
+                limpio = (m.group(0).replace(BARRA + ",", "")
+                          .replace("{,}", "").replace(",", ""))
+                mutado = original[:m.start()] + muta(limpio) + original[m.end():]
+                io.open(tmp, "w", encoding="utf-8", newline="\n").write(mutado)
+                r = subprocess.run([sys.executable, "_check_numbers.py"], cwd=HERE,
+                                   env=dict(os.environ, MANUSCRITO="_mutante.tex"),
+                                   capture_output=True)
+                probados += 1
+                if r.returncode == 0:
+                    linea = original.count("\n", 0, m.start()) + 1
+                    vivos.append((crudo, f"sobrevive al mutar la aparicion de la linea {linea}"))
     finally:
         if os.path.exists(tmp):
             os.remove(tmp)

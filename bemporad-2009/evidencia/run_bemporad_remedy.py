@@ -67,6 +67,11 @@ def main(n_problems: int = 120, seed: int = 11) -> dict:
     t3_lp_vacio_con_admisible = t3_tot = 0
     t4_noconvex = t4_tot = 0
     peor_err = 0.0
+    # por cuantil: el protocolo de niveles J_a no estaba revelado en el
+    # Comment ni desglosado en el archivo (revision adversarial del 21-ago)
+    CUANTILES = (0.15, 0.35, 0.55, 0.75)
+    por_q = {q: {"casos": 0, "infactible_con_admisible": 0,
+                 "estrictamente_menor": 0, "no_convexos": 0} for q in CUANTILES}
 
     for p in range(n_problems):
         c0, Cmu, G, b, S = random_mplp(d=6, l=l, n=2, ncon=8, seed=2000 + p)
@@ -80,11 +85,13 @@ def main(n_problems: int = 120, seed: int = 11) -> dict:
             continue
         # piezas afines evaluadas en toda la rejilla
         P = np.array([[float((c0 + Cmu.T @ mu) @ z) for z in Z] for mu in MU])
-        for q in (0.15, 0.35, 0.55, 0.75):
+        for q in CUANTILES:
             Ja = float(np.quantile(V, q))
             verdad = V <= Ja + 1e-9
             union = (P.min(axis=1) <= Ja + 1e-9)        # remedio exacto (R)
             inter = (P.max(axis=1) <= Ja + 1e-9)        # la (17) publicada
+            pq = por_q[q]
+            pq["casos"] += 1
             t1_tot += 1
             if np.array_equal(verdad, union):
                 t1_ok += 1
@@ -95,9 +102,11 @@ def main(n_problems: int = 120, seed: int = 11) -> dict:
                 t2_sub += 1
             if inter.sum() < verdad.sum():
                 t2_estricto += 1
+                pq["estrictamente_menor"] += 1
             t3_tot += 1
             if inter.sum() == 0 and verdad.sum() > 0:
                 t3_lp_vacio_con_admisible += 1
+                pq["infactible_con_admisible"] += 1
             # no convexidad: algun punto medio de dos admisibles cae fuera
             t4_tot += 1
             idx = np.where(verdad)[0]
@@ -112,11 +121,16 @@ def main(n_problems: int = 120, seed: int = 11) -> dict:
                         break
                 if fuera:
                     t4_noconvex += 1
+                    pq["no_convexos"] += 1
 
     out = {
         "protocolo": {"problemas": n_problems, "l": l,
                       "rejilla": "simplex mu>=0, sum mu<=1, paso 1/40",
-                      "niveles_por_problema": 4, "seed": seed},
+                      "niveles_por_problema": 4, "seed": seed,
+                      "niveles": "cuantiles de V*(., x) sobre la rejilla del "
+                                 "simplex: 0.15, 0.35, 0.55, 0.75",
+                      "cuantiles": list(CUANTILES)},
+        "por_cuantil": {str(q): v for q, v in por_q.items()},
         "T1_union_reproduce_el_conjunto": {
             "casos": t1_tot, "exactos": t1_ok,
             "peor_error_min_piezas_vs_V": peor_err},

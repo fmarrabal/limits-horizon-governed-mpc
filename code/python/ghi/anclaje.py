@@ -85,12 +85,67 @@ def variantes(v: float) -> set[str]:
     return {s for s in salida if s}
 
 
+def _fmt(x: float) -> str:
+    """Forma decimal limpia, sin notacion cientifica ni ceros finales."""
+    s = f"{abs(float(x)):.10f}".rstrip("0").rstrip(".")
+    return s or "0"
+
+
+def formas_impresas(v: float) -> set[str]:
+    """Las formas en que el manuscrito puede imprimir EXACTAMENTE ``v``.
+
+    A diferencia de ``variantes``, no admite redondeos mas cortos: ``man`` es lo
+    que el autor afirma haber impreso, y el anclaje tiene que encontrar eso
+    mismo. Un ``0.15`` del verificador no puede anclarse a un ``15`` suelto
+    del texto (21-ago: con ``variantes`` pasaba, y 1946 mutantes sobrevivian).
+    Solo se toleran ceros finales (``14`` / ``14.0``; ``0.15`` / ``0.150``).
+    """
+    s = _fmt(v)
+    out = {s, s + "0" if "." in s else s + ".0"}
+    if "." in s:
+        out.add(s + "00")
+    return out
+
+
+def formas_impresas_pct(v: float) -> set[str]:
+    """La forma en tanto por ciento, admisible SOLO junto a ``\\%``."""
+    if abs(float(v)) >= 1.0:
+        return set()
+    return formas_impresas(round(float(v) * 100.0, 8))
+
+
+def literales_pct_de(tex: str) -> set[str]:
+    """Los numeros que el texto imprime como tanto por ciento: seguidos de
+    ``\\%``, o como extremo inferior de un rango ``$a$--$b\\%$``."""
+    t = normaliza(tex)
+    num = r"([0-9]+(?:[.][0-9]+)?)"
+    pct = re.escape(BARRA) + "%"
+    sueltos = set(re.findall(num + pct, t))
+    rangos = set(re.findall(num + r"\$?--\$?[0-9]+(?:[.][0-9]+)?" + pct, t))
+    return sueltos | rangos
+
+
+def presente(man: float, lits: set[str], lits_pct: set[str]) -> set[str]:
+    """Formas de ``man`` presentes en el texto (vacio = huerfano)."""
+    return (formas_impresas(man) & lits) | (formas_impresas_pct(man) & lits_pct)
+
+
+def redondeo_correcto(man: float, arch: float) -> bool:
+    """``man`` tiene que ser el redondeo correcto de ``arch`` a la precision con
+    que esta impreso: 1.83 no vale para un archivado 1.8249 aunque una
+    tolerancia relativa lo deje pasar (G-24b)."""
+    s = _fmt(man)
+    d = len(s.split(".")[1]) if "." in s else 0
+    return abs(abs(float(man)) - abs(float(arch))) <= 0.5 * 10.0 ** (-d) + 1e-12
+
+
 def sin_rastro(checks, ruta_tex: str, permitidos=()):
-    """Comprobaciones cuyo valor no aparece en el manuscrito."""
-    lits = literales(ruta_tex)
+    """Comprobaciones cuyo valor impreso no aparece en el manuscrito."""
+    tex = io.open(ruta_tex, encoding="utf-8").read()
+    lits, lits_pct = literales_de(tex), literales_pct_de(tex)
     permitidos = set(permitidos)
     return [(tag, man) for tag, man, _a, _t in checks
-            if tag not in permitidos and not (variantes(man) & lits)]
+            if tag not in permitidos and not presente(man, lits, lits_pct)]
 
 
 def informe(checks, ruta_tex: str, permitidos=()) -> int:

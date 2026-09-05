@@ -4,7 +4,40 @@
   "l": 2,
   "rejilla": "simplex mu>=0, sum mu<=1, paso 1/40",
   "niveles_por_problema": 4,
-  "seed": 11
+  "seed": 11,
+  "niveles": "cuantiles de V*(., x) sobre la rejilla del simplex: 0.15, 0.35, 0.55, 0.75",
+  "cuantiles": [
+   0.15,
+   0.35,
+   0.55,
+   0.75
+  ]
+ },
+ "por_cuantil": {
+  "0.15": {
+   "casos": 120,
+   "infactible_con_admisible": 95,
+   "estrictamente_menor": 117,
+   "no_convexos": 48
+  },
+  "0.35": {
+   "casos": 120,
+   "infactible_con_admisible": 79,
+   "estrictamente_menor": 117,
+   "no_convexos": 68
+  },
+  "0.55": {
+   "casos": 120,
+   "infactible_con_admisible": 74,
+   "estrictamente_menor": 117,
+   "no_convexos": 62
+  },
+  "0.75": {
+   "casos": 120,
+   "infactible_con_admisible": 54,
+   "estrictamente_menor": 117,
+   "no_convexos": 54
+  }
  },
  "T1_union_reproduce_el_conjunto": {
   "casos": 480,

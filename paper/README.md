@@ -18,9 +18,9 @@ python _check_numbers.py      # contrasta cada cifra del texto con su JSON
 
 ## Los dos resultados de titular
 
-**Retardo afín (transporte).** En una cadena con perturbación que viaja, lo que importa es que cada nodo reciba el aviso con la **misma antelación** — y eso exige un término independiente en el retardo (`k_i = max(0, τi − ℓ)`). El afín de 4 parámetros: +12.4 % sobre la mejor detección local, 90.9 % del techo acausal, estadísticamente en el techo. Bate al proporcional (t=+17.87 a igual densidad; t=+5.40 contra su mejor sintonía), al campo de onda (t=+4.64), y conformar no aporta nada resoluble. Fuente: `transport_affine.json` (30 semillas, guarda de causalidad, normalización causal, densidades igualadas, óptimos interiores).
+**Retardo afín (transporte).** En una cadena con perturbación que viaja, lo que importa es que cada nodo reciba el aviso con la **misma antelación** — y eso exige un término independiente en el retardo (`k_i = max(0, τi − ℓ)`). El afín de 4 parámetros: +12.4 % sobre la mejor detección local, 90.9 % de la referencia acausal (IC bootstrap [84.9, 103.9], hueco de coste [−0.3 %, +3.7 %]). Bate al proporcional (t=+17.87 a igual densidad; t=+5.40 contra su mejor sintonía), al campo de onda (t=+4.64), y conformar no aporta nada resoluble. Fuente: `transport_affine.json` (30 semillas, guarda de causalidad, normalización causal, densidades igualadas, óptimos interiores).
 
-**Detector de certificado (flota).** El gobernador óptimo del horizonte pide N_max **solo cuando α_t ≤ 0** (el certificado roto) y decae con τ≈30. En 8 lazos con presupuesto duro: −5/−6 % contra la mejor frontera fija **a cómputo gastado**, con ambas correlaciones. Descomposición limpia: lo temporal paga siempre; el reparto entre lazos solo con perturbaciones independientes (hasta +8.6 %). Fuentes: `fleet3.json`, `fleet_decomp.json`.
+**Detector de certificado (flota).** El gobernador óptimo del horizonte pide N_max **solo cuando α_t ≤ 0** (el certificado roto) y decae con τ=30 (sintonizado bajo la propia métrica de evaluación). En 8 lazos con presupuesto duro: hasta −6 % contra la mejor frontera fija **a cómputo gastado**, en todos los presupuestos que atan con perturbaciones independientes y en cuatro de ocho con frente común (Holm). Descomposición complementaria: el reparto entre lazos solo paga con perturbaciones independientes (+6 a +7 %); lo temporal solo con frente común (+2 a +5 %), y perjudica con independientes. Fuentes: `fleet3.json`, `fleet_decomp.json`.
 
 ## La sección metodológica: las cinco fugas
 
@@ -28,9 +28,9 @@ python _check_numbers.py      # contrasta cada cifra del texto con su JSON
 |---|---|---|
 | canal roto (ganancia DC nula) | el campo perdía sin poder competir | sonda de escalón sostenido (A18) |
 | desplazamiento acausal | los dos "ganadores" leían el futuro | sonda de un pulso, dentro del barrido |
-| normalización acausal | escala fijada con el futuro (0.42 antes del evento) | sonda de truncamiento |
+| normalización acausal | escala fijada con el futuro (la puerta cambiaba antes del evento) | sonda de truncamiento |
 | presupuesto vs gasto | la flota "ganaba" gastando +18/26 % | contabilizar donde se gasta |
-| sintonía ≠ métrica de evaluación | **desinfló** el resultado a nada | sintonizar con la métrica de evaluación |
+| sintonía ≠ métrica de evaluación | **desinfló** el resultado, dos veces: la segunda, el script la seguía violando mientras el texto decía lo contrario | sintonizar con la métrica de evaluación, y auditar el script, no el texto |
 
 La quinta es la clave de la moraleja: las fugas no favorecen sistemáticamente al favorito — favorecen lo que el desajuste favorezca. Por eso la guarda tiene que ser mecánica.
 

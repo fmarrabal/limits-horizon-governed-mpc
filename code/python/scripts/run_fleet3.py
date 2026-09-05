@@ -93,8 +93,38 @@ def main() -> dict:
     print("=" * 78)
 
     # ---------------- barrido de sintonia (semillas disjuntas) --------------
+    # EL OBJETIVO ES LA METRICA DE EVALUACION, calculada de la misma manera:
+    # hueco relativo del gobernador frente a la frontera de horizonte fijo DE
+    # LA MISMA SEMILLA, interpolada en el computo que el gobernador GASTO en
+    # esa semilla, promediado en semillas y sumado sobre B_TUNE.
+    #
+    # La version anterior (19-ago) sumaba coste bruto a presupuesto nominal.
+    # Ese es exactamente el criterio que la Fuga 5 del manuscrito declara
+    # haber abandonado ("the tuning objective must be the evaluation metric,
+    # computed the same way"), y una revision adversarial (21-ago) encontro
+    # que el script lo seguia usando mientras el texto afirmaba lo contrario.
+    fijos_tune = []
+    for N in FIJOS:
+        r = corre(plant, "fijo", N, None, 0.0, SEEDS_TUNE)
+        if r:
+            fijos_tune.append(dict(r, N=N))
+
+    def objetivo(g):
+        """Hueco relativo medio frente a la frontera a computo GASTADO, semilla
+        a semilla. Un punto cuyo gasto cae fuera del rango de la frontera no
+        se puede puntuar y queda descartado (inf), igual que en la evaluacion."""
+        huecos = []
+        for k, (c, cm) in enumerate(zip(g["por_semilla"], g["comp_por_semilla"])):
+            fk = frontera_por_semilla(cm, fijos_tune, k)
+            if fk is None:
+                return float("inf")
+            huecos.append((c - fk) / fk)
+        return float(np.mean(huecos))
+
     print(f"\n  barrido de sintonia en semillas {SEEDS_TUNE}, presupuestos "
-          f"{B_TUNE}, rho=0 (coste total, menor es mejor)")
+          f"{B_TUNE}, rho=0")
+    print(f"  objetivo = suma sobre B del hueco relativo medio frente a la "
+          f"frontera a computo gastado (la metrica de evaluacion; menor es mejor)")
     print(f"  {'tau':>6}" + "".join(f"{a:>10.4g}" for a in AREFS))
     malla = {}
     for tau in TAUS:
@@ -103,12 +133,13 @@ def main() -> dict:
             tot = 0.0
             for B in B_TUNE:
                 r = corre(plant, "fugas", None, B, 0.0, SEEDS_TUNE, tau=tau, a_ref=a_ref)
-                tot += r["coste"] if r else float("inf")
+                tot += objetivo(r) if r else float("inf")
             malla[(tau, a_ref)] = tot
             fila.append(tot)
-        print(f"  {tau:>6.1f}" + "".join(f"{v:>10.1f}" for v in fila))
+        print(f"  {tau:>6.1f}" + "".join(f"{100*v:>+10.2f}" for v in fila))
     (TAU, AREF), mejor = min(malla.items(), key=lambda kv: kv[1])
-    print(f"\n  optimo del barrido: tau={TAU}, a_ref={AREF:g}  (coste {mejor:.1f})")
+    print(f"\n  optimo del barrido: tau={TAU}, a_ref={AREF:g}  "
+          f"(hueco acumulado {100*mejor:+.2f}%)")
 
     # las dos afirmaciones que el manuscrito hace sobre esta sintonia
     tau_int = TAUS[0] < TAU < TAUS[-1]

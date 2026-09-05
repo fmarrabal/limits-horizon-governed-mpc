@@ -10,7 +10,6 @@
 \usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=blue]{hyperref}
 
 \newtheorem{lemma}{Lemma}
-\newproof{proof}{Proof}
 
 \newcommand{\Rset}{\mathbb{R}}
 
@@ -53,12 +52,15 @@ conservative in $97.5\%$ of the levels tested and infeasible while admissible
 weights exist in $62.9\%$ of them. In the quadratic case, the joint convexity
 invoked in Theorem~7 does not hold, because the bilinear coupling between
 weights and decision variables makes the joint Hessian indefinite unless that
-coupling vanishes; the online problem is not a convex program. Both defects
-admit an exact repair at the same cost as the published program: since the
-value function is the minimum of the affine pieces, the admissible weight set
-is their \emph{union} of half-spaces, so it is obtained exactly by solving one
-linear program per active piece --- which also restores the recursive
-feasibility witness that the published formulation loses.
+coupling vanishes; the online problem is not a convex program. The first defect
+admits an exact repair: since the value function is the minimum of the affine
+pieces, the admissible weight set is their \emph{union} of half-spaces,
+obtained exactly by solving one linear program per active piece --- each
+smaller than the published one and independent of the others, their number
+growing with the number of active pieces --- which also restores the recursive
+feasibility witness that the published formulation loses. For the quadratic
+case we show that any feasible point of the published program still satisfies
+the contractive constraint, so only global optimality is at stake.
 \end{abstract}
 
 \begin{keyword}
@@ -97,8 +99,10 @@ feasible set is nonempty, and let $D_x=\{\mu: V^\ast(\mu,x)>-\infty\}$ be the
 set of weights for which the program is bounded. Then $\mu\mapsto
 V^\ast(\mu,x)$ is concave on $D_x$, and piecewise affine there whenever the
 feasible set is pointed --- as it is in the setting of the commented paper,
-where the decision variables are bounded below \citep[Eq.~(22)]{bemporad2009ecc}
-and the input set is compact \citep[footnote~3]{bemporad2009}.
+whose decision vector consists of the input sequence, confined to the bounded
+set $U$ \citep[footnote~3]{bemporad2009}, and of non-negative slack variables,
+so that all its components are bounded below (see the sentence preceding their
+Eq.~(14)).
 \end{lemma}
 
 \begin{proof}
@@ -127,16 +131,17 @@ We verified the corrected statement directly on problem (13), on randomly
 generated instances rather than on any particular controller, so that the
 evidence does not depend on how the scheme is instantiated. $200$ random
 multiparametric linear programs with six decision variables, eight
-constraints and two weights, and six chord tests each ($1{,}200$ tests): the
-concavity inequality in $\mu$ held in every test, strictly in $791$ of them
-and with equality in the rest, where the chord lay inside a single affine
-piece; the convexity inequality in $\mu$ held strictly in none. The same test
-in $x$ --- the direction the commented paper gets right --- came out convex in
-every test, strictly in $320$. A third test confirms the direction of the
-error at the level of the pieces: evaluating the value function as the
-\emph{maximum} of the affine pieces, as the proof of Theorem~6 does,
-overstates it by up to $5.15$ in value, while the \emph{minimum} reproduces it
-to $7\times10^{-15}$. Code and data are available with this comment.
+constraints and two weights, the weights sampled in the simplex
+$\{\mu\ge0,\ \sum_i\mu_i\le1\}$ declared in the commented paper, and six chord
+tests each ($1{,}200$ tests): the concavity inequality in $\mu$ held in every
+test, strictly in $746$ of them and with equality in the rest, where the chord
+lay inside a single affine piece; the convexity inequality in $\mu$ held
+strictly in none. The same test in $x$ --- the direction the commented paper
+gets right --- came out convex in every test, strictly in $295$. A third test
+confirms the direction of the error at the level of the pieces: evaluating the
+value function as the \emph{maximum} of the affine pieces, as the proof of
+Theorem~6 does, overstates it by up to $1.34$ in value over the simplex, while
+the \emph{minimum} reproduces it to $4\times10^{-15}$. Code and data are available with this comment.
 
 % ====================================================================
 \section{Consequences within the commented paper}
@@ -167,12 +172,17 @@ Two things follow, one reassuring and one not. Since every weight accepted by
 (17) satisfies the contractive constraint, the closed-loop guarantees that
 rest on that constraint are untouched, and the piecewise affine scheme is safe
 as published. What fails is exactness. We quantified the gap on $480$
-instance--level pairs, sampling the weight simplex $\{\mu\ge0,\ \sum_i\mu_i\le
-1\}$ declared in the commented paper: (17) was always contained in
+instance--level pairs: $120$ random instances, each at four contraction levels
+taken as the $15$th, $35$th, $55$th and $75$th percentiles of $V^\ast(\cdot,x)$
+over a grid of the weight simplex $\{\mu\ge0,\ \sum_i\mu_i\le 1\}$ declared in
+the commented paper, so that the admissible set is never empty nor the whole
+simplex. (17) was always contained in
 $\mathcal{A}(x,J_a)$, as the theory predicts, but \emph{strictly} contained in
 $468$ of them ($97.5\%$); $\mathcal{A}(x,J_a)$ was non-convex in $232$
 ($48.3\%$); and, most consequentially, (17) was \emph{infeasible while
-admissible weights existed} in $302$ of them ($62.9\%$). In those samples the
+admissible weights existed} in $302$ of them ($62.9\%$); that rate falls with
+the level, from $79.2\%$ at the lowest to $45.0\%$ at the highest, but never
+vanishes. In those samples the
 published program reports that no weight meets the contraction level when in
 fact a set of them does. Its optimizer, when feasible, also need not be the
 admissible weight closest to the desired one.
@@ -196,13 +206,16 @@ Lemma~\ref{lem:concave} applies verbatim in the $\mu$ direction, so
 $V^\ast_\mu(\cdot,x)$ is concave; a function that is both concave and convex
 in $\mu$ is affine in $\mu$, so joint convexity can hold only in that
 degenerate case. Consequently the feasible set of (21) is in general
-non-convex and (21) is not a convex program. Unlike the piecewise affine case,
-no inner-approximation safety net is created here; any candidate weight
-returned by a solver should therefore be certified a posteriori by evaluating
-$V^\ast_\mu$ directly, which is cheap.
+non-convex and (21) is not a convex program. The closed-loop guarantee is
+preserved here too: the contractive constraint is imposed exactly in (21), so
+any feasible point satisfies it, and a tangent linearization of a concave
+constraint is conservative. What is lost is global optimality --- a local
+solver may stop at a suboptimal weight, or report infeasibility where
+admissible weights exist --- and warm-starting at $\mu_{t-1}$, the scheme's
+own recursive-feasibility witness, removes the spurious infeasibility.
 
 % ====================================================================
-\section{An exact repair at the same cost}
+\section{An exact repair for the piecewise affine case}
 % ====================================================================
 The correction also supplies the fix. Because $V^\ast(\cdot,x)$ is the
 \emph{minimum} of the pieces, the admissible set is their \emph{union} of
@@ -215,11 +228,13 @@ half-spaces rather than their intersection:
 with $\Delta$ the weight simplex. Each member of the union is defined by a
 \emph{single} affine inequality over the same simplex, so selecting the
 admissible weight closest to a desired one is solved exactly by
-$\mathrm{card}(I(x))$ linear programs of the same size as (17), and the best
-of their optima is returned. On the $480$ instance--level pairs above,
-\eqref{eq:union} reproduced the true admissible set exactly in $466$ ($97.1\%$;
-the remaining discrepancies are grid points lying on the level itself), with
-the minimum of the pieces matching the value function to $2\times10^{-9}$.
+$\mathrm{card}(I(x))$ independent linear programs, each with a single
+contraction row in place of the $\mathrm{card}(I(x))$ rows of (17), and the
+best of their optima is returned; the price of exactness is that their number
+grows with the number of active pieces. On the $480$ instance--level pairs above,
+\eqref{eq:union} reproduced the true admissible set exactly in $466$; the $14$ disagreements
+are grid points lying on the level itself ($V^\ast=J_a$ within tolerance), and
+the minimum of the pieces matches the value function to $2\times10^{-9}$.
 
 The repair also restores a property the published program loses. The recursive
 feasibility argument of \citep[Theorem~3]{bemporad2009} exhibits the previous
@@ -248,8 +263,9 @@ with closed-loop guarantees obtained through a contractive constraint on a
 weighted value function---is not in question, and the published piecewise
 affine algorithm remains safe precisely because the affected construction errs
 on the conservative side. The correction concerns the exactness claims
-attached to the weight-selection subproblems, and it comes with a repair that
-costs no more than the published program. The authors of the commented paper
+attached to the weight-selection subproblems, and for the piecewise affine
+case it comes with an exact repair whose cost is $\mathrm{card}(I(x))$ small,
+independent linear programs. The authors of the commented paper
 were contacted about this observation on 7~August 2026; no response had been
 received at the time of submission.
 

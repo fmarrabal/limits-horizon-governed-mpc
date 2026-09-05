@@ -6,28 +6,28 @@
  },
  "T1_concava_en_mu": {
   "tests": 1200,
-  "concava": 791,
+  "concava": 746,
   "convexa": 0,
-  "d_media": 0.3155015556768846,
+  "d_media": 0.2395317481506431,
   "ok": true
  },
  "T2_convexa_en_x": {
   "tests": 1200,
-  "convexa": 320,
+  "convexa": 295,
   "concava": 0,
-  "d_media": -0.018455958438248987,
+  "d_media": -0.012407408446172104,
   "ok": true
  },
  "T3_minimo_de_piezas": {
-  "piezas": 4,
-  "err_min": 7.105427357601002e-15,
-  "err_max": 5.151663861831885,
+  "piezas": 2,
+  "err_min": 3.552713678800501e-15,
+  "err_max": 1.339121242641773,
   "ok": true
  },
  "T4_T5_conjunto": {
   "niveles": 2280,
-  "no_convexos": 36,
-  "lp_subconjunto_estricto": 2202
+  "no_convexos": 175,
+  "lp_subconjunto_estricto": 2114
  },
  "veredicto_ok": true
 }

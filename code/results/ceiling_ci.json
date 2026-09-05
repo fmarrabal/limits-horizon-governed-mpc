@@ -35,5 +35,15 @@
    ],
    "frac_por_encima_del_techo": 0.0
   }
+ },
+ "hueco_afin_vs_referencia": {
+  "hueco_pct": 1.44,
+  "ic95_pct": [
+   -0.3,
+   3.7
+  ],
+  "semillas_causal_mas_barato": 13,
+  "t_pareado_crudo": 1.49,
+  "p_crudo_bilateral": 0.146
  }
 }

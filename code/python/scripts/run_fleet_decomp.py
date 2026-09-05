@@ -47,7 +47,9 @@ BUDGETS = [24, 32, 40, 48, 64, 96]
 # presupuestos mayores para cubrir el computo de los puntos proporcionales
 BUDGETS_IG = [24, 32, 40, 48, 64, 96, 128, 192, 256]
 FIJOS = [2, 3, 4, 5, 6, 8, 10, 12, 16]
-TAU, AREF = 11.0, 0.1          # la sintonia que el barrido de run_fleet3 elige
+TAU, AREF = 30.0, 1e-6        # la sintonia que el barrido de run_fleet3 elige
+                               # (21-ago: con el objetivo = metrica de evaluacion;
+                               #  el 19-ago, con coste bruto nominal, salia 11/0.1)
 
 
 def campo(seed, rho):

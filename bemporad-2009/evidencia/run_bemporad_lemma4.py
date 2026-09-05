@@ -99,6 +99,18 @@ def chord_test(fun, p1, p2, tol_rel=1e-9):
     return d, tol
 
 
+def muestra_simplex(rng, l):
+    """Un punto uniforme en el simplex de pesos del articulo comentado,
+    {mu >= 0, sum mu <= 1}, por rechazo desde el cubo. La version del 6-ago
+    muestreaba el cubo [0,1]^l entero, es decir tambien fuera del dominio que
+    el articulo declara; la concavidad vale en todo R^l, pero un revisor puede
+    objetar que la evidencia no se tomo donde el Lema se enuncia."""
+    while True:
+        m = rng.uniform(0, 1, l)
+        if m.sum() <= 1.0:
+            return m
+
+
 def main(n_problems: int = 200, n_pairs: int = 6, seed: int = 0) -> dict:
     rng = np.random.default_rng(seed)
     print("=" * 78)
@@ -106,7 +118,8 @@ def main(n_problems: int = 200, n_pairs: int = 6, seed: int = 0) -> dict:
     print("=" * 78)
     print("Problema (13):   min_z (c0 + Cmu' mu)' z   s.a.  G z <= b + S x")
     print("El factible NO depende de mu; el objetivo es AFIN en mu para cada z.")
-    print("=> V*(.,x) = min de afines = CONCAVA en mu.\n")
+    print("=> V*(.,x) = min de afines = CONCAVA en mu.")
+    print("Los pesos se muestrean en el simplex {mu>=0, sum mu<=1} del articulo.\n")
 
     # ---------------------------------------------------------------- T1, T2
     nmu = nc_mu = nv_mu = 0
@@ -118,7 +131,7 @@ def main(n_problems: int = 200, n_pairs: int = 6, seed: int = 0) -> dict:
         x0 = rng.normal(size=n) * 0.5
         f_mu = lambda m: V_star(m, x0, c0, Cmu, G, b, S)[0]
         for _ in range(n_pairs):
-            m1, m2 = rng.uniform(0, 1, l), rng.uniform(0, 1, l)
+            m1, m2 = muestra_simplex(rng, l), muestra_simplex(rng, l)
             r = chord_test(f_mu, m1, m2)
             if r is None:
                 continue
@@ -126,7 +139,7 @@ def main(n_problems: int = 200, n_pairs: int = 6, seed: int = 0) -> dict:
             nmu += 1; dmu_sum += d
             if d < -tol: nc_mu += 1          # por debajo de la cuerda -> convexa
             if d >  tol: nv_mu += 1          # por encima -> concava
-        mu0 = rng.uniform(0, 1, l)
+        mu0 = muestra_simplex(rng, l)
         f_x = lambda xx: V_star(mu0, xx, c0, Cmu, G, b, S)[0]
         for _ in range(n_pairs):
             x1, x2 = rng.normal(size=n), rng.normal(size=n)
@@ -160,7 +173,8 @@ def main(n_problems: int = 200, n_pairs: int = 6, seed: int = 0) -> dict:
     print("--- T3: V* es el MINIMO de las piezas afines, no el maximo ---")
     c0, Cmu, G, b, S = random_mplp(l=1, seed=7)
     x0 = np.zeros(S.shape[1])
-    mus = np.linspace(0.0, 4.0, 241).reshape(-1, 1)
+    # con un solo peso el simplex es [0, 1]; la version del 6-ago barria [0, 4]
+    mus = np.linspace(0.0, 1.0, 241).reshape(-1, 1)
     vals, verts = [], []
     for m in mus:
         v, z = V_star(m, x0, c0, Cmu, G, b, S)
@@ -188,7 +202,7 @@ def main(n_problems: int = 200, n_pairs: int = 6, seed: int = 0) -> dict:
     for p in range(60):
         c0, Cmu, G, b, S = random_mplp(l=1, seed=500 + p)
         x0 = np.zeros(S.shape[1])
-        grid = np.linspace(0.0, 4.0, 161).reshape(-1, 1)
+        grid = np.linspace(0.0, 1.0, 161).reshape(-1, 1)     # el simplex, l=1
         V = np.array([V_star(m, x0, c0, Cmu, G, b, S)[0] for m in grid])
         Z = [V_star(m, x0, c0, Cmu, G, b, S)[1] for m in grid]
         uq = []

@@ -43,14 +43,16 @@ chk("200 problemas x 6 cuerdas = 1.200 pruebas",
     L4["protocolo"]["problemas"] == 200
     and L4["protocolo"]["cuerdas"] == 6
     and t1["tests"] == 1200 and en_texto("$200$", "$1{,}200$"))
-chk("791 estrictamente concavas", t1["concava"] == 791 and en_texto("$791$"))
+chk("746 estrictamente concavas (simplex)", t1["concava"] == 746 and en_texto("$746$"))
 chk("ninguna convexa en mu", t1["convexa"] == 0)
-chk("1.200 cuerdas en x, 320 estrictas", t2["tests"] == 1200 and t2["convexa"] == 320
-    and t2["concava"] == 0 and en_texto("$320$"))
-chk("el maximo de piezas sobrestima hasta 5.15",
-    abs(t3["err_max"] - 5.15) < 0.02 and en_texto("$5.15$"))
-chk("el minimo reproduce a 7e-15",
-    t3["err_min"] < 1e-14 and en_texto("7", "10^{-15}"))
+chk("1.200 cuerdas en x, 295 estrictas", t2["tests"] == 1200 and t2["convexa"] == 295
+    and t2["concava"] == 0 and en_texto("$295$"))
+chk("el maximo de piezas sobrestima hasta 1.34 (simplex)",
+    abs(t3["err_max"] - 1.34) < 0.01 and en_texto("$1.34$"))
+chk("el minimo reproduce a 4e-15",
+    t3["err_min"] < 1e-14 and en_texto("$4\\times10^{-15}$"))
+chk("los pesos se muestrean en el simplex",
+    "sampled in the simplex" in TEX)
 
 print("\nRemedio exacto y gap de la (17) (bemporad_remedy.json)")
 r1, r2, r3, r4 = (RM["T1_union_reproduce_el_conjunto"],
@@ -66,8 +68,19 @@ chk("infactible con admisible no vacio en 302 (62.9%)",
     r3["veces"] == 302 and en_texto("$302$", "62.9"))
 chk("no convexo en 232 (48.3%)",
     r4["no_convexos"] == 232 and en_texto("$232$", "48.3"))
-chk("la union reproduce el conjunto en 466 (97.1%)",
-    r1["exactos"] == 466 and en_texto("$466$", "97.1"))
+chk("la union reproduce el conjunto en 466 (14 desacuerdos sobre el nivel)",
+    r1["exactos"] == 466 and r1["casos"] - r1["exactos"] == 14
+    and en_texto("$466$", "$14$ disagreements"))
+_pq = RM["por_cuantil"]
+_tasa = lambda q: 100.0 * _pq[q]["infactible_con_admisible"] / _pq[q]["casos"]
+chk("protocolo de niveles revelado: cuantiles 15/35/55/75",
+    RM["protocolo"]["cuantiles"] == [0.15, 0.35, 0.55, 0.75]
+    and en_texto("$15$th, $35$th, $55$th and $75$th percentiles"))
+chk("infactibilidad por nivel: 79.2% -> 45.0%",
+    abs(_tasa("0.15") - 79.2) < 0.05 and abs(_tasa("0.75") - 45.0) < 0.05
+    and en_texto("$79.2\\%$", "$45.0\\%$"))
+chk("el remedio ya no se vende 'al mismo coste'",
+    "at the same cost" not in TEX and "the price of exactness" in TEX)
 chk("minimo de piezas = V* a 2e-9",
     r1["peor_error_min_piezas_vs_V"] < 1e-8 and en_texto("2", "10^{-9}"))
 
@@ -105,6 +118,8 @@ DECLARADOS = {
 # formas adicionales para no tener que declararlos como si no tuvieran origen
 from ghi.anclaje import variantes as _var
 _derivados = set()
+for _q, _v in RM["por_cuantil"].items():          # tasas por nivel (G-17)
+    _derivados |= _var(100.0 * _v["infactible_con_admisible"] / _v["casos"])
 for _num, _den in ((r2["estrictamente_menor"], n), (r3["veces"], n),
                    (r4["no_convexos"], n), (r1["exactos"], n),
                    (t1["concava"], t1["tests"]), (t2["convexa"], t2["tests"])):
